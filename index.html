@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8" />
+<title>Awesomplete: Lightweight autocomplete</title>
+<link rel="stylesheet" href="http://prismjs.com/themes/prism.css" />
+<link rel="stylesheet" href="awesomplete.css" />
+<link rel="stylesheet" href="style.css" />
+
+</head>
+<body class="language-markup">
+
+<header>
+<h1>Awesomplete</h1>
+
+<p class="size"><strong>1.5KB</strong> minified <span class="amp">&amp;</span> gzipped!</p>
+
+<p>Lightweight, simple, customizable autocomplete, built with modern standards. Because <code>&lt;datalist></code> still doesn’t cut it.</p>
+</header>
+
+<section>
+
+<h1>Demo (no JS, minimal options)</h1>
+<label>
+	Pick a programming language:<br />
+	<input class="awesomplete" data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" xautofocus />
+</label>
+
+<p>With Awesomplete, making something like this can be as simple as:</p>
+
+<pre class="language-markup"><code>&lt;input class="awesomplete"
+       data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" /></code></pre>
+
+<pre class="language-javascript"><code>// No extra JS needed for basic usage!</code></pre>
+
+</section>
+
+<section id="basic-usage">
+
+<h1>Basic usage</h1>
+<p>Before you try anything, you need to include <code>awesomplete.css</code> and <code>awesomplete.js</code> in your page, via the usual <code>&lt;link rel="stylesheet" href="awesomplete.css" /></code> and <code>&lt;script src="awesomplete.js">&lt;/script></code> tags.</p>
+
+<p>For the autocomplete, you just need an <code>&lt;input></code> or <code>&lt;textarea></code> box. Add <code>class="awsomplete"</code> for it to be <strong>automatically processed</strong> (you can still specify most options via HTML attributes), otherwise you can instantiate with a few lines of JS code, which allow for more customization.</p>
+<p>There are many ways <strong>to link an input to a list of suggestions</strong>. The simple example above could have also been made with the following code:</p>
+
+<pre class="language-markup"><code>&lt;input class="awesomplete" data-list="#mylist" />
+&lt;ul id="mylist">
+	&lt;li>Ada&lt;/li>
+	&lt;li>Java&lt;/li>
+	&lt;li>JavaScript&lt;/li>
+	&lt;li>Brainfuck&lt;/li>
+	&lt;li>LOLCODE&lt;/li>
+	&lt;li>Node.js&lt;/li>
+	&lt;li>Ruby on Rails&lt;/li>
+&lt;/ul></code></pre>
+
+<pre class="language-javascript"><code>// None!</code></pre>
+
+<p>Or the following, if we want to instantiate in JS:</p>
+
+<pre class="language-markup"><code>&lt;input id="myinput" />
+&lt;ul id="mylist">
+	&lt;li>Ada&lt;/li>
+	&lt;li>Java&lt;/li>
+	&lt;li>JavaScript&lt;/li>
+	&lt;li>Brainfuck&lt;/li>
+	&lt;li>LOLCODE&lt;/li>
+	&lt;li>Node.js&lt;/li>
+	&lt;li>Ruby on Rails&lt;/li>
+&lt;/ul></code></pre>
+<pre class="language-javascript"><code>var input = document.getElementById("myinput");
+new Awesomplete(input, {list: "#mylist"});</code></pre>
+
+<p>We can use an <strong>element reference</strong> for the list instead of a selector:</p>
+
+<pre class="language-markup"><code>&lt;input id="myinput" />
+&lt;ul id="mylist">
+	&lt;li>Ada&lt;/li>
+	&lt;li>Java&lt;/li>
+	&lt;li>JavaScript&lt;/li>
+	&lt;li>Brainfuck&lt;/li>
+	&lt;li>LOLCODE&lt;/li>
+	&lt;li>Node.js&lt;/li>
+	&lt;li>Ruby on Rails&lt;/li>
+&lt;/ul></code></pre>
+<pre class="language-javascript"><code>var input = document.getElementById("myinput");
+new Awesomplete(input, {list: document.querySelector("#mylist")});</code></pre>
+
+<p>We can also directly use an <strong>array of strings</strong>:</p>
+
+<pre class="language-markup"><code>&lt;input id="myinput" /></code></pre>
+	<pre class="language-javascript"><code>var input = document.getElementById("myinput");
+new Awesomplete(input, {
+	list: ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"]
+});</code></pre>
+	
+</section>
+
+<section id="customization">
+
+	<h1>More customization</h1>
+	
+	<p>Except the properties whose value needs to be a function, every property is settable via either a <code>data-</code> attribute on the <code>&lt;input></code> element or a JS property on the second argument of the <code>Awesomplete</code> constructor, like so:</p>
+	
+	<pre class="language-javascript"><code>new Awesomplete(inputReference, {
+	minChars: 3,
+	maxItems: 15,
+	...
+});</code></pre>
+	<p>You can of course combine both HTML attributes and JS properties. <strong>In case of conflict</strong> (e.g. you’ve specified both a <code>data-minchars</code> on the text field and a <code>minChars</code> JS property, <strong>the HTML attribute wins</strong>.</p>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>JS property</th>
+				<th>HTML attribute</th>
+				<th>Description</th>
+				<th>Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><code>list</code></td>
+				<td><code>data-list</code></td>
+				<td>Where to find the list of suggestions. Described in more detail in the “<a href="#basic-usage">Basic usage</a>” section above.</td>
+				<td>Array of strings, CSS selector (no commas), comma-separated list of items</td>
+			</tr>
+			<tr>
+				<td><code>minChars</code></td>
+				<td><code>data-minchars</code></td>
+				<td>Minimum characters the user has to type before the autocomplete popup shows up.</td>
+				<td>Number</td>
+			</tr>
+			<tr>
+				<td><code>maxItems</code></td>
+				<td><code>data-maxitems</code></td>
+				<td>Maximum number of suggestions to display.</td>
+				<td>Number</td>
+			</tr>
+			<tr>
+				<td><code>filter</code></td>
+				<td>-</td>
+				<td>Controls how entries get matched. By default, the input can match anywhere in the string and it’s a case insensitive match.</td>
+				<td>Function that takes two parameters, the first one being the current suggestion text that’s being tested and the second a string with the user’s input it’s matched against. Returns <code>true</code> if the match is successful and <code>false</code> if it is not. For example, to only match strings that <strong>start with the user’s input</strong>, <strong>case sensitive</strong>, we can do this:
+<pre class="language-javascript"><code>filter: function (text, input) {
+	return item.indexOf(input) === 0;
+}</code></pre> For case-<strong>in</strong>sensitive matching from the start of the word, there is a predefined filter that you can use, <code class="language-javascript">Awesomplete.FILTER_STARTSWITH</code>
+				</td>
+			</tr>
+			<tr>
+				<td><code>item</code></td>
+				<td>-</td>
+				<td>Controls how list items are generated.</td>
+				<td>Function that takes two parameters, the first one being the suggestion text and the second one the user’s input and returns a list item.</td>
+			</tr>
+		</tbody>
+	</table>
+
+</section>
+
+<footer>By <a href="http://lea.verou.me">Lea Verou</a></footer>
+
+<script src="awesomplete.js"></script>
+<script src="http://prismjs.com/prism.js" defer></script>
+
+</body>
+</html>
