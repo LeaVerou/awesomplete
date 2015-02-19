@@ -45,7 +45,22 @@
 <p>Before you try anything, you need to include <code>awesomplete.css</code> and <code>awesomplete.js</code> in your page, via the usual <code>&lt;link rel="stylesheet" href="awesomplete.css" /></code> and <code>&lt;script src="awesomplete.js">&lt;/script></code> tags.</p>
 
 <p>For the autocomplete, you just need an <code>&lt;input></code> text field (might work on <code>&lt;textarea></code> and elements with <code>contentEditable</code>, but that hasn’t been tested). Add <code>class="awesomplete"</code> for it to be <strong>automatically processed</strong> (you can still specify many options via HTML attributes), otherwise you can instantiate with a few lines of JS code, which allow for more customization.</p>
-<p>There are many ways <strong>to link an input to a list of suggestions</strong>. The simple example above could have also been made with the following markup (note that any elements will work, it doesn’t have to be a list):</p>
+<p>There are many ways <strong>to link an input to a list of suggestions</strong>. The simple example above could have also been made with the following markup, which provides a nice native fallback in case the script doesn’t load:</p>
+
+<pre class="language-markup"><code>&lt;input class="awesomplete" list="mylist" />
+&lt;datalist id="mylist">
+	&lt;option>Ada&lt;/option>
+	&lt;option>Java&lt;/option>
+	&lt;option>JavaScript&lt;/option>
+	&lt;option>Brainfuck&lt;/option>
+	&lt;option>LOLCODE&lt;/option>
+	&lt;option>Node.js&lt;/option>
+	&lt;option>Ruby on Rails&lt;/option>
+&lt;/datalist></code></pre>
+
+<pre class="language-javascript"><code>// None!</code></pre>
+
+<p>Or the following, if you don’t want to use a <code>&lt;datalist></code>, or if you don’t want to use IDs (since any selector will work in <code>data-list</code>):</p>
 
 <pre class="language-markup"><code>&lt;input class="awesomplete" data-list="#mylist" />
 &lt;ul id="mylist">

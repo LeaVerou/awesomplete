@@ -77,7 +77,14 @@ var _ = self.Awesomplete = function (input, o) {
 	this.minChars = +input.getAttribute("data-minchars") || o.minChars || 2;
 	this.maxItems = +input.getAttribute("data-maxitems") || o.maxItems || 10;
 	
-	this.list = input.hasAttribute("list")? "#" + input.getAttribute("list") : input.getAttribute("data-list") || o.list || [];
+	if (input.hasAttribute("list")) {
+		this.list = "#" + input.getAttribute("list");
+		input.removeAttribute("list");
+	}
+	else {
+		this.list = input.getAttribute("data-list") || o.list || [];
+	}
+	
 	this.filter = o.filter || _.FILTER_CONTAINS;
 	this.sort = o.sort || _.SORT_BYLENGTH;
 	
