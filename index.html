@@ -205,7 +205,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 				<td>Controls how entries get matched. By default, the input can match anywhere in the string and it’s a case insensitive match.</td>
 				<td>Function that takes two parameters, the first one being the current suggestion text that’s being tested and the second a string with the user’s input it’s matched against. Returns <code>true</code> if the match is successful and <code>false</code> if it is not. For example, to only match strings that <strong>start with the user’s input</strong>, <strong>case sensitive</strong>, we can do this:
 <pre class="language-javascript"><code>filter: function (text, input) {
-	return item.indexOf(input) === 0;
+	return text.indexOf(input) === 0;
 }</code></pre> For case-<strong>in</strong>sensitive matching from the start of the word, there is a predefined filter that you can use, <code class="language-javascript">Awesomplete.FILTER_STARTSWITH</code>
 				</td>
 				<td><code class="language-javascript">Awesomplete.FILTER_CONTAINS</code>: Text can match anywhere, case insensitive.</td>
