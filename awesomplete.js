@@ -279,8 +279,10 @@ _.SORT_BYLENGTH = function (a, b) {
 
 function regEscape(s) { return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&"); }
 
-$$("input.awesomplete").forEach(function (input) {
-	new Awesomplete(input);
+window.document.addEventListener('DOMContentLoaded', function () {
+	$$("input.awesomplete").forEach(function (input) {
+		new Awesomplete(input);
+	});
 });
 
 _.$ = $;
