@@ -132,7 +132,7 @@ var _ = self.Awesomplete = function (input, o) {
 		me.close();
 	}});
 	
-	$.bind(this.ul, {"click": function(evt) {
+	$.bind(this.ul, {"mousedown": function(evt) {
 		var li = evt.target;
 		
 		if (li != this) {
@@ -178,15 +178,6 @@ _.prototype = {
 	
 	open: function () {
 		this.ul.removeAttribute("hidden");
-		
-		var me = this;
-		
-		document.addEventListener("click", function(evt) {
-			if (!me.container.contains(evt.target)) {
-				document.removeEventListener("click", arguments.callee);
-				me.close();
-			}
-		});
 		
 		if (this.autoFirst && this.index == -1) {
 			this.goto(0);
