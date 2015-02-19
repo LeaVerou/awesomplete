@@ -100,6 +100,11 @@ header {
 		margin: 0;
 	}
 	
+		header p a {
+			text-decoration: none;
+			color: inherit;
+		}
+	
 	.size {
 		position: absolute;
 		top: 1em;
