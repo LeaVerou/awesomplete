@@ -78,7 +78,7 @@ div.awesomplete > ul:empty {
 	}
 	
 		div.awesomplete mark {
-			background: yellow;
+			background: hsl(65, 100%, 50%);
 		}
 		
 		div.awesomplete li:hover mark {

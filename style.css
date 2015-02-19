@@ -27,6 +27,11 @@ h2 {
 	font-size: 120%;
 }
 
+ul {
+	margin: 0;
+	padding-left: .8em;
+}
+
 strong {
 	font-weight: 600;
 }
@@ -47,7 +52,7 @@ button {
 
 input {
 	width: 12em;
-	padding: 0 .3em;
+	padding: .1em .3em;
 	border: 0;
 	border: 1px solid hsl(35, 80%, 60%);
 	background: hsla(0,0%,100%,.2);
@@ -95,43 +100,73 @@ header {
 		top: 1em;
 		right: 1em;
 		width: 4em;
-		padding: .7em .5em;
+		padding: .8em .6em 1em;
 		background: hsl(40, 80%, 40%);
+		
 		color: hsl(35, 80%, 94%);
 		text-shadow: none;
 		text-align: center;
 		line-height: 1.1;
 		text-indent: -.1em;
-		box-shadow: 0 0 0 .2em hsl(40, 80%, 40%) inset, 0 0 0 .25em currentcolor inset;
+		outline: .1em dotted;
+		outline-offset: -.3em;
 	}
-	
-		.size::before {
-			content: "";
-			position: absolute;
-			top: -.5em;
-			left: -.5em;
-			padding: .5em;
-			background: currentColor;
-			border-radius: 50%;
-			box-shadow: 5em 0, 0 4.9em, 5em 4.9em;
-			overflow: hidden;
-		}
 	
 		.size strong {
 			display: block;
-			font-weight: 900;
 			margin-bottom: .1em;
-			font-size: 110%;
+			font-size: 150%;
+			line-height: 1;
+			font-weight: 900;
 			font-style: normal;
 		}
 		
 		.size .amp {
 			position: absolute;
 			left: 0; right: 0;
-			bottom: -.1em;
+			bottom: 0;
 			color: hsla(35, 80%, 94%,.3);
 			font-size: 350%;
 		}
+	
+	nav {
+		margin-top: .5em;
+	}
+	
+	nav a {
+		position: relative;
+		display: inline-block;
+		padding: 0 .4em;
+		margin: 0 .1em;
+		
+		color: hsl(35, 80%, 94%);
+		text-shadow: none;
+		text-decoration: none;
+		font-size: 80%;
+	}
+	
+	nav a::before {
+		content: "";
+		position: absolute;
+		top: 0; left: 0; right: 0; bottom: 0;
+		z-index: -1;
+		border-radius: .2em;
+		background: hsl(40, 80%, 40%);
+		transform: skew(-16deg);
+	}
+	
+	nav a[href="#download"] {
+		font-weight: 600;
+	}
+	
+	nav a[href="#download"]::before {
+		background: hsl(65, 85%, 35%);
+	}
+	
+	nav a:hover::before {
+		background: #58a;
+	}
+	
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
@@ -145,7 +180,6 @@ footer {
 	border-top: 1px solid rgba(0,0,0,.3);
 	margin-top: 1em;
 	text-align: center;
-	font-size: 75%;
 }
 
 pre {
@@ -184,8 +218,8 @@ th {
 
 td {
 	vertical-align: top;
-	padding: 0 .5em;
-	border: 1px solid rgba(0,0,0,.2);
+	padding: .5em;
+	border: 1px solid rgba(0,0,0,.1);
 }
 
 :not(pre) > code[class*="language-"] {

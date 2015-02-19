@@ -12,11 +12,14 @@
 <body class="language-markup">
 
 <header>
+
 <h1>Awesomplete</h1>
 
-<p class="size"><strong>1.5KB</strong> minified <span class="amp">&amp;</span> gzipped!</p>
+<p class="size"><strong>2KB</strong> minified <span class="amp">&amp;</span> gzipped!</p>
 
-<p>Lightweight, simple, customizable autocomplete, built with modern standards. Because <code>&lt;datalist></code> still doesn’t cut it.</p>
+<p>Ultra lightweight, highly customizable, simple autocomplete widget, built with modern standards for modern browsers. Because <code>&lt;datalist></code> still doesn’t cut it.</p>
+
+<nav></nav>
 </header>
 
 <section>
@@ -24,7 +27,7 @@
 <h1>Demo (no JS, minimal options)</h1>
 <label>
 	Pick a programming language:<br />
-	<input class="awesomplete" data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" xautofocus />
+	<input autofocus class="awesomplete" data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" xautofocus />
 </label>
 
 <p>With Awesomplete, making something like this can be as simple as:</p>
@@ -41,8 +44,8 @@
 <h1>Basic usage</h1>
 <p>Before you try anything, you need to include <code>awesomplete.css</code> and <code>awesomplete.js</code> in your page, via the usual <code>&lt;link rel="stylesheet" href="awesomplete.css" /></code> and <code>&lt;script src="awesomplete.js">&lt;/script></code> tags.</p>
 
-<p>For the autocomplete, you just need an <code>&lt;input></code> or <code>&lt;textarea></code> box. Add <code>class="awsomplete"</code> for it to be <strong>automatically processed</strong> (you can still specify most options via HTML attributes), otherwise you can instantiate with a few lines of JS code, which allow for more customization.</p>
-<p>There are many ways <strong>to link an input to a list of suggestions</strong>. The simple example above could have also been made with the following code:</p>
+<p>For the autocomplete, you just need an <code>&lt;input></code> text field (might work on <code>&lt;textarea></code> and elements with <code>contentEditable</code>, but that hasn’t been tested). Add <code>class="awsomplete"</code> for it to be <strong>automatically processed</strong> (you can still specify many options via HTML attributes), otherwise you can instantiate with a few lines of JS code, which allow for more customization.</p>
+<p>There are many ways <strong>to link an input to a list of suggestions</strong>. The simple example above could have also been made with the following markup (note that any elements will work, it doesn’t have to be a list):</p>
 
 <pre class="language-markup"><code>&lt;input class="awesomplete" data-list="#mylist" />
 &lt;ul id="mylist">
@@ -94,21 +97,30 @@ new Awesomplete(input, {list: document.querySelector("#mylist")});</code></pre>
 new Awesomplete(input, {
 	list: ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"]
 });</code></pre>
+
+<p>We can even set it (or override it) later and it will just work:</p>
+
+<pre class="language-markup"><code>&lt;input id="myinput" /></code></pre>
+	<pre class="language-javascript"><code>var input = document.getElementById("myinput");
+var awesomplete = new Awesomplete(input);
+
+/* ...more code... */
+
+awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"];</code></pre>
 	
 </section>
 
 <section id="customization">
-
-	<h1>More customization</h1>
+	<h1>Customize</h1>
 	
-	<p>Except the properties whose value needs to be a function, every property is settable via either a <code>data-</code> attribute on the <code>&lt;input></code> element or a JS property on the second argument of the <code>Awesomplete</code> constructor, like so:</p>
+	<p>All settings discussed in this section are settable via either a <code>data-</code> attribute on the <code>&lt;input></code> element or a JS property on the second argument of the <code>Awesomplete</code> constructor, like so:</p>
 	
 	<pre class="language-javascript"><code>new Awesomplete(inputReference, {
 	minChars: 3,
 	maxItems: 15,
 	...
 });</code></pre>
-	<p>You can of course combine both HTML attributes and JS properties. <strong>In case of conflict</strong> (e.g. you’ve specified both a <code>data-minchars</code> on the text field and a <code>minChars</code> JS property, <strong>the HTML attribute wins</strong>.</p>
+	<p>You can of course combine both HTML attributes and JS properties. <strong>In case of conflict</strong> (e.g. you’ve specified both a <code>data-minchars</code> on the text field and a <code>minChars</code> JS property, <strong>the HTML attribute wins</strong>. You can also use the JS properties to change a parameter <strong>after</strong> the object has been created, in which case the change will apply even if there is a conflicting HTML attribute.</p>
 	
 	<table>
 		<thead>
@@ -117,6 +129,7 @@ new Awesomplete(input, {
 				<th>HTML attribute</th>
 				<th>Description</th>
 				<th>Value</th>
+				<th>Default</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -124,45 +137,195 @@ new Awesomplete(input, {
 				<td><code>list</code></td>
 				<td><code>data-list</code></td>
 				<td>Where to find the list of suggestions. Described in more detail in the “<a href="#basic-usage">Basic usage</a>” section above.</td>
-				<td>Array of strings, CSS selector (no commas), comma-separated list of items</td>
+				<td><ul>
+					<li>Array of strings</li>
+					<li>HTML element</li>
+					<li>CSS selector (no groups, i.e. no commas)</li>
+					<li>String containing a comma-separated list of items</li>
+				</ul></td>
+				<td>N/A</td>
 			</tr>
 			<tr>
 				<td><code>minChars</code></td>
 				<td><code>data-minchars</code></td>
 				<td>Minimum characters the user has to type before the autocomplete popup shows up.</td>
 				<td>Number</td>
+				<td>3</td>
 			</tr>
 			<tr>
 				<td><code>maxItems</code></td>
 				<td><code>data-maxitems</code></td>
 				<td>Maximum number of suggestions to display.</td>
 				<td>Number</td>
+				<td>10</td>
 			</tr>
 			<tr>
-				<td><code>filter</code></td>
-				<td>-</td>
-				<td>Controls how entries get matched. By default, the input can match anywhere in the string and it’s a case insensitive match.</td>
-				<td>Function that takes two parameters, the first one being the current suggestion text that’s being tested and the second a string with the user’s input it’s matched against. Returns <code>true</code> if the match is successful and <code>false</code> if it is not. For example, to only match strings that <strong>start with the user’s input</strong>, <strong>case sensitive</strong>, we can do this:
-<pre class="language-javascript"><code>filter: function (text, input) {
-	return item.indexOf(input) === 0;
-}</code></pre> For case-<strong>in</strong>sensitive matching from the start of the word, there is a predefined filter that you can use, <code class="language-javascript">Awesomplete.FILTER_STARTSWITH</code>
-				</td>
-			</tr>
-			<tr>
-				<td><code>item</code></td>
-				<td>-</td>
-				<td>Controls how list items are generated.</td>
-				<td>Function that takes two parameters, the first one being the suggestion text and the second one the user’s input and returns a list item.</td>
+				<td><code>autoFirst</code></td>
+				<td><code>data-autofirst</code></td>
+				<td>Should the first element be automatically selected? Demo: <input class="awesomplete" data-autofirst data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" xautofocus /></td>
+				<td>Boolean</td>
+				<td>false</td>
 			</tr>
 		</tbody>
 	</table>
 
 </section>
 
-<footer>By <a href="http://lea.verou.me">Lea Verou</a></footer>
+<section id="extensibility">
+	<h1>Extend</h1>
+	<p>The following JS properties do not have equivalent HTML attributes, because their values are functions. They allow you to completely change the way Awesomplete works:</p>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>Property</th>
+				<th>Description</th>
+				<th>Value</th>
+				<th>Default</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><code>filter</code></td>
+				<td>Controls how entries get matched. By default, the input can match anywhere in the string and it’s a case insensitive match.</td>
+				<td>Function that takes two parameters, the first one being the current suggestion text that’s being tested and the second a string with the user’s input it’s matched against. Returns <code>true</code> if the match is successful and <code>false</code> if it is not. For example, to only match strings that <strong>start with the user’s input</strong>, <strong>case sensitive</strong>, we can do this:
+<pre class="language-javascript"><code>filter: function (text, input) {
+	return item.indexOf(input) === 0;
+}</code></pre> For case-<strong>in</strong>sensitive matching from the start of the word, there is a predefined filter that you can use, <code class="language-javascript">Awesomplete.FILTER_STARTSWITH</code>
+				</td>
+				<td><code class="language-javascript">Awesomplete.FILTER_CONTAINS</code>: Text can match anywhere, case insensitive.</td>
+			</tr>
+			<tr>
+				<td><code>sort</code></td>
+				<td>Controls how list items are ordered.</td>
+				<td>Sort function (will be passed directly to <code>Array.prototype.sort()</code>) to sort the items after they have been filtered and before they are truncated and converted to HTML elements.</td>
+				<td>Sorted by length first, order second.</td>
+			</tr>
+			<tr>
+				<td><code>item</code></td>
+				<td>Controls how list items are generated.</td>
+				<td>Function that takes two parameters, the first one being the suggestion text and the second one the user’s input and returns a list item.</td>
+				<td>Generates list items with the user’s input highlighted via <code>&lt;mark></code>.</td>
+			</tr>			
+		</tbody>
+	</table>
+</section>
+
+<section id="events">
+	<h1>Events</h1>
+	
+	<p>Custom events are thrown in several places and are often cancellable. To avoid conflicts, all custom events are prefixed with <code>awesomplete-</code>.</p>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th>event.preventDefault()?</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><code>awesomplete-select</code></td>
+				<td>The user has made a selection (either via pressing enter or clicking on an item), but it has not been applied yet.</td>
+				<td>Yes. The selection will not be applied and the popup will not close.</td>
+			</tr>
+			<tr>
+				<td><code>awesomplete-selectcomplete</code></td>
+				<td>The user has made a selection (either via pressing enter or clicking on an item), and it has been applied.</td>
+				<td>No</td>
+			</tr>
+			<tr>
+				<td><code>awesomplete-open</code></td>
+				<td>The popup just appeared.</td>
+				<td>No</td>
+			</tr>
+			<tr>
+				<td><code>awesomplete-close</code></td>
+				<td>The popup just closed.</td>
+				<td>No</td>
+			</tr>
+		</tbody>
+	</table>
+</section>
+
+<section id="api">
+	<h1>API</h1>
+	
+	<p>There are several methods on every Awesomplete instance that you can call to customize behavior:</p>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>Method</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><code>open()</code></td>
+				<td>Opens the popup.</td>
+			</tr>
+			<tr>
+				<td><code>close()</code></td>
+				<td>Closes the popup.</td>
+			</tr>
+			<tr>
+				<td><code>next()</code></td>
+				<td>Highlights the next item in the popup.</td>
+			</tr>
+			<tr>
+				<td><code>previous()</code></td>
+				<td>Highlights the previous item in the popup.</td>
+			</tr>
+			<tr>
+				<td><code>goto(i)</code></td>
+				<td>Highlights the item with index <code>i</code> in the popup (<code>-1</code> to deselect all). Avoid using this directly and try to use <code>next()</code> or <code>previous()</code> instead when possible.</td>
+			</tr>
+			<tr>
+				<td><code>select()</code></td>
+				<td>Selects the currently highlighted item, replaces the text field’s value with it and closes the popup.</td>
+			</tr>
+			<tr>
+				<td><code>evaluate()</code></td>
+				<td>Evaluates the current state of the widget and regenerates the list of suggestions or closes the popup if none are available. You need to call it if you dynamically set <code>list</code> while the popup is open.</td>
+			</tr>
+		</tbody>
+	</table>
+</section>
+
+<section id="download">
+	<h1>Download!</h1>
+	
+	<ul>
+		<li><a href="https://github.com/LeaVerou/awesomplete">Fork me on Github</a></li>
+		<li><a href="https://github.com/LeaVerou/awesomplete/issues/new">File a bug</a> </li>
+		<li><a href="https://github.com/LeaVerou/awesomplete/issues/new">Suggest a feature</a> </li>
+	</ul>
+	
+	<p><strong>Pull requests are very welcome</strong>, as long as you maintain the code style and ask before adding tons of LOCs to the codebase!</p>
+</section>
+
+<footer>Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> &bull; <a href="http://shop.oreilly.com/product/0636920031123.do">Buy my book!</a> </footer>
 
 <script src="awesomplete.js"></script>
 <script src="http://prismjs.com/prism.js" defer></script>
+<script>
+$ = Awesomplete.$;
+$$ = Awesomplete.$$;
+
+var nav = $("nav")
+$$("section > h1").forEach(function (h1) {
+	if (h1.parentNode.id) {
+		$.create("a", {
+			href: "#" + h1.parentNode.id,
+			textContent: h1.textContent.replace(/\(.+?\)/g, ""),
+			inside: nav
+		});
+	}
+});
+
+</script>
 
 </body>
 </html>

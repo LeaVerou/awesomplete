@@ -1,7 +1,7 @@
 /**
- * Simple, leightweight, usable local autocomplete library for modern browsers
+ * Simple, lightweight, usable local autocomplete library for modern browsers
  * Because there weren’t enough autocomplete scripts in the world? Because I’m completely insane and have NIH syndrome? Probably both. :P
- * @author Lea Verou
+ * @author Lea Verou http://leaverou.github.io/awesomplete
  * MIT license
  */
  
@@ -17,14 +17,7 @@ function $$(expr, con) {
 }
 
 $.create = function(tag, o) {
-	if (arguments.length == 1) {
-		o = tag;
-		tag = o.tag;
-		delete o.tag;
-	}
-	
-	var element = o.element || document.createElement(tag);
-	delete o.element;
+	var element = document.createElement(tag);
 	
 	for (var i in o) {
 		var val = o[i];
@@ -60,6 +53,18 @@ $.bind = function(element, o) {
 	}
 }
 
+$.fire = function(target, type, properties) {
+	var evt = document.createEvent("HTMLEvents");
+			
+	evt.initEvent(type, true, true );
+
+	for (var j in properties) {
+		evt[j] = properties[j];
+	}
+
+	target.dispatchEvent(evt);
+}
+
 var _ = self.Awesomplete = function (input, o) {
 	var me = this;
 	
@@ -70,31 +75,14 @@ var _ = self.Awesomplete = function (input, o) {
 	input.setAttribute("aria-autocomplete", "list");
 	
 	this.minChars = +input.getAttribute("data-minchars") || o.minChars || 2;
-	this.maxItems = +input.getAttribute("data-maxitems") || o.maxItems || 20;
+	this.maxItems = +input.getAttribute("data-maxitems") || o.maxItems || 10;
 	
-	var list = input.getAttribute("data-list") || o.list || [];
-	
-	if (Array.isArray(list)) {
-		this.list = list;
-	}
-	else {
-		if (typeof list == "string" && list.indexOf(",") > -1) {
-			this.list = list.split(/\s*,\s*/);
-		}
-		else {
-			list = $(list);
-			
-			if (list && list.children) {
-				list.setAttribute("hidden", "");
-				
-				this.list = [].slice.apply(list.children).map(function (el) {
-					return el.innerHTML.trim();
-				});
-			}
-		}
-	}
-	
+	this.list = input.getAttribute("data-list") || o.list || [];
 	this.filter = o.filter || _.FILTER_CONTAINS;
+	this.sort = o.sort || _.SORT_BYLENGTH;
+	
+	this.autoFirst = input.hasAttribute("data-autofirst") || o.autoFirst || false;
+	
 	this.item = o.item || function (text, input) {
 		return $.create("li", {
 			innerHTML: text.replace(RegExp(regEscape(input.trim()), "gi"), "<mark>$&</mark>"),
@@ -117,32 +105,25 @@ var _ = self.Awesomplete = function (input, o) {
 	// Bind events
 	
 	$.bind(this.input, {
-		"input focus": checkInput,
+		"input": function () {
+			me.evaluate();
+		},
 		"blur": function () {
-			if (document.activeElement != this && document.activeElement != document.body) {
-				me.close();
-			}
+			me.close();
 		},
 		"keydown": function(evt) {
-			switch (evt.keyCode) {
-				case 13: // Enter
-					if (me.index > -1) {
-						evt.preventDefault();
-						me.select();
-					}
-					
-					break;
-				case 27: // Esc
-					me.close();
-					break;
-				case 40: // up arrow
-					me.next();
-					evt.preventDefault();
-					break;
-				case 38: // down arrow
-					me.previous();
-					evt.preventDefault();
-					break;
+			var c = evt.keyCode;
+			
+			if (c == 13 && me.index > -1) { // Enter
+				evt.preventDefault();
+				me.select();
+			}
+			else if (c == 27) { // Esc
+				me.close();
+			}
+			else if (c == 38 || c == 40) { // Down/Up arrow
+				evt.preventDefault();
+				me[c == 38? "previous" : "next"]();
 			}
 		}
 	});
@@ -165,36 +146,34 @@ var _ = self.Awesomplete = function (input, o) {
 			}
 		}
 	}});
-	
-	// Private functions
-	
-	function checkInput() {
-		var value = me.input.value;
-				
-		if (value.length >= me.minChars && me.list.length > 0) {
-			// Populate list with options that match
-			me.ul.innerHTML = "";
-
-			me.list.filter(function(item) {
-				return me.filter(item, value);
-			}).every(function(text, i) {
-				me.ul.appendChild(me.item(text, value));
-				
-				return i < me.maxItems - 1;
-			});
-			
-			me.open();
-		}
-		else {
-			me.close();
-		}
-	}
 };
 
 _.prototype = {
+	set list(list) {
+		if (Array.isArray(list)) {
+			this._list = list;
+		}
+		else {
+			if (typeof list == "string" && list.indexOf(",") > -1) {
+				this._list = list.split(/\s*,\s*/);
+			}
+			else {
+				list = $(list);
+				
+				if (list && list.children) {
+					this._list = [].slice.apply(list.children).map(function (el) {
+						return el.innerHTML.trim();
+					});
+				}
+			}
+		}
+	},
+	
 	close: function () {
 		this.ul.setAttribute("hidden", "");
 		this.index = -1;
+		
+		$.fire(this.input, "awesomplete-close");
 	},
 	
 	open: function () {
@@ -204,10 +183,16 @@ _.prototype = {
 		
 		document.addEventListener("click", function(evt) {
 			if (!me.container.contains(evt.target)) {
-				document.removeEventListener(arguments.callee);
+				document.removeEventListener("click", arguments.callee);
 				me.close();
 			}
 		});
+		
+		if (this.autoFirst && this.index == -1) {
+			this.goto(0);
+		}
+		
+		$.fire(this.input, "awesomplete-open");
 	},
 	
 	next: function () {
@@ -232,7 +217,7 @@ _.prototype = {
 		
 		this.index = i;
 		
-		if (i > -1) {
+		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
 		}
 	},
@@ -241,7 +226,45 @@ _.prototype = {
 		selected = selected || this.ul.children[this.index];
 
 		if (selected) {
-			this.input.value = selected.textContent;
+			var prevented;
+			
+			$.fire(this.input, "awesomplete-select", {
+				text: selected.textContent,
+				preventDefault: function () {
+					prevented = true;
+				}
+			});
+			
+			if (!prevented) {
+				this.input.value = selected.textContent;
+				this.close();
+				$.fire(this.input, "awesomplete-selectcomplete");
+			}
+		}
+	},
+	
+	evaluate: function() {
+		var me = this;
+		var value = this.input.value;
+				
+		if (value.length >= this.minChars && this._list.length > 0) {
+			this.index = -1;
+			// Populate list with options that match
+			this.ul.innerHTML = "";
+
+			this._list.filter(function(item) {
+				return me.filter(item, value);
+			})
+			.sort(this.sort)
+			.every(function(text, i) {
+				me.ul.appendChild(me.item(text, value));
+				
+				return i < me.maxItems - 1;
+			});
+			
+			this.open();
+		}
+		else {
 			this.close();
 		}
 	}
@@ -253,6 +276,14 @@ _.FILTER_CONTAINS = function (text, input) {
 
 _.FILTER_STARTSWITH = function (text, input) {
 	return RegExp("^" + regEscape(input.trim()), "i").test(text);
+};
+
+_.SORT_BYLENGTH = function (a, b) {
+	if (a.length != b.length) {
+		return a.length - b.length;
+	}
+	
+	return a < b? -1 : 1;
 };
 
 function regEscape(s) { return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&"); }
