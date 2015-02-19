@@ -54,10 +54,11 @@ div.awesomplete > ul:empty {
 		left: 1em;
 		width: 0; height: 0;
 		padding: .4em;
-		background: linear-gradient(to bottom right,white 50%, transparent 0);
+		background: white;
 		border: inherit;
 		border-right: 0;
 		border-bottom: 0;
+		-webkit-transform: rotate(45deg);
 		transform: rotate(45deg);
 	}
 

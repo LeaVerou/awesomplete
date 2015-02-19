@@ -102,7 +102,6 @@ header {
 		width: 4em;
 		padding: .8em .6em 1em;
 		background: hsl(40, 80%, 40%);
-		
 		color: hsl(35, 80%, 94%);
 		text-shadow: none;
 		text-align: center;
@@ -110,6 +109,12 @@ header {
 		text-indent: -.1em;
 		outline: .1em dotted;
 		outline-offset: -.3em;
+		text-decoration: none;
+		border-radius: .15em;
+	}
+	
+	.size:hover {
+		background: #58a;
 	}
 	
 		.size strong {
@@ -224,4 +229,30 @@ td {
 
 :not(pre) > code[class*="language-"] {
 	background: none;
+}
+
+.twitter-share-button {
+	position: absolute;
+	top: 1em;
+	left: 1em;
+}
+
+#carbonads {
+	position: absolute;
+	top: 100%;
+	top: calc(100vh - 15em);
+	right: 1em;
+	max-width: 10em;
+	max-width: -webkit-min-content;
+	max-width: min-content;
+	font-size: 75%;
+}
+
+#carbonads a {
+	text-decoration: none;
+	color: inherit;
+}
+
+#carbonads img {
+	display: block;
 }
