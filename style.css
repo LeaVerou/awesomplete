@@ -36,6 +36,11 @@ strong {
 	font-weight: 600;
 }
 
+abbr {
+	border-bottom: .1em dotted hsl(40, 80%, 40%);
+	cursor: help;
+}
+
 input, button {
 	font: inherit;
 	text-shadow: inherit;
@@ -157,6 +162,7 @@ header {
 		z-index: -1;
 		border-radius: .2em;
 		background: hsl(40, 80%, 40%);
+		-webkit-transform: skew(-16deg);
 		transform: skew(-16deg);
 	}
 	
