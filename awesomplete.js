@@ -39,7 +39,7 @@ $.create = function(tag, o) {
 	}
 	
 	return element;
-}
+};
 
 $.bind = function(element, o) {
 	if (element) {
@@ -51,7 +51,7 @@ $.bind = function(element, o) {
 			});
 		}
 	}
-}
+};
 
 $.fire = function(target, type, properties) {
 	var evt = document.createEvent("HTMLEvents");
@@ -63,7 +63,7 @@ $.fire = function(target, type, properties) {
 	}
 
 	target.dispatchEvent(evt);
-}
+};
 
 var _ = self.Awesomplete = function (input, o) {
 	var me = this;
@@ -88,7 +88,7 @@ var _ = self.Awesomplete = function (input, o) {
 			innerHTML: text.replace(RegExp(regEscape(input.trim()), "gi"), "<mark>$&</mark>"),
 			"aria-selected": "false"
 		});	
-	}
+	};
 	
 	this.index = -1;
 	

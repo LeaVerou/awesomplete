@@ -4,7 +4,7 @@
 
 <meta charset="utf-8" />
 <title>Awesomplete: Ultra lightweight, highly customizable, simple autocomplete, by Lea Verou</title>
-<link rel="stylesheet" href="http://prismjs.com/themes/prism.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.css" />
 <link rel="stylesheet" href="awesomplete.css" />
 <link rel="stylesheet" href="style.css" />
 
@@ -30,7 +30,7 @@
 	<input autofocus class="awesomplete" data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" />
 </label>
 
-<p>Note that by default you need to type <strong>at least 2 characters</strong> for the popup to show up, though that’s <a href="#customize">super easy to customize</a>. With Awesomplete, making something like this can be as simple as:</p>
+<p>Note that by default you need to type <strong>at least 2 characters</strong> for the popup to show up, though that’s <a href="#customization">super easy to customize</a>. With Awesomplete, making something like this can be as simple as:</p>
 
 <pre class="language-markup"><code>&lt;input class="awesomplete"
        data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" /></code></pre>
@@ -44,7 +44,7 @@
 <h1>Basic usage</h1>
 <p>Before you try anything, you need to include <code>awesomplete.css</code> and <code>awesomplete.js</code> in your page, via the usual <code>&lt;link rel="stylesheet" href="awesomplete.css" /></code> and <code>&lt;script src="awesomplete.js">&lt;/script></code> tags.</p>
 
-<p>For the autocomplete, you just need an <code>&lt;input></code> text field (might work on <code>&lt;textarea></code> and elements with <code>contentEditable</code>, but that hasn’t been tested). Add <code>class="awsomplete"</code> for it to be <strong>automatically processed</strong> (you can still specify many options via HTML attributes), otherwise you can instantiate with a few lines of JS code, which allow for more customization.</p>
+<p>For the autocomplete, you just need an <code>&lt;input></code> text field (might work on <code>&lt;textarea></code> and elements with <code>contentEditable</code>, but that hasn’t been tested). Add <code>class="awesomplete"</code> for it to be <strong>automatically processed</strong> (you can still specify many options via HTML attributes), otherwise you can instantiate with a few lines of JS code, which allow for more customization.</p>
 <p>There are many ways <strong>to link an input to a list of suggestions</strong>. The simple example above could have also been made with the following markup (note that any elements will work, it doesn’t have to be a list):</p>
 
 <pre class="language-markup"><code>&lt;input class="awesomplete" data-list="#mylist" />
@@ -310,7 +310,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 <footer>Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> &bull; <a href="http://lea.verou.me/2015/02/awesomplete-2kb-autocomplete-with-zero-dependencies">Read the blog post</a> &bull; <a href="http://shop.oreilly.com/product/0636920031123.do">Buy my book!</a> </footer>
 
 <script src="awesomplete.js"></script>
-<script src="http://prismjs.com/prism.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.js" defer></script>
 <script>
 $ = Awesomplete.$;
 $$ = Awesomplete.$$;
