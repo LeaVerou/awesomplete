@@ -109,6 +109,14 @@ var _ = self.Awesomplete = function (input, o) {
 		inside: this.container
 	});
 	
+	this.status = $.create("span", {
+		hiddena11y: "",
+		role: "status",
+		"aria-live": "assertive",
+		"aria-relevant": "additions",
+		inside: this.container
+	});
+	
 	// Bind events
 	
 	$.bind(this.input, {
@@ -217,6 +225,7 @@ _.prototype = {
 		
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
+			this.setStatus(lis[i].textContent);
 		}
 	},
 	
@@ -265,6 +274,10 @@ _.prototype = {
 		else {
 			this.close();
 		}
+	},
+
+	setStatus: function(message) {
+		this.status.innerHTML = message;
 	}
 };
 
