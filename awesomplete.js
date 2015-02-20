@@ -110,7 +110,7 @@ var _ = self.Awesomplete = function (input, o) {
 	});
 	
 	this.status = $.create("span", {
-		hiddena11y: "",
+		className: "visually-hidden",
 		role: "status",
 		"aria-live": "assertive",
 		"aria-relevant": "additions",
