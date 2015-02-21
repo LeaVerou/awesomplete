@@ -42,7 +42,7 @@
 <section id="basic-usage">
 
 <h1>Basic usage</h1>
-<p>Before you try anything, you need to include <code>awesomplete.css</code> and <code>awesomplete.js</code> in your page, via the usual <code>&lt;link rel="stylesheet" href="awesomplete.css" /></code> and <code>&lt;script src="awesomplete.js">&lt;/script></code> tags.</p>
+<p>Before you try anything, you need to include <code>awesomplete.css</code> and <code>awesomplete.js</code> in your page, via the usual <code>&lt;link rel="stylesheet" href="awesomplete.css" /></code> and <code>&lt;script src="awesomplete.js" async>&lt;/script></code> tags.</p>
 
 <p>For the autocomplete, you just need an <code>&lt;input></code> text field (might work on <code>&lt;textarea></code> and elements with <code>contentEditable</code>, but that hasn’t been tested). Add <code>class="awesomplete"</code> for it to be <strong>automatically processed</strong> (you can still specify many options via HTML attributes), otherwise you can instantiate with a few lines of JS code, which allow for more customization.</p>
 <p>There are many ways <strong>to link an input to a list of suggestions</strong>. The simple example above could have also been made with the following markup, which provides a nice native fallback in case the script doesn’t load:</p>
