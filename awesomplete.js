@@ -225,7 +225,7 @@ _.prototype = {
 		
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
-			this.setStatus(lis[i].textContent);
+			this.status.textContent = lis[i].textContent;
 		}
 	},
 	
@@ -274,10 +274,6 @@ _.prototype = {
 		else {
 			this.close();
 		}
-	},
-
-	setStatus: function(message) {
-		this.status.innerHTML = message;
 	}
 };
 
