@@ -9,7 +9,7 @@
 
 function $(expr, con) {
 	if (!expr) return null;
-	return typeof expr === 'string'? (con || document).querySelector(expr) : expr;
+	return typeof expr === "string"? (con || document).querySelector(expr) : expr;
 }
 
 function $$(expr, con) {
