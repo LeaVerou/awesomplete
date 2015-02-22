@@ -112,12 +112,8 @@ var _ = self.Awesomplete = function (input, o) {
 	// Bind events
 	
 	$.bind(this.input, {
-		"input": function () {
-			me.evaluate();
-		},
-		"blur": function () {
-			me.close();
-		},
+		"input": me.evaluate.bind(me),
+		"blur": me.close.bind(me),
 		"keydown": function(evt) {
 			var c = evt.keyCode;
 			
@@ -135,9 +131,7 @@ var _ = self.Awesomplete = function (input, o) {
 		}
 	});
 	
-	$.bind(this.input.form, {"submit": function(event) {
-		me.close();
-	}});
+	$.bind(this.input.form, {"submit": me.close.bind(me)});
 	
 	$.bind(this.ul, {"mousedown": function(evt) {
 		var li = evt.target;
