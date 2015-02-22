@@ -5,7 +5,7 @@
  * MIT license
  */
  
-(function () {
+(function (document) {
 
 function $(expr, con) {
 	if (!expr) return null;
@@ -303,4 +303,4 @@ if (document.readyState !== "loading") {
 _.$ = $;
 _.$$ = $$;
 
-})();
+})(document);
