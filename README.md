@@ -1,5 +1,7 @@
 # Awesomplete
 
+http://leaverou.github.io/awesomplete/
+
 Awesomplete is an ultra lightweight, customizable, simple autocomplete widget with zero dependencies, built with modern standards for modern browsers.
 
 
@@ -64,7 +66,7 @@ details.
 
 The official site for the library is at <http://leaverou.github.io/awesomplete/>.
 
-Further in-depth documentation for the API and other topics is at
+Documentation for the API and other topics is at
 <http://leaverou.github.io/awesomplete/#api>.
 
 Created by Lea Verou and other fantastic contributors.
