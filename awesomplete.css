@@ -34,7 +34,7 @@ div.awesomplete > ul:empty {
 @supports (transform: scale(0)) {
 	div.awesomplete > ul {
 		transition: .3s cubic-bezier(.4,.2,.5,1.4);
-		transform-origin: 1em -.43em;
+		transform-origin: 1.43em -.43em;
 	}
 	
 	div.awesomplete > ul[hidden],
