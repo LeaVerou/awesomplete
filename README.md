@@ -5,6 +5,13 @@ http://leaverou.github.io/awesomplete/
 Awesomplete is an ultra lightweight, customizable, simple autocomplete widget with zero dependencies, built with modern standards for modern browsers.
 
 
+## Bower Installation
+
+```bash
+bower install https://github.com/LeaVerou/awesomplete.git#gh-pages
+```
+
+
 ## Basic Usage
 
 Before you try anything, you need to include awesomplete.css and awesomplete.js in your page, via the usual tags:
