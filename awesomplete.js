@@ -24,10 +24,10 @@ $.create = function(tag, o) {
 	for (var i in o) {
 		var val = o[i];
 		
-		if (i == "inside") {
+		if (i === "inside") {
 			$(val).appendChild(element);
 		}
-		else if (i == "around") {
+		else if (i === "around") {
 			var ref = $(val);
 			ref.parentNode.insertBefore(element, ref);
 			element.appendChild(ref);
@@ -119,16 +119,16 @@ var _ = self.Awesomplete = function (input, o) {
 		"keydown": function(evt) {
 			var c = evt.keyCode;
 			
-			if (c == 13 && me.index > -1) { // Enter
+			if (c === 13 && me.index > -1) { // Enter
 				evt.preventDefault();
 				me.select();
 			}
-			else if (c == 27) { // Esc
+			else if (c === 27) { // Esc
 				me.close();
 			}
-			else if (c == 38 || c == 40) { // Down/Up arrow
+			else if (c === 38 || c === 40) { // Down/Up arrow
 				evt.preventDefault();
-				me[c == 38? "previous" : "next"]();
+				me[c === 38? "previous" : "next"]();
 			}
 		}
 	});
@@ -138,7 +138,7 @@ var _ = self.Awesomplete = function (input, o) {
 	$.bind(this.ul, {"mousedown": function(evt) {
 		var li = evt.target;
 		
-		if (li != this) {
+		if (li !== this) {
 			
 			while (li && !/li/i.test(li.nodeName)) {
 				li = li.parentNode;
@@ -157,7 +157,7 @@ _.prototype = {
 			this._list = list;
 		}
 		else {
-			if (typeof list == "string" && list.indexOf(",") > -1) {
+			if (typeof list === "string" && list.indexOf(",") > -1) {
 				this._list = list.split(/\s*,\s*/);
 			}
 			else {
@@ -182,7 +182,7 @@ _.prototype = {
 	open: function () {
 		this.ul.removeAttribute("hidden");
 		
-		if (this.autoFirst && this.index == -1) {
+		if (this.autoFirst && this.index === -1) {
 			this.goto(0);
 		}
 		
@@ -273,7 +273,7 @@ _.FILTER_STARTSWITH = function (text, input) {
 };
 
 _.SORT_BYLENGTH = function (a, b) {
-	if (a.length != b.length) {
+	if (a.length !== b.length) {
 		return a.length - b.length;
 	}
 	
