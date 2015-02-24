@@ -4,6 +4,11 @@ http://leaverou.github.io/awesomplete/
 
 Awesomplete is an ultra lightweight, customizable, simple autocomplete widget with zero dependencies, built with modern standards for modern browsers.
 
+## Bower Installation
+
+```bash
+bower install --save https://github.com/LeaVerou/awesomplete.git#gh-pages
+```
 
 ## Basic Usage
 
@@ -24,7 +29,7 @@ Then you can add an Awesomplete widget by adding the following input tag:
 Add `class="awesomplete"` for it to be automatically processed (you can still specify many options via HTML attributes)
 Otherwise you can instantiate with a few lines of JS code, which allow for more customization.
 
-There are many ways to link an input to a list of suggestions. 
+There are many ways to link an input to a list of suggestions.
 The simple example above could have also been made with the following markup, which provides a nice native fallback in case the script doesn’t load:
 
 ```html
