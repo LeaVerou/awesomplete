@@ -10,28 +10,29 @@
 var _ = self.Awesomplete = function (input, o) {
 	var me = this;
 	
-	// Setup environment
-	o = o || {};
+	// Setup
 	
 	this.input = input;
 	input.setAttribute("aria-autocomplete", "list");
 	
-	this.minChars = +input.getAttribute("data-minchars") || o.minChars || 2;
-	this.maxItems = +input.getAttribute("data-maxitems") || o.maxItems || 10;
-	this.autoFirst = input.hasAttribute("data-autofirst") || o.autoFirst || false;
-	this.filter = o.filter || _.FILTER_CONTAINS;
-	this.sort = o.sort || _.SORT_BYLENGTH;
+	o = o || {};
 	
-	this.item = o.item || function (text, input) {
-		return $.create("li", {
-			innerHTML: text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>"),
-			"aria-selected": "false"
-		});	
-	};
-	
-	this.replace = o.replace || function (text) {
-		this.input.value = text;
-	};
+	configure.call(this, {
+		minChars: 2,
+		maxItems: 10,
+		autoFirst: false,
+		filter: _.FILTER_CONTAINS,
+		sort: _.SORT_BYLENGTH,
+		item: function (text, input) {
+			return $.create("li", {
+				innerHTML: text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>"),
+				"aria-selected": "false"
+			});	
+		},
+		replace: function (text) {
+			this.input.value = text;
+		}
+	}, o);
 	
 	this.index = -1;
 	
@@ -237,6 +238,30 @@ _.SORT_BYLENGTH = function (a, b) {
 	return a < b? -1 : 1;
 };
 
+// Private functions
+
+function configure(properties, o) {
+	for (var i in properties) {
+		var initial = properties[i],
+		    attrValue = this.input.getAttribute("data-" + i.toLowerCase());
+		
+		if (typeof initial === "number") {
+			this[i] = +attrValue;
+		}
+		else if (initial === false) { // Boolean options must be false by default anyway
+			this[i] = attrValue !== null;
+		}
+		else if (initial instanceof Function) {
+			this[i] = null;
+		}
+		else {
+			this[i] = attrValue;
+		}
+		
+		this[i] = this[i] || o[i] || initial;
+	}
+}
+
 // Helpers
 
 var slice = Array.prototype.slice;
@@ -302,7 +327,7 @@ $.regExpEscape = function (s) {
 	return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
 }
 
-
+// Initialization
 
 function init() {
 	$$("input.awesomplete").forEach(function (input) {
