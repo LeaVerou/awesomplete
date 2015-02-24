@@ -7,13 +7,15 @@
  
 (function () {
 
+var slice = Array.prototype.slice;
+
 function $(expr, con) {
 	if (!expr) return null;
 	return typeof expr === "string"? (con || document).querySelector(expr) : expr;
 }
 
 function $$(expr, con) {
-	return Array.prototype.slice.call((con || document).querySelectorAll(expr));
+	return slice.call((con || document).querySelectorAll(expr));
 }
 
 $.create = function(tag, o) {
@@ -162,7 +164,7 @@ _.prototype = {
 				list = $(list);
 				
 				if (list && list.children) {
-					this._list = [].slice.apply(list.children).map(function (el) {
+					this._list = slice.apply(list.children).map(function (el) {
 						return el.innerHTML.trim();
 					});
 				}
