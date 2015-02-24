@@ -21,7 +21,7 @@ Then you can add an Awesomplete widget by adding the following input tag:
        data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" />
 ```
 
-Add class="awesomplete" for it to be automatically processed (you can still specify many options via HTML attributes)
+Add `class="awesomplete"` for it to be automatically processed (you can still specify many options via HTML attributes)
 Otherwise you can instantiate with a few lines of JS code, which allow for more customization.
 
 There are many ways to link an input to a list of suggestions. 
@@ -40,7 +40,7 @@ The simple example above could have also been made with the following markup, wh
 </datalist>
 ```
 
-Or the following, if you don’t want to use a <datalist>, or if you don’t want to use IDs (since any selector will work in data-list):
+Or the following, if you don’t want to use a `<datalist>`, or if you don’t want to use IDs (since any selector will work in data-list):
 
 ```html
 <input class="awesomplete" data-list="#mylist" />
