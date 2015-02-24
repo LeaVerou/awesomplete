@@ -221,7 +221,16 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 				<td>Controls how list items are generated.</td>
 				<td>Function that takes two parameters, the first one being the suggestion text and the second one the user’s input and returns a list item.</td>
 				<td>Generates list items with the user’s input highlighted via <code>&lt;mark></code>.</td>
-			</tr>			
+			</tr>
+			<tr>
+				<td><code>replace</code></td>
+				<td>Controls how the user’s selection replaces the user’s input. For example, this is useful if you want the selection to only partially replace the user’s input.</td>
+				<td>Function that takes one parameter, the text of the selected option, and is responsible for replacing the current input value with it.
+				</td>
+				<td><pre class="language-javascript"><code>function (text) {
+	this.input.value = value;
+}</code></pre></td>
+			</tr>
 		</tbody>
 	</table>
 </section>
@@ -326,22 +335,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 
 <script src="awesomplete.js"></script>
 <script src="https://leaverou.github.io/prism/prism.js" defer></script>
-<script>
-$ = Awesomplete.$;
-$$ = Awesomplete.$$;
-
-var nav = $("nav")
-$$("section > h1").forEach(function (h1) {
-	if (h1.parentNode.id) {
-		$.create("a", {
-			href: "#" + h1.parentNode.id,
-			textContent: h1.textContent.replace(/\(.+?\)/g, ""),
-			inside: nav
-		});
-	}
-});
-
-</script>
+<script src="index.js"></script>
 
 <a href="https://twitter.com/share" class="twitter-share-button" data-via="LeaVerou" data-size="large">Tweet</a>
 <script async src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=leaveroume" id="_carbonads_js"></script>

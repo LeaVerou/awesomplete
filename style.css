@@ -258,12 +258,12 @@ td {
 	max-width: min-content;
 	font-size: 75%;
 }
-
-#carbonads a {
-	text-decoration: none;
-	color: inherit;
-}
-
-#carbonads img {
-	display: block;
-}
+	
+	#carbonads a {
+		text-decoration: none;
+		color: inherit;
+	}
+	
+	#carbonads img {
+		display: block;
+	}
