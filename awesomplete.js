@@ -7,7 +7,7 @@
 
 (function () {
 
-var _ = self.Awesomplete = function (input, o) {
+var _ = function (input, o) {
 	var me = this;
 
 	// Setup
@@ -348,16 +348,31 @@ function init() {
 	});
 }
 
-// DOM already loaded?
-if (document.readyState !== "loading") {
-	init();
-}
-else {
-	// Wait for it
-	document.addEventListener("DOMContentLoaded", init);
+// Are we in a browser? Check for Document constructor
+if (typeof Document !== 'undefined') {
+	// DOM already loaded?
+	if (document.readyState !== "loading") {
+		init();
+	}
+	else {
+		// Wait for it
+		document.addEventListener("DOMContentLoaded", init);
+	}
 }
 
 _.$ = $;
 _.$$ = $$;
 
-})();
+// Make sure to export Awesomplete on self when in a browser
+if (typeof self !== 'undefined') {
+	self.Awesomplete = _;
+}
+
+// Expose Awesomplete as a CJS module
+if (typeof exports === 'object') {
+	module.exports = _;
+}
+
+return _;
+
+}());
