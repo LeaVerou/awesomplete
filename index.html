@@ -348,6 +348,47 @@ var emailAutoComplete = new Awesomplete(input, {
 	</table>
 </section>
 
+<section id="advanced-examples">
+	<h1>Advanced Examples</h1>
+	<h2>E-mail autocomplete</h2>
+	<p><input id="emailInput"></p>
+	<pre class="language-markup"><code>&lt;input id="emailInput" /></code></pre>
+	<pre class="language-javascript"><code>
+var input = document.getElementById("emailInput");
+var emailAutoComplete = new Awesomplete(input, {
+	// List of emails domains
+	list: ["@aol.com", "@att.net", "@comcast.net", "@facebook.com", "@gmail.com", "@gmx.com", "@googlemail.com", "@google.com", "@hotmail.com", "@hotmail.co.uk", "@mac.com", "@me.com", "@mail.com", "@msn.com", "@live.com", "@sbcglobal.net", "@verizon.net", "@yahoo.com", "@yahoo.co.uk"],
+	
+	// Suggestions list modification
+	item: function(text, input){
+	    // join the user input with the email suggestion
+	    var newText = input.slice(0, input.indexOf("@")) + text;
+	
+	    // create the node with the suggestion
+	    return Awesomplete.$.create("li", {
+	        innerHTML: newText.replace(RegExp(input.trim(), "gi"), "<mark>$&</mark>"),
+	        "aria-selected": "false"
+	    });
+	},
+	
+	// E-mail filter
+	filter: function(text, input){
+	    var atPosition = input.indexOf("@");
+	    // verify if it's an email (has @) and it has at least one letter to search
+	    var inputIsEmail = !!~atPosition && (input.length > atPosition + 1);
+	    
+	    // get the email part of the user input
+	    var emailPart = input.slice(input.indexOf("@"));
+	    
+	    // check if the email part is on the domains list
+	    var textMatchWithInput = RegExp("^" + emailPart.trim(), "i").test(text);
+	
+	    return (inputIsEmail && textMatchWithInput);
+	}
+});
+	</code></pre>
+</section>
+
 <section id="download">
 	<h1>Download!</h1>
 	
