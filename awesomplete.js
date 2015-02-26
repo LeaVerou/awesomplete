@@ -7,13 +7,271 @@
  
 (function () {
 
+var _ = self.Awesomplete = function (input, o) {
+	var me = this;
+	
+	// Setup
+	
+	this.input = input;
+	input.setAttribute("aria-autocomplete", "list");
+	
+	o = o || {};
+	
+	configure.call(this, {
+		minChars: 2,
+		maxItems: 10,
+		autoFirst: false,
+		filter: _.FILTER_CONTAINS,
+		sort: _.SORT_BYLENGTH,
+		item: function (text, input) {
+			return $.create("li", {
+				innerHTML: text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>"),
+				"aria-selected": "false"
+			});	
+		},
+		replace: function (text) {
+			this.input.value = text;
+		}
+	}, o);
+	
+	this.index = -1;
+	
+	// Create necessary elements
+	
+	this.container = $.create("div", {
+		className: "awesomplete",
+		around: input
+	});
+	
+	this.ul = $.create("ul", {
+		hidden: "",
+		inside: this.container
+	});
+	
+	// Bind events
+	
+	$.bind(this.input, {
+		"input": this.evaluate.bind(this),
+		"blur": this.close.bind(this),
+		"keydown": function(evt) {
+			var c = evt.keyCode;
+			
+			if (c === 13 && me.selected) { // Enter
+				evt.preventDefault();
+				me.select();
+			}
+			else if (c === 27) { // Esc
+				me.close();
+			}
+			else if (c === 38 || c === 40) { // Down/Up arrow
+				evt.preventDefault();
+				me[c === 38? "previous" : "next"]();
+			}
+		}
+	});
+	
+	$.bind(this.input.form, {"submit": me.close.bind(me)});
+	
+	$.bind(this.ul, {"mousedown": function(evt) {
+		var li = evt.target;
+		
+		if (li !== this) {
+			
+			while (li && !/li/i.test(li.nodeName)) {
+				li = li.parentNode;
+			}
+			
+			if (li) {
+				me.select(li);	
+			}
+		}
+	}});
+	
+	if (input.hasAttribute("list")) {
+		this.list = "#" + input.getAttribute("list");
+		input.removeAttribute("list");
+	}
+	else {
+		this.list = input.getAttribute("data-list") || o.list || [];
+	}
+	
+	_.all.push(this);
+};
+
+_.prototype = {
+	set list(list) {
+		if (Array.isArray(list)) {
+			this._list = list;
+		}
+		else if (typeof list === "string" && list.indexOf(",") > -1) {
+				this._list = list.split(/\s*,\s*/);
+		}
+		else { // Element or CSS selector
+			list = $(list);
+			
+			if (list && list.children) {
+				this._list = slice.apply(list.children).map(function (el) {
+					return el.innerHTML.trim();
+				});
+			}
+		}
+		
+		if (document.activeElement === this.input) {
+			this.evaluate();
+		}
+	},
+	
+	get selected() {
+		return this.index > -1;
+	},
+	
+	close: function () {
+		this.ul.setAttribute("hidden", "");
+		this.index = -1;
+		
+		$.fire(this.input, "awesomplete-close");
+	},
+	
+	open: function () {
+		this.ul.removeAttribute("hidden");
+		
+		if (this.autoFirst && this.index === -1) {
+			this.goto(0);
+		}
+		
+		$.fire(this.input, "awesomplete-open");
+	},
+	
+	next: function () {
+		var count = this.ul.children.length;
+
+		this.goto(this.index < count - 1? this.index + 1 : -1);
+	},
+	
+	previous: function () {
+		var count = this.ul.children.length;
+		
+		this.goto(this.selected? this.index - 1 : count - 1);
+	},
+	
+	// Should not be used, highlights specific item without any checks!
+	goto: function (i) {
+		var lis = this.ul.children;
+		
+		if (this.selected) {
+			lis[this.index].setAttribute("aria-selected", "false");
+		}
+		
+		this.index = i;
+		
+		if (i > -1 && lis.length > 0) {
+			lis[i].setAttribute("aria-selected", "true");
+		}
+	},
+	
+	select: function (selected) {
+		selected = selected || this.ul.children[this.index];
+
+		if (selected) {
+			var prevented;
+			
+			$.fire(this.input, "awesomplete-select", {
+				text: selected.textContent,
+				preventDefault: function () {
+					prevented = true;
+				}
+			});
+			
+			if (!prevented) {
+				this.replace(selected.textContent);
+				this.close();
+				$.fire(this.input, "awesomplete-selectcomplete");
+			}
+		}
+	},
+	
+	evaluate: function() {
+		var me = this;
+		var value = this.input.value;
+				
+		if (value.length >= this.minChars && this._list.length > 0) {
+			this.index = -1;
+			// Populate list with options that match
+			this.ul.innerHTML = "";
+
+			this._list
+				.filter(function(item) {
+					return me.filter(item, value);
+				})
+				.sort(this.sort)
+				.every(function(text, i) {
+					me.ul.appendChild(me.item(text, value));
+					
+					return i < me.maxItems - 1;
+				});
+			
+			this.open();
+		}
+		else {
+			this.close();
+		}
+	}
+};
+
+// Static methods/properties
+
+_.all = [];
+
+_.FILTER_CONTAINS = function (text, input) {
+	return RegExp($.regExpEscape(input.trim()), "i").test(text);
+};
+
+_.FILTER_STARTSWITH = function (text, input) {
+	return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
+};
+
+_.SORT_BYLENGTH = function (a, b) {
+	if (a.length !== b.length) {
+		return a.length - b.length;
+	}
+	
+	return a < b? -1 : 1;
+};
+
+// Private functions
+
+function configure(properties, o) {
+	for (var i in properties) {
+		var initial = properties[i],
+		    attrValue = this.input.getAttribute("data-" + i.toLowerCase());
+		
+		if (typeof initial === "number") {
+			this[i] = +attrValue;
+		}
+		else if (initial === false) { // Boolean options must be false by default anyway
+			this[i] = attrValue !== null;
+		}
+		else if (initial instanceof Function) {
+			this[i] = null;
+		}
+		else {
+			this[i] = attrValue;
+		}
+		
+		this[i] = this[i] || o[i] || initial;
+	}
+}
+
+// Helpers
+
+var slice = Array.prototype.slice;
+
 function $(expr, con) {
-	if (!expr) return null;
-	return typeof expr === 'string'? (con || document).querySelector(expr) : expr;
+	return typeof expr === "string"? (con || document).querySelector(expr) : expr || null;
 }
 
 function $$(expr, con) {
-	return Array.prototype.slice.call((con || document).querySelectorAll(expr));
+	return slice.call((con || document).querySelectorAll(expr));
 }
 
 $.create = function(tag, o) {
@@ -22,10 +280,10 @@ $.create = function(tag, o) {
 	for (var i in o) {
 		var val = o[i];
 		
-		if (i == "inside") {
+		if (i === "inside") {
 			$(val).appendChild(element);
 		}
-		else if (i == "around") {
+		else if (i === "around") {
 			var ref = $(val);
 			ref.parentNode.insertBefore(element, ref);
 			element.appendChild(ref);
@@ -65,226 +323,11 @@ $.fire = function(target, type, properties) {
 	target.dispatchEvent(evt);
 };
 
-var _ = self.Awesomplete = function (input, o) {
-	var me = this;
-	
-	// Setup environment
-	o = o || {};
-	
-	this.input = input;
-	input.setAttribute("aria-autocomplete", "list");
-	
-	this.minChars = +input.getAttribute("data-minchars") || o.minChars || 2;
-	this.maxItems = +input.getAttribute("data-maxitems") || o.maxItems || 10;
-	
-	if (input.hasAttribute("list")) {
-		this.list = "#" + input.getAttribute("list");
-		input.removeAttribute("list");
-	}
-	else {
-		this.list = input.getAttribute("data-list") || o.list || [];
-	}
-	
-	this.filter = o.filter || _.FILTER_CONTAINS;
-	this.sort = o.sort || _.SORT_BYLENGTH;
-	
-	this.autoFirst = input.hasAttribute("data-autofirst") || o.autoFirst || false;
-	
-	this.item = o.item || function (text, input) {
-		return $.create("li", {
-			innerHTML: text.replace(RegExp(regEscape(input.trim()), "gi"), "<mark>$&</mark>"),
-			"aria-selected": "false"
-		});	
-	};
-	
-	this.index = -1;
-	
-	this.container = $.create("div", {
-		className: "awesomplete",
-		around: input
-	});
-	
-	this.ul = $.create("ul", {
-		hidden: "",
-		inside: this.container
-	});
-	
-	// Bind events
-	
-	$.bind(this.input, {
-		"input": function () {
-			me.evaluate();
-		},
-		"blur": function () {
-			me.close();
-		},
-		"keydown": function(evt) {
-			var c = evt.keyCode;
-			
-			if (c == 13 && me.index > -1) { // Enter
-				evt.preventDefault();
-				me.select();
-			}
-			else if (c == 27) { // Esc
-				me.close();
-			}
-			else if (c == 38 || c == 40) { // Down/Up arrow
-				evt.preventDefault();
-				me[c == 38? "previous" : "next"]();
-			}
-		}
-	});
-	
-	$.bind(this.input.form, {"submit": function(event) {
-		me.close();
-	}});
-	
-	$.bind(this.ul, {"mousedown": function(evt) {
-		var li = evt.target;
-		
-		if (li != this) {
-			
-			while (li && !/li/i.test(li.nodeName)) {
-				li = li.parentNode;
-			}
-			
-			if (li) {
-				me.select(li);	
-			}
-		}
-	}});
-};
+$.regExpEscape = function (s) {
+	return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
+}
 
-_.prototype = {
-	set list(list) {
-		if (Array.isArray(list)) {
-			this._list = list;
-		}
-		else {
-			if (typeof list == "string" && list.indexOf(",") > -1) {
-				this._list = list.split(/\s*,\s*/);
-			}
-			else {
-				list = $(list);
-				
-				if (list && list.children) {
-					this._list = [].slice.apply(list.children).map(function (el) {
-						return el.innerHTML.trim();
-					});
-				}
-			}
-		}
-	},
-	
-	close: function () {
-		this.ul.setAttribute("hidden", "");
-		this.index = -1;
-		
-		$.fire(this.input, "awesomplete-close");
-	},
-	
-	open: function () {
-		this.ul.removeAttribute("hidden");
-		
-		if (this.autoFirst && this.index == -1) {
-			this.goto(0);
-		}
-		
-		$.fire(this.input, "awesomplete-open");
-	},
-	
-	next: function () {
-		var count = this.ul.children.length;
-
-		this.goto(this.index < count - 1? this.index + 1 : -1);
-	},
-	
-	previous: function () {
-		var count = this.ul.children.length;
-		
-		this.goto(this.index > -1? this.index - 1 : count - 1);
-	},
-	
-	// Should not be used, highlights specific item without any checks!
-	goto: function (i) {
-		var lis = this.ul.children;
-		
-		if (this.index > -1) {
-			lis[this.index].setAttribute("aria-selected", "false");
-		}
-		
-		this.index = i;
-		
-		if (i > -1 && lis.length > 0) {
-			lis[i].setAttribute("aria-selected", "true");
-		}
-	},
-	
-	select: function (selected) {
-		selected = selected || this.ul.children[this.index];
-
-		if (selected) {
-			var prevented;
-			
-			$.fire(this.input, "awesomplete-select", {
-				text: selected.textContent,
-				preventDefault: function () {
-					prevented = true;
-				}
-			});
-			
-			if (!prevented) {
-				this.input.value = selected.textContent;
-				this.close();
-				$.fire(this.input, "awesomplete-selectcomplete");
-			}
-		}
-	},
-	
-	evaluate: function() {
-		var me = this;
-		var value = this.input.value;
-				
-		if (value.length >= this.minChars && this._list.length > 0) {
-			this.index = -1;
-			// Populate list with options that match
-			this.ul.innerHTML = "";
-
-			this._list.filter(function(item) {
-				return me.filter(item, value);
-			})
-			.sort(this.sort)
-			.every(function(text, i) {
-				me.ul.appendChild(me.item(text, value));
-				
-				return i < me.maxItems - 1;
-			});
-			
-			this.open();
-		}
-		else {
-			this.close();
-		}
-	}
-};
-
-_.FILTER_CONTAINS = function (text, input) {
-	return RegExp(regEscape(input.trim()), "i").test(text);
-};
-
-_.FILTER_STARTSWITH = function (text, input) {
-	return RegExp("^" + regEscape(input.trim()), "i").test(text);
-};
-
-_.SORT_BYLENGTH = function (a, b) {
-	if (a.length != b.length) {
-		return a.length - b.length;
-	}
-	
-	return a < b? -1 : 1;
-};
-
-function regEscape(s) { return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&"); }
+// Initialization
 
 function init() {
 	$$("input.awesomplete").forEach(function (input) {
@@ -295,7 +338,8 @@ function init() {
 // DOM already loaded?
 if (document.readyState !== "loading") {
 	init();
-} else {
+}
+else {
 	// Wait for it
 	document.addEventListener("DOMContentLoaded", init);
 }
