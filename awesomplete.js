@@ -58,7 +58,7 @@ var _ = self.Awesomplete = function (input, o) {
 
 			// If the dropdown `ul` is in view, then act on keydown for the following keys:
 			// Enter / Esc / Up / Down
-			if(me.ul && me.ul.getAttribute("hidden") == null) {
+			if(me.opened) {
 				if (c === 13 && me.selected) { // Enter
 					evt.preventDefault();
 					me.select();
@@ -127,6 +127,10 @@ _.prototype = {
 
 	get selected() {
 		return this.index > -1;
+	},
+
+	get opened() {
+		return this.ul && this.ul.getAttribute("hidden") == null;
 	},
 
 	close: function () {
