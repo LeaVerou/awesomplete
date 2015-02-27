@@ -8,6 +8,8 @@
 (function () {
 
 var _ = self.Awesomplete = function (input, o) {
+	if(!(this instanceof Awesomplete)) return new Awesomplete(input, o);
+
 	var me = this;
 	
 	// Setup
