@@ -25,7 +25,7 @@ var _ = self.Awesomplete = function (input, o) {
 		sort: _.SORT_BYLENGTH,
 		item: function (text, input) {
 			return $.create("li", {
-				innerHTML: text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>"),
+				innerHTML: text.replace($.regExp("", input, "gi"), "<mark>$&</mark>"),
 				"aria-selected": "false"
 			});	
 		},
@@ -232,11 +232,11 @@ _.prototype = {
 _.all = [];
 
 _.FILTER_CONTAINS = function (text, input) {
-	return RegExp($.regExpEscape(input.trim()), "i").test(text);
+	return $.regExp("", input, "i").test(text);
 };
 
 _.FILTER_STARTSWITH = function (text, input) {
-	return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
+	return $.regExp("^", input, "i").test(text);
 };
 
 _.SORT_BYLENGTH = function (a, b) {
@@ -332,8 +332,8 @@ $.fire = function(target, type, properties) {
 	target.dispatchEvent(evt);
 };
 
-$.regExpEscape = function (s) {
-	return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
+$.regExp = function(prefix, str, options) {
+	return RegExp(prefix + str.trim().replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&"), options);
 }
 
 // Initialization
