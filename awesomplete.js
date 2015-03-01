@@ -12,7 +12,7 @@ var _ = self.Awesomplete = function (input, o) {
 
 	// Setup
 
-	this.input = (typeof input === "string") ? $(input) : input;
+	this.input = $(input);
 	this.input.setAttribute("aria-autocomplete", "list");
 
 	o = o || {};
