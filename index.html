@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="awesomplete.css" />
 <link rel="stylesheet" href="style.css" />
 
+<script src="awesomplete.js"></script>
+<script src="index.js"></script>
 </head>
 <body class="language-markup">
 
@@ -320,43 +322,43 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 
 <section id="advanced-examples">
 	<h1>Advanced Examples</h1>
+	<p>These examples show how powerful Awesomplete’s minimal API can be.</p>
+	
+	<section id="email">
 	<h2>E-mail autocomplete</h2>
-	<p><input id="emailInput"></p>
-	<pre class="language-markup"><code>&lt;input id="emailInput" /></code></pre>
-	<pre class="language-javascript"><code>
-var emailInput = Awesomplete.$("#emailInput");
-var emailAwesomplete = new Awesomplete(emailInput, {
-	// List of emails domains
+	<label>Type an email: <input type="email"></label>
+	<pre class="language-markup"><code>&lt;input type="email" /></code></pre>
+	<pre class="language-javascript"><code><script>new Awesomplete($('input[type="email"]'), {
 	list: ["@aol.com", "@att.net", "@comcast.net", "@facebook.com", "@gmail.com", "@gmx.com", "@googlemail.com", "@google.com", "@hotmail.com", "@hotmail.co.uk", "@mac.com", "@me.com", "@mail.com", "@msn.com", "@live.com", "@sbcglobal.net", "@verizon.net", "@yahoo.com", "@yahoo.co.uk"],
-
-	// Suggestions list modification
 	item: function(text, input){
-	    // join the user input with the email suggestion
-	    var newText = input.slice(0, input.indexOf("@")) + text;
-
-	    // create the node with the suggestion
-	    return Awesomplete.$.create("li", {
-	        innerHTML: newText.replace(RegExp(input.trim(), "gi"), "<mark>$&</mark>"),
-	        "aria-selected": "false"
-	    });
-	},
-
-	// E-mail filter
+		var newText = input.slice(0, input.indexOf("@")) + text;
+		
+		return Awesomplete.$.create("li", {
+		    innerHTML: newText.replace(RegExp(input.trim(), "gi"), "<mark>$&</mark>"),
+		    "aria-selected": "false"
+		});
+    },
 	filter: function(text, input){
-	    var atPosition = input.indexOf("@");
-	    // verify if it's an email (has @) and it has at least one letter to search
-	    var inputIsEmail = !!~atPosition && (input.length > atPosition + 1);
-
-	    // get the email part of the user input
-	    var emailPart = input.slice(input.indexOf("@"));
-
-	    // check if the email part is on the domains list
-	    var textMatchWithInput = RegExp("^" + emailPart.trim(), "i").test(text);
-
-	    return (inputIsEmail && textMatchWithInput);
-	}
-});
-	</code></pre>
+		return RegExp("^" + Awesomplete.$.regExpEscape(input.replace(/^.+?(?=@)/, ''), "i")).test(text);
+    }
+});</script></code></pre>
+	</section>
+	
+	<section id="multiple-values">
+	<h2>Multiple values</h2>
+	<label>Tags (comma separated): <input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" data-multiple data-minchars="1" /></label>
+	<pre class="language-markup"><code>&lt;input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" data-multiple /></code></pre>
+	<pre class="language-javascript"><code><script>new Awesomplete($('input[data-multiple]'), {
+	filter: function(text, input) {
+		return Awesomplete.FILTER_CONTAINS(text, input.match(/[^,]*$/)[0]);
+	},
+	
+	replace: function(text) {
+		var before = this.input.value.match(/^.+,\s*|/)[0];
+		this.input.value = before + text + ", ";
+	}	
+});</script></code></pre>
+	</section>
 </section>
 
 <section id="download">
@@ -374,9 +376,8 @@ var emailAwesomplete = new Awesomplete(emailInput, {
 
 <footer>Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> &bull; <a href="http://lea.verou.me/2015/02/awesomplete-2kb-autocomplete-with-zero-dependencies">Read the blog post</a> &bull; <a href="http://shop.oreilly.com/product/0636920031123.do">Buy my book!</a> </footer>
 
-<script src="awesomplete.js"></script>
+
 <script src="https://leaverou.github.io/prism/prism.js" defer></script>
-<script src="index.js"></script>
 
 <a href="https://twitter.com/share" class="twitter-share-button" data-via="LeaVerou" data-size="large">Tweet</a>
 <script async src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=leaveroume" id="_carbonads_js"></script>

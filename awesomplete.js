@@ -78,7 +78,7 @@ var _ = self.Awesomplete = function (input, o) {
 		}
 	});
 	
-	$.bind(this.input.form, {"submit": me.close.bind(me)});
+	$.bind(this.input.form, {"submit": this.close.bind(this)});
 	
 	$.bind(this.ul, {"mousedown": function(evt) {
 		var li = evt.target;
