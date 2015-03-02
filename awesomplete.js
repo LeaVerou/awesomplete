@@ -64,7 +64,7 @@ var _ = self.Awesomplete = function (input, o) {
 		"keydown": function(evt) {
 			var c = evt.keyCode;
 			
-			if (c === 13 && me.selected) { // Enter
+			if (c === 13) { // Enter
 				evt.preventDefault();
 				me.select();
 			}
@@ -179,7 +179,9 @@ _.prototype = {
 	},
 	
 	select: function (selected) {
-		selected = selected || this.ul.children[this.index];
+		// select first option if only one option though not selected (good for ux)
+		var index = (this.ul.children.length == 1) ? 0 : this.index;
+		selected = selected || this.ul.children[index];
 
 		if (selected) {
 			var prevented;
