@@ -48,6 +48,14 @@ var _ = self.Awesomplete = function (input, o) {
 		inside: this.container
 	});
 
+	this.status = $.create("span", {
+		className: "visually-hidden",
+		role: "status",
+		"aria-live": "assertive",
+		"aria-relevant": "additions",
+		inside: this.container
+	});
+
 	// Bind events
 
 	$.bind(this.input, {
@@ -70,7 +78,7 @@ var _ = self.Awesomplete = function (input, o) {
 		}
 	});
 
-	$.bind(this.input.form, {"submit": me.close.bind(me)});
+	$.bind(this.input.form, {"submit": this.close.bind(this)});
 
 	$.bind(this.ul, {"mousedown": function(evt) {
 		var li = evt.target;
@@ -166,6 +174,7 @@ _.prototype = {
 
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
+			this.status.textContent = lis[i].textContent;
 		}
 	},
 
