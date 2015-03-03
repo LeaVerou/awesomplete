@@ -12,8 +12,8 @@ var _ = self.Awesomplete = function (input, o) {
 
 	// Setup
 
-	this.input = input;
-	input.setAttribute("aria-autocomplete", "list");
+	this.input = $(input);
+	this.input.setAttribute("aria-autocomplete", "list");
 
 	o = o || {};
 
@@ -48,6 +48,14 @@ var _ = self.Awesomplete = function (input, o) {
 		inside: this.container
 	});
 
+	this.status = $.create("span", {
+		className: "visually-hidden",
+		role: "status",
+		"aria-live": "assertive",
+		"aria-relevant": "additions",
+		inside: this.container
+	});
+
 	// Bind events
 
 	$.bind(this.input, {
@@ -74,7 +82,7 @@ var _ = self.Awesomplete = function (input, o) {
 		}
 	});
 
-	$.bind(this.input.form, {"submit": me.close.bind(me)});
+	$.bind(this.input.form, {"submit": this.close.bind(this)});
 
 	$.bind(this.ul, {"mousedown": function(evt) {
 		var li = evt.target;
@@ -91,12 +99,12 @@ var _ = self.Awesomplete = function (input, o) {
 		}
 	}});
 
-	if (input.hasAttribute("list")) {
+	if (this.input.hasAttribute("list")) {
 		this.list = "#" + input.getAttribute("list");
 		input.removeAttribute("list");
 	}
 	else {
-		this.list = input.getAttribute("data-list") || o.list || [];
+		this.list = this.input.getAttribute("data-list") || o.list || [];
 	}
 
 	_.all.push(this);
@@ -174,6 +182,7 @@ _.prototype = {
 
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
+			this.status.textContent = lis[i].textContent;
 		}
 	},
 
@@ -218,7 +227,11 @@ _.prototype = {
 					return i < me.maxItems - 1;
 				});
 
-			this.open();
+			if (this.ul.children.length === 0) {
+				this.close();
+			} else {
+				this.open();
+			}
 		}
 		else {
 			this.close();
