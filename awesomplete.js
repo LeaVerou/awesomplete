@@ -64,7 +64,7 @@ var _ = self.Awesomplete = function (input, o) {
 		"keydown": function(evt) {
 			var c = evt.keyCode;
 
-			if (c === 13 && me.selected) { // Enter
+			if ((c === 13 || c === 9) && me.selected) { // Enter
 				evt.preventDefault();
 				me.select();
 			}
