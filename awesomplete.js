@@ -219,7 +219,11 @@ _.prototype = {
 					return i < me.maxItems - 1;
 				});
 
-			this.open();
+			if (this.ul.children.length === 0) {
+				this.close();
+			} else {
+				this.open();
+			}
 		}
 		else {
 			this.close();
