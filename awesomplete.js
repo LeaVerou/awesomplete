@@ -64,16 +64,20 @@ var _ = function (input, o) {
 		"keydown": function(evt) {
 			var c = evt.keyCode;
 
-			if (c === 13 && me.selected) { // Enter
-				evt.preventDefault();
-				me.select();
-			}
-			else if (c === 27) { // Esc
-				me.close();
-			}
-			else if (c === 38 || c === 40) { // Down/Up arrow
-				evt.preventDefault();
-				me[c === 38? "previous" : "next"]();
+			// If the dropdown `ul` is in view, then act on keydown for the following keys:
+			// Enter / Esc / Up / Down
+			if(me.opened) {
+				if (c === 13 && me.selected) { // Enter
+					evt.preventDefault();
+					me.select();
+				}
+				else if (c === 27) { // Esc
+					me.close();
+				}
+				else if (c === 38 || c === 40) { // Down/Up arrow
+					evt.preventDefault();
+					me[c === 38? "previous" : "next"]();
+				}
 			}
 		}
 	});
@@ -131,6 +135,10 @@ _.prototype = {
 
 	get selected() {
 		return this.index > -1;
+	},
+
+	get opened() {
+		return this.ul && this.ul.getAttribute("hidden") == null;
 	},
 
 	close: function () {
