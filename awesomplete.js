@@ -176,6 +176,8 @@ _.prototype = {
 			lis[i].setAttribute("aria-selected", "true");
 			this.status.textContent = lis[i].textContent;
 		}
+
+		$.fire(this.input, "awesomplete-highlight");
 	},
 
 	select: function (selected) {
