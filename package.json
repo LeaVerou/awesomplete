@@ -1,19 +1,16 @@
 {
   "name": "awesomplete",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "http://leaverou.github.io/awesomplete/",
   "main": "awesomplete.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/LeaVerou/awesomplete.git"
-  },
-  "author": "",
-  "license": "ISC",
+  "repository": "LeaVerou/awesomplete",
+  "author": "Lea Verou",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/LeaVerou/awesomplete/issues"
   },
-  "homepage": "https://github.com/LeaVerou/awesomplete"
+  "homepage": "https://leaverou.github.io/awesomplete/"
 }
