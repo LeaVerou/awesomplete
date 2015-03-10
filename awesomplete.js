@@ -269,7 +269,7 @@ function configure(properties, o) {
 		    attrValue = this.input.getAttribute("data-" + i.toLowerCase());
 
 		if (typeof initial === "number") {
-			this[i] = +attrValue;
+			this[i] = parseInt(attrValue);
 		}
 		else if (initial === false) { // Boolean options must be false by default anyway
 			this[i] = attrValue !== null;
@@ -281,7 +281,9 @@ function configure(properties, o) {
 			this[i] = attrValue;
 		}
 
-		this[i] = this[i] || o[i] || initial;
+		if (!this[i] && this[i] !== 0) {
+			this[i] = (i in o)? o[i] : initial;
+		}
 	}
 }
 
