@@ -1,17 +1,17 @@
 body {	
-	max-width: 50rem;
+	max-width: 60rem;
 	padding: 1rem;
 	margin: auto;
-	background: hsl(35, 80%, 94%);
-	color: hsl(35, 50%, 20%);
-	text-shadow: 0 1px 1px white;
-	font: 120%/1.6 Baskerville, Palatino Linotype, Palatino, serif;
+	font-weight: 300;
+	font-family: 'Lato', sans-serif;
 }
 
 a {
-	color: #58a;
+	color: #BA2640;
 }
-
+p {
+    line-height: 34px;
+}
 h1 {
 	text-align: center;
 	font-weight: 600;
@@ -19,7 +19,8 @@ h1 {
 
 	section > h1 {
 		margin-top: 2em;
-	}
+	
+}
 
 h2 {
 	color: hsl(35, 50%, 40%);
@@ -29,7 +30,7 @@ h2 {
 
 ul {
 	margin: 0;
-	padding-left: .8em;
+	padding-left: 1.8em;
 }
 
 strong {
@@ -37,7 +38,7 @@ strong {
 }
 
 abbr {
-	border-bottom: .1em dotted hsl(40, 80%, 40%);
+	border-bottom: .1em dotted #BA2640;
 	cursor: help;
 }
 
@@ -56,13 +57,11 @@ button {
 }
 
 input {
-	width: 12em;
-	padding: .1em .3em;
-	border: 0;
-	border: 1px solid hsl(35, 80%, 60%);
-	background: hsla(0,0%,100%,.2);
-	border-radius: .3em;
-	box-shadow: .05em .1em .3em rgba(0,0,0,.3) inset;
+	margin-top: 8px;
+	width: 22em;
+	height: 3em;
+	padding: .1em 2.3em;
+	border: 1px solid #C5C5C5;
 }
 
 @keyframes pulsate {
@@ -79,26 +78,24 @@ input:focus {
 }
 
 header {
-	max-width: 37rem;
+	max-width: 50rem;
 	margin: 0 auto 2em;
 	text-align: center;
 	font-size: 150%;
-	font-style: italic;
 }
 
 	header h1 {
-		margin: .1em 0;
 		text-align: center;
-		color: hsl(35, 50%, 40%);
+		color: #BA2640;
 		font-size: 400%;
 		line-height: 1;
-		font-style: italic;
-		font-weight: normal;
+		font-weight: 700;
 	}
 	
 	header p {
-		margin: 0;
-	}
+		/* margin: 0; */
+	
+}
 	
 		header p a {
 			text-decoration: none;
@@ -111,7 +108,7 @@ header {
 		right: 1em;
 		width: 4em;
 		padding: .8em .6em 1em;
-		background: hsl(40, 80%, 40%);
+		background: #BA2640;
 		color: hsl(35, 80%, 94%);
 		text-shadow: none;
 		text-align: center;
@@ -124,7 +121,7 @@ header {
 	}
 	
 	.size:hover {
-		background: #58a;
+		background: #A9142E;
 	}
 	
 		.size strong {
@@ -149,53 +146,52 @@ header {
 	}
 	
 	nav a {
-		position: relative;
-		display: inline-block;
-		padding: 0 .4em;
-		margin: 0 .1em;
+    position: relative;    
+    display: inline-block;    
+    padding: 10px 20px;    
+    cursor: pointer;    
+    vertical-align: middle;    
+    font-size: 16px;    
+    margin: 2px;
+    font-size: 1rem;    
+    color: #fff;    
+    text-align: center;    
+    text-decoration: none;
+    font-weight: 700;    -moz-osx-font-smoothing: grayscale;    -webkit-font-smoothing: antialiased;    -webkit-user-select: none;    -moz-user-select: none;    -ms-user-select: none;    user-select: none;    transition: background .3s ease;    
+    border-radius: 3px;    border: 0;    
+    background: #BA2640;
 		
-		color: hsl(35, 80%, 94%);
-		text-shadow: none;
-		text-decoration: none;
-		font-size: 80%;
 	}
 	
-	nav a::before {
-		content: "";
-		position: absolute;
-		top: 0; left: 0; right: 0; bottom: 0;
-		z-index: -1;
-		border-radius: .2em;
-		background: hsl(40, 80%, 40%);
-		-webkit-transform: skew(-16deg);
-		transform: skew(-16deg);
+	nav a:hover {   
+		background-color: #A9142E;
 	}
 	
 	nav a[href="#download"] {
-		font-weight: 600;
+		  background-color: #6D2243;
+		  font-size: 34px;
+		  font-weight: 100;
+		  margin-top: 2%;
 	}
 	
-	nav a[href="#download"]::before {
-		background: hsl(65, 85%, 35%);
+	nav a[href="#download"]:hover {
+		background-color: #4C0D29;
 	}
-	
-	nav a:hover::before {
-		background: #58a;
-	}
-	
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-	background: hsl(35, 70%, 88%);
+	background: hsl(0, 100%, 100%);
 	font-size: 80%;
 	border-radius: .3em;
+	border: 1px solid #BA2640;
 }
 
 footer {
 	padding: .6em;
-	border-top: 1px solid rgba(0,0,0,.3);
+	border-top: 1px solid #BA2640;
 	margin-top: 1em;
 	text-align: center;
+	color: #BA2640;
 }
 
 pre {
@@ -207,9 +203,8 @@ pre::before {
 	top: 0;
 	right: .5em;
 	padding: .3em .4em;
-	border-radius: 0 0 .3em .3em;
-	background: hsl(35, 50%, 60%);
-	color: hsl(35, 80%, 90%);
+	background: #BA2640;
+	color: hsl(0, 100%, 100%);
 	text-shadow: none;
 	font: bold 100%/1 Baskerville, Palatino Linotype, Palatino, serif;
 }
@@ -234,12 +229,13 @@ th {
 
 td {
 	vertical-align: top;
-	padding: .5em;
 	border: 1px solid rgba(0,0,0,.1);
+	padding: 1em;
 }
 
 :not(pre) > code[class*="language-"] {
 	background: none;
+	padding: 4px;
 }
 
 .twitter-share-button {
