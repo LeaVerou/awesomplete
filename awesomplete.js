@@ -124,7 +124,7 @@ _.prototype = {
 
 			if (list && list.children) {
 				this._list = slice.apply(list.children).map(function (el) {
-					return el.innerHTML.trim();
+					return el.textContent.trim();
 				});
 			}
 		}
