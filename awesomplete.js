@@ -85,7 +85,7 @@ var _ = function (input, o) {
 
 	$.bind(this.input.form, {"submit": this.close.bind(this)});
 
-	$.bind(this.ul, {"mousedown": function(evt) {
+	$.bind(this.ul, {"click": function(evt) {
 		var li = evt.target;
 
 		if (li !== this) {
