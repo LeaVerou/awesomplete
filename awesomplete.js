@@ -85,7 +85,7 @@ var _ = function (input, o) {
 
 	$.bind(this.input.form, {"submit": this.close.bind(this)});
 
-	$.bind(this.ul, {"mousedown": function(evt) {
+	$.bind(this.ul, {"click mousedown": $.debounce( function(evt) {
 		var li = evt.target;
 
 		if (li !== this) {
@@ -98,7 +98,7 @@ var _ = function (input, o) {
 				me.select(li);
 			}
 		}
-	}});
+	}, 100 )});
 
 	if (this.input.hasAttribute("list")) {
 		this.list = "#" + input.getAttribute("list");
@@ -335,6 +335,23 @@ $.bind = function(element, o) {
 			});
 		}
 	}
+};
+
+$.debounce = function(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this,
+		args = arguments,
+		callNow = immediate && !timeout,
+		later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
 };
 
 $.fire = function(target, type, properties) {
