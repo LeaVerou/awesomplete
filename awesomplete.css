@@ -69,7 +69,7 @@ div.awesomplete > ul:empty {
 
 	div.awesomplete > ul > li {
 		position: relative;
-		padding: .2em .5em;
+		padding: 0.8em 1.5em;
 		cursor: pointer;
 	}
 	
@@ -84,14 +84,15 @@ div.awesomplete > ul:empty {
 	}
 	
 		div.awesomplete mark {
-			background: hsl(65, 100%, 50%);
-		}
+			background: #BA2640;
+			color: #FFF;
+}
 		
 		div.awesomplete li:hover mark {
-			background: hsl(68, 101%, 41%);
+			background: #A9142E;
 		}
 		
 		div.awesomplete li[aria-selected="true"] mark {
-			background: hsl(86, 102%, 21%);
+			background: #A9142E;
 			color: inherit;
 		}
