@@ -1,4 +1,4 @@
-|# Awesomplete
+## Awesomplete
 
 http://leaverou.github.io/awesomplete/
 
