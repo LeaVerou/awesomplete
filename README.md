@@ -102,7 +102,7 @@ describe("A fact", function(){
 });
 ```
 
-See existing tests in ```tests``` directory as an example. More expectations and examples on how to use Jasmine can be found on the official [documentation](http://jasmine.github.io/2.2/introduction.html).
+See existing tests in ```test``` directory as an example. More expectations and examples on how to use Jasmine can be found on the official [documentation](http://jasmine.github.io/2.2/introduction.html).
 
 ## License
 

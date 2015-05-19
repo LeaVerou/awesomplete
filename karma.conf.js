@@ -10,7 +10,7 @@ module.exports = function(config) {
 		// list of files / patterns to load in the browser
 		files: [
 			'awesomplete.js',
-			'tests/**/*Spec.js'
+			'test/**/*Spec.js'
 		],
 
 		// list of files to exclude
