@@ -88,10 +88,10 @@ div.awesomplete > ul:empty {
 		}
 		
 		div.awesomplete li:hover mark {
-			background: hsl(68, 101%, 41%);
+			background: hsl(68, 100%, 41%);
 		}
 		
 		div.awesomplete li[aria-selected="true"] mark {
-			background: hsl(86, 102%, 21%);
+			background: hsl(86, 100%, 21%);
 			color: inherit;
 		}
