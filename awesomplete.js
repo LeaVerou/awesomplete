@@ -22,6 +22,7 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
+		keepListItems: false,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: function (text, input) {
@@ -221,7 +222,7 @@ _.prototype = {
 
 			this._list
 				.filter(function(item) {
-					return me.filter(item, value);
+					return me.keepListItems || me.filter(item, value);
 				})
 				.sort(this.sort)
 				.every(function(text, i) {
