@@ -22,6 +22,7 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
+		keepListItems: false,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: function (text, input) {
@@ -219,16 +220,17 @@ _.prototype = {
 			// Populate list with options that match
 			this.ul.innerHTML = "";
 
-			this._list
-				.filter(function(item) {
-					return me.filter(item, value);
-				})
-				.sort(this.sort)
-				.every(function(text, i) {
-					me.ul.appendChild(me.item(text, value));
+			var list = this._list.filter(function(item) {
+				return me.keepListItems || me.filter(item, value);
+			});
+			if(typeof this.sort === 'function') {
+				list.sort(this.sort);
+			}
+			list.every(function(text, i) {
+				me.ul.appendChild(me.item(text, value));
 
-					return i < me.maxItems - 1;
-				});
+				return i < me.maxItems - 1;
+			});
 
 			if (this.ul.children.length === 0) {
 				this.close();
