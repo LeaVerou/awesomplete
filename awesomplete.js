@@ -223,7 +223,7 @@ _.prototype = {
 			var list = this._list.filter(function(item) {
 				return me.keepListItems || me.filter(item, value);
 			});
-			if(typeof this.sort === 'Function') {
+			if(typeof this.sort === 'function') {
 				list.sort(this.sort);
 			}
 			list.every(function(text, i) {
