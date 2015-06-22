@@ -39,10 +39,12 @@ var _ = function (input, o) {
 
 	// Create necessary elements
 
-	this.container = $.create("div", {
-		className: "awesomplete",
-		around: input
-	});
+	this.container = input.parentNode.className.search(/awesomplete-wrapper/) >= 0 ?
+		input.parentNode :
+		$.create("div", {
+			className: "awesomplete-wrapper",
+			around: input
+		});
 
 	this.ul = $.create("ul", {
 		hidden: "",
