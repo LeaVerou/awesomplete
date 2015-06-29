@@ -41,7 +41,7 @@ var _ = function (input, o) {
 
 	this.container = $.create("div", {
 		className: "awesomplete",
-		around: input
+		around: o.wrapThis ? o.wrapThis : input
 	});
 
 	this.ul = $.create("ul", {
