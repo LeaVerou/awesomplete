@@ -357,7 +357,7 @@ $.regExpEscape = function (s) {
 
 function init() {
 	$$("input.awesomplete").forEach(function (input) {
-		new Awesomplete(input);
+		new _(input);
 	});
 }
 
