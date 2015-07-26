@@ -13,7 +13,7 @@ var _ = function (input, o) {
 	// Setup
 
 	this.input = $(input);
-	this.input.setAttribute("autocomplete", "off");
+	this.input.setAttribute("autocomplete", "false");
 	this.input.setAttribute("aria-autocomplete", "list");
 
 	o = o || {};
@@ -357,7 +357,7 @@ $.regExpEscape = function (s) {
 
 function init() {
 	$$("input.awesomplete").forEach(function (input) {
-		new Awesomplete(input);
+		new _(input);
 	});
 }
 
