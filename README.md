@@ -1,4 +1,5 @@
-## Awesomplete
+# Awesomplete
+[![Build Status](https://img.shields.io/travis/leaverou/awesomplete/gh-pages.svg)](https://travis-ci.org/leaverou/awesomplete)
 
 http://leaverou.github.io/awesomplete/
 
