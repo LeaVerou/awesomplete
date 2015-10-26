@@ -115,6 +115,16 @@ new Awesomplete(input, {
 	list: ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"]
 });</code></pre>
 
+<p>We can also use an <strong>array of arrays</strong> to map strings to ids.</p>
+
+<p>This will create a hidden input with the same name as the original input, removing it from the original:</p>
+
+<pre class="language-markup"><code>&lt;input id="myinput" name="lang" /></code></pre>
+	<pre class="language-javascript"><code>var input = document.getElementById("myinput");
+new Awesomplete(input, {
+	list: [[1, "Ada"], [2, "Java"], [3, "JavaScript"], [4, "Brainfuck"], [5, "LOLCODE"], [6, "Node.js"], [7, "Ruby on Rails"]]
+});</code></pre>
+
 <p>We can even set it (or override it) later and it will just work:</p>
 
 <pre class="language-markup"><code>&lt;input id="myinput" /></code></pre>
@@ -124,21 +134,21 @@ var awesomplete = new Awesomplete(input);
 /* ...more code... */
 
 awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"];</code></pre>
-	
+
 </section>
 
 <section id="customization">
 	<h1>Customize</h1>
-	
+
 	<p>All settings discussed in this section are settable via either a <code>data-</code> attribute on the <code>&lt;input></code> element or a JS property on the second argument of the <code>Awesomplete</code> constructor, like so:</p>
-	
+
 	<pre class="language-javascript"><code>new Awesomplete(inputReference, {
 	minChars: 3,
 	maxItems: 15,
 	...
 });</code></pre>
 	<p>You can of course combine both HTML attributes and JS properties. <strong>In case of conflict</strong> (e.g. you’ve specified both a <code>data-minchars</code> on the text field and a <code>minChars</code> JS property, <strong>the HTML attribute wins</strong>. You can also use the JS properties to change a parameter <strong>after</strong> the object has been created, in which case the change will apply even if there is a conflicting HTML attribute.</p>
-	
+
 	<table>
 		<thead>
 			<tr>
@@ -191,7 +201,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 <section id="extensibility">
 	<h1>Extend</h1>
 	<p>The following JS properties do not have equivalent HTML attributes, because their values are functions. They allow you to completely change the way Awesomplete works:</p>
-	
+
 	<table>
 		<thead>
 			<tr>
@@ -227,11 +237,19 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 			<tr>
 				<td><code>replace</code></td>
 				<td>Controls how the user’s selection replaces the user’s input. For example, this is useful if you want the selection to only partially replace the user’s input.</td>
-				<td>Function that takes one parameter, the text of the selected option, and is responsible for replacing the current input value with it.
+				<td>Function that takes one parameter, the li element of the selected option, and is responsible for replacing the current input value with it.
 				</td>
-				<td><pre class="language-javascript"><code>function (text) {
-	this.input.value = value;
-}</code></pre></td>
+				<td>
+					For simple input:
+					<pre class="language-javascript"><code>function (li) {
+						this.input.value = li.textContent;
+					}</code></pre>
+					For complex input (strings mapped to ids):
+					<pre class="language-javascript"><code>function (li) {
+						this.input.value = li.textContent;
+						this.hidden.value = li.getAttribute('data-id');
+					}</code></pre>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -239,9 +257,9 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 
 <section id="events">
 	<h1>Events</h1>
-	
+
 	<p>Custom events are thrown in several places and are often cancellable. To avoid conflicts, all custom events are prefixed with <code>awesomplete-</code>.</p>
-	
+
 	<table>
 		<thead>
 			<tr>
@@ -282,9 +300,9 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 
 <section id="api">
 	<h1>API</h1>
-	
+
 	<p>There are several methods on every Awesomplete instance that you can call to customize behavior:</p>
-	
+
 	<table>
 		<thead>
 			<tr>
@@ -328,7 +346,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 <section id="advanced-examples">
 	<h1>Advanced Examples</h1>
 	<p>These examples show how powerful Awesomplete’s minimal API can be.</p>
-	
+
 	<section id="email">
 	<h2>E-mail autocomplete</h2>
 	<label>Type an email: <input type="email"></label>
@@ -337,7 +355,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	list: ["@aol.com", "@att.net", "@comcast.net", "@facebook.com", "@gmail.com", "@gmx.com", "@googlemail.com", "@google.com", "@hotmail.com", "@hotmail.co.uk", "@mac.com", "@me.com", "@mail.com", "@msn.com", "@live.com", "@sbcglobal.net", "@verizon.net", "@yahoo.com", "@yahoo.co.uk"],
 	item: function(text, input){
 		var newText = input.slice(0, input.indexOf("@")) + text;
-		
+
 		return Awesomplete.$.create("li", {
 		    innerHTML: newText.replace(RegExp(input.trim(), "gi"), "<mark>$&</mark>"),
 		    "aria-selected": "false"
@@ -348,7 +366,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
     }
 });</script></code></pre>
 	</section>
-	
+
 	<section id="multiple-values">
 	<h2>Multiple values</h2>
 	<label>Tags (comma separated): <input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" data-multiple data-minchars="1" /></label>
@@ -357,25 +375,25 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	filter: function(text, input) {
 		return Awesomplete.FILTER_CONTAINS(text, input.match(/[^,]*$/)[0]);
 	},
-	
+
 	replace: function(text) {
 		var before = this.input.value.match(/^.+,\s*|/)[0];
 		this.input.value = before + text + ", ";
-	}	
+	}
 });</script></code></pre>
 	</section>
 </section>
 
 <section id="download">
 	<h1>Download!</h1>
-	
+
 	<ul>
 		<li><strong><a href="https://github.com/LeaVerou/awesomplete/archive/gh-pages.zip">Download everything as a zip file</a></strong></li>
 		<li><a href="https://github.com/LeaVerou/awesomplete">Fork me on Github</a></li>
 		<li><a href="https://github.com/LeaVerou/awesomplete/issues/new">File a bug</a> </li>
 		<li><a href="https://github.com/LeaVerou/awesomplete/issues/new">Suggest a feature</a> </li>
 	</ul>
-	
+
 	<p><strong>Pull requests are very welcome</strong>, as long as you maintain the code style and ask before adding tons of LOCs to the codebase!</p>
 </section>
 

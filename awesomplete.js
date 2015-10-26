@@ -9,6 +9,7 @@
 
 var _ = function (input, o) {
 	var me = this;
+	var complex = (o.list && o.list.length > 0 && Array.isArray(o.list[0]));
 
 	// Setup
 
@@ -24,15 +25,8 @@ var _ = function (input, o) {
 		autoFirst: false,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
-		item: function (text, input) {
-			return $.create("li", {
-				innerHTML: text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>"),
-				"aria-selected": "false"
-			});
-		},
-		replace: function (text) {
-			this.input.value = text;
-		}
+		item: complex? _.RENDER_OBJ : _.RENDER_STRING,
+		replace: complex? _.REPLACE_OBJ : _.REPLACE_STRING
 	}, o);
 
 	this.index = -1;
@@ -56,6 +50,16 @@ var _ = function (input, o) {
 		"aria-relevant": "additions",
 		inside: this.container
 	});
+
+	if (complex) {
+		this.hidden = $.create("input", {
+			type: "hidden",
+			name: input.name,
+			value: input.value,
+			before: input
+		});
+		input.removeAttribute('name');
+	}
 
 	// Bind events
 
@@ -203,7 +207,7 @@ _.prototype = {
 			});
 
 			if (!prevented) {
-				this.replace(selected.textContent);
+				this.replace(selected);
 				this.close();
 				$.fire(this.input, "awesomplete-selectcomplete");
 			}
@@ -262,6 +266,30 @@ _.SORT_BYLENGTH = function (a, b) {
 	return a < b? -1 : 1;
 };
 
+_.RENDER_STRING = function (text, input) {
+	return $.create("li", {
+		innerHTML: text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>"),
+		"aria-selected": "false"
+	});
+};
+
+_.RENDER_OBJ = function (obj, input) {
+	return $.create("li", {
+		innerHTML: obj[1].replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>"),
+		"aria-selected": "false",
+		"data-id": obj[0]
+	});
+};
+
+_.REPLACE_STRING = function (li) {
+	this.input.value = li.textContent;
+};
+
+_.REPLACE_OBJ = function (li) {
+	this.input.value = li.textContent;
+	this.hidden.value = li.getAttribute("data-id");
+};
+
 // Private functions
 
 function configure(properties, o) {
@@ -313,6 +341,9 @@ $.create = function(tag, o) {
 			var ref = $(val);
 			ref.parentNode.insertBefore(element, ref);
 			element.appendChild(ref);
+		}
+		else if (i === "before") {
+			$(val).parentElement.insertBefore(element, $(val));
 		}
 		else if (i in element) {
 			element[i] = val;
