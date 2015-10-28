@@ -9,7 +9,7 @@
 
 var _ = function (input, o) {
 	var me = this;
-	var complex = (o.list && o.list.length > 0 && Array.isArray(o.list[0]));
+	var complex = (o && o.list && o.list.length > 0 && Array.isArray(o.list[0]));
 
 	// Setup
 
