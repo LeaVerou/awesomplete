@@ -39,12 +39,11 @@ describe("awesomplete",function(){
 
 		it("should support key value pairs", function(){
 			awesompleter = new Awesomplete(dummyInput,{list:[[0,'Test0'],[1,'Test1']]});
-			//Give browser time to add elements to DOM
-			setTimeout(function(){
-				awesompleter.select(dummyBody.querySelector('[data-id="1"]'));
-				expect(awesompleter.hidden.value).toBe('1');
-				expect(awesompleter.input.value).toBe('Test1');
-			}, 1);
+			awesompleter.input.value = 'Tes';
+			awesompleter.evaluate();
+			awesompleter.select(dummyBody.querySelector('[data-id="1"]'));
+			expect(awesompleter.hidden.value).toBe('1');
+			expect(awesompleter.input.value).toBe('Test1');
 		})
 	})
 
