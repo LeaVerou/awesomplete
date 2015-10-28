@@ -2,16 +2,17 @@ describe("awesomplete",function(){
 
 	var awesompleter;
 	var dummyInput;
+	var dummyBody;
 
 	beforeEach(function(){
-		var dummyBody = document.createElement('body');
+		dummyBody = document.createElement('body');
 		dummyInput = document.createElement('input');
 		dummyBody.appendChild(dummyInput);
 		awesompleter = new Awesomplete(dummyInput);
 	})
 
 	describe("default object",function(){
-		
+
 		it("should have an empty list",function(){
 			expect(awesompleter._list.length).toBe(0);
 		})
@@ -22,7 +23,7 @@ describe("awesomplete",function(){
 
 		it("should have 10 max items",function(){
 			expect(awesompleter.maxItems).toBe(10);
-		})	
+		})
 	})
 
 	describe("custom object",function(){
@@ -35,8 +36,18 @@ describe("awesomplete",function(){
 			awesompleter = new Awesomplete(dummyInput,{minChars:3});
 			expect(awesompleter.minChars).toBe(3);
 		})
+
+		it("should support key value pairs", function(){
+			awesompleter = new Awesomplete(dummyInput,{list:[[0,'Test0'],[1,'Test1']]});
+			//Give browser time to add elements to DOM
+			setTimeout(function(){
+				awesompleter.select(dummyBody.querySelector('[data-id="1"]'));
+				expect(awesompleter.hidden.value).toBe('1');
+				expect(awesompleter.input.value).toBe('Test1');
+			}, 1);
+		})
 	})
-	
+
 });
 
 describe("awesomplete helpers",function(){
@@ -46,7 +57,7 @@ describe("awesomplete helpers",function(){
 		it("should return null when is called without input",function(){
 			var null_selector = Awesomplete.$();
 			expect(null_selector).toBe(null);
-		})	
+		})
 
 
 		it("should escape regular expression tokens",function(){
@@ -69,7 +80,7 @@ describe("awesomplete helpers",function(){
 
 		it("should have been called with null when called with no args",function(){
 			expect(Awesomplete.$).toHaveBeenCalledWith(null);
-		})		
+		})
 	})
 
 });

@@ -274,6 +274,7 @@ _.RENDER_STRING = function (text, input) {
 };
 
 _.RENDER_OBJ = function (obj, input) {
+	console.log('rendering obj');
 	return $.create("li", {
 		innerHTML: obj[1].replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>"),
 		"aria-selected": "false",
