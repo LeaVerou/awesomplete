@@ -218,14 +218,16 @@ _.prototype = {
 
 		if (value.length >= this.minChars && this._list.length > 0) {
 			this.index = -1;
-			// Populate list with options that match
-			this.ul.innerHTML = "";
+            // Populate list with options that match
+            this.ul.innerHTML = "";
 
-            this._currentEvaluation = this._list
-            .filter(function(item) {
-                return me.filter(item, value);
-            })
-            .sort(this.sort);
+            this._currentEvaluation =  
+                this._list
+                .filter(function(item) {
+                    return me.filter(item, value);
+                });
+
+            $.mergeSort(this._currentEvaluation ,this.sort);
 
             this._currentEvaluation
             .every(function(text, i) {
@@ -356,6 +358,50 @@ $.fire = function(target, type, properties) {
 $.regExpEscape = function (s) {
 	return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
 }
+
+$.mergeSort = function(array, compareFn) {
+
+    msort(array, 0, array.length);
+
+    function msort(array, begin, end) {
+        var size = end - begin;
+        if (size < 2) return;
+
+        var begin_right = begin + Math.floor(size / 2);
+
+        msort(array, begin, begin_right);
+        msort(array, begin_right, end);
+        merge(array, begin, begin_right, end);
+    }
+
+    function merge(array, begin, begin_right, end) {
+        for (; begin < begin_right; ++begin) {
+            if (compareFn(array[begin], array[begin_right]) > 0) {
+                var v = array[begin];
+                array[begin] = array[begin_right];
+                insert(array, begin_right, end, v);
+            }
+        }
+    }
+
+    function insert(array, begin, end, v) {
+        while (begin + 1 < end && compareFn(array[begin + 1], v) < 0) {
+            swap(array, begin, begin + 1);
+            ++begin;
+        }
+        array[begin] = v;
+    }
+
+    function swap(array, a, b) {
+        var tmp = array[a];
+        array[a] = array[b];
+        array[b] = tmp;
+    }
+
+}
+
+
+
 
 // Initialization
 
