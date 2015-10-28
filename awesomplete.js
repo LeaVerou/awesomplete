@@ -129,6 +129,8 @@ _.prototype = {
 			}
 		}
 
+        this._currentEvaluation = []; // used for unit testing.
+
 		if (document.activeElement === this.input) {
 			this.evaluate();
 		}
@@ -219,16 +221,18 @@ _.prototype = {
 			// Populate list with options that match
 			this.ul.innerHTML = "";
 
-			this._list
-				.filter(function(item) {
-					return me.filter(item, value);
-				})
-				.sort(this.sort)
-				.every(function(text, i) {
-					me.ul.appendChild(me.item(text, value));
+            this._currentEvaluation = this._list
+            .filter(function(item) {
+                return me.filter(item, value);
+            })
+            .sort(this.sort);
 
-					return i < me.maxItems - 1;
-				});
+            this._currentEvaluation
+            .every(function(text, i) {
+                me.ul.appendChild(me.item(text, value));
+
+                return i < me.maxItems - 1;
+            });
 
 			if (this.ul.children.length === 0) {
 				this.close();

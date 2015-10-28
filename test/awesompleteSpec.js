@@ -35,6 +35,18 @@ describe("awesomplete",function(){
 			awesompleter = new Awesomplete(dummyInput,{minChars:3});
 			expect(awesompleter.minChars).toBe(3);
 		})
+
+        // see http://www.ecma-international.org/ecma-262/5.1/#sec-15.4.4.11
+        // Chrome's native Array.prototype.sort does not perform stable sorts with arrays above 10 items.
+        it("should perform a stable sort inside evaluation chain",function(){
+            var origList = ["New York","Staten Island","Jamaica","Schenectady","Flushing","White Plains","Great Neck","Yonkers","Utica","Elmira","Binghamton"];
+
+			awesompleter = new Awesomplete(dummyInput,{minChars:0, sort: function(a,b){ return 0;}});
+            awesompleter.list = origList;
+            awesompleter.evaluate();
+            expect(awesompleter._currentEvaluation).toEqual(origList);
+        })
+
 	})
 	
 });
