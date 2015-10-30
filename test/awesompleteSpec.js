@@ -41,10 +41,12 @@ describe("awesomplete",function(){
         it("should perform a stable sort inside evaluation chain",function(){
             var origList = ["New York","Staten Island","Jamaica","Schenectady","Flushing","White Plains","Great Neck","Yonkers","Utica","Elmira","Binghamton"];
 
-			awesompleter = new Awesomplete(dummyInput,{minChars:0, sort: function(a,b){ return 0;}});
+			awesompleter = new Awesomplete(dummyInput,{minChars:0, maxItems:20, sort: function(a,b){ return 0;}});
             awesompleter.list = origList;
             awesompleter.evaluate();
-            expect(awesompleter._currentEvaluation).toEqual(origList);
+            console.log(typeof awesompleter.ul.children);
+
+            expect(getListFromResults(awesompleter)).toEqual(origList);
         })
 
 	})
@@ -85,3 +87,12 @@ describe("awesomplete helpers",function(){
 	})
 
 });
+
+// TODO: should be move to the shared file after mereging with pull request #16776
+function getListFromResults(awesompleter){
+     return [].slice.call(awesompleter.ul.children)
+    .map(function(value){
+        return value.textContent;
+    });
+}
+

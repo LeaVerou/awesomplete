@@ -129,8 +129,6 @@ _.prototype = {
 			}
 		}
 
-        this._currentEvaluation = []; // used for unit testing.
-
 		if (document.activeElement === this.input) {
 			this.evaluate();
 		}
@@ -221,15 +219,15 @@ _.prototype = {
             // Populate list with options that match
             this.ul.innerHTML = "";
 
-            this._currentEvaluation =  
+            var filteredAndSortedList =  
                 this._list
                 .filter(function(item) {
                     return me.filter(item, value);
                 });
 
-            $.mergeSort(this._currentEvaluation ,this.sort);
+            $.mergeSort(filteredAndSortedList ,this.sort);
 
-            this._currentEvaluation
+            filteredAndSortedList 
             .every(function(text, i) {
                 me.ul.appendChild(me.item(text, value));
 
