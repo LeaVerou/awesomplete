@@ -1,0 +1,1 @@
+fixture.setBase("test/fixtures");

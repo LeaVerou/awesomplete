@@ -10,6 +10,7 @@ module.exports = function(config) {
 		// list of files / patterns to load in the browser
 		files: [
 			'awesomplete.js',
+			'test/specHelper.js',
 			{
 				pattern: 'test/fixtures/**/*.html',
 				watched: true, included: true, served: true
