@@ -25,10 +25,9 @@ var _ = function (input, o) {
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: function (text, input) {
-			var html = input === '' ? text : text.replace(_.RE(input), "<mark>$&</mark>");
-			return $.create('li', {
-				innerHTML: html,
-				'aria-selected': 'false'
+			return $.create("li", {
+				innerHTML: text.replace(_.RE(input), "<mark>$&</mark>");,
+				"aria-selected": "false"
 			});
 		},
 		replace: function (text) {
