@@ -313,22 +313,18 @@ $.update = function(element, o) {
   for (var i in o) {
     var val = o[i];
 
-		if (i === "inside") {
     if (i === 'inside') {
       $(val).appendChild(element);
-		}
-		else if (i === "around") {
-    } else if (i === 'around') {
+    }
+    else if (i === 'around') {
       var ref = $(val);
       ref.parentNode.insertBefore(element, ref);
       element.appendChild(ref);
-		}
-		else if (i in element) {
-    } else if (i in element) {
+    }
+    else if (i in element) {
       element[i] = val;
-		}
-		else {
-    } else {
+    }
+    else {
       element.setAttribute(i, val);
     }
   }
