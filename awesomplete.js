@@ -25,9 +25,10 @@ var _ = function (input, o) {
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: function (text, input) {
-			return $.create("li", {
-				innerHTML: text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>"),
-				"aria-selected": "false"
+			var html = input === '' ? text : text.replace(_.RE(input), "<mark>$&</mark>");
+			return $.create('li', {
+				innerHTML: html,
+				'aria-selected': 'false'
 			});
 		},
 		replace: function (text) {
@@ -246,12 +247,16 @@ _.prototype = {
 
 _.all = [];
 
+_.RE = null;
+
 _.FILTER_CONTAINS = function (text, input) {
-	return RegExp($.regExpEscape(input.trim()), "i").test(text);
+	_.RE = function(q){ return RegExp($.regExpEscape(q.trim()), 'i'); };
+	return _.RE(input).test(text);
 };
 
 _.FILTER_STARTSWITH = function (text, input) {
-	return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
+	_.RE = function(q){ return RegExp('^' + $.regExpEscape(q.trim()), 'i'); };
+	return _.RE(input).test(text);
 };
 
 _.SORT_BYLENGTH = function (a, b) {
