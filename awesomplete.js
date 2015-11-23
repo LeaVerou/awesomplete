@@ -46,7 +46,7 @@ var _ = function (input, o) {
 	});
 
 	this.ul = $.create("ul", {
-		hidden: "",
+		hidden: "hidden",
 		inside: this.container
 	});
 
