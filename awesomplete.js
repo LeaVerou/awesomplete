@@ -26,7 +26,7 @@ var _ = function (input, o) {
 		sort: _.SORT_BYLENGTH,
 		item: function (text, input) {
 			return $.create("li", {
-				innerHTML: text.replace(_.RE(input), "<mark>$&</mark>");,
+				innerHTML: text.replace(_.RE(input), "<mark>$&</mark>"),
 				"aria-selected": "false"
 			});
 		},
