@@ -120,6 +120,7 @@ _.prototype = {
 				this._list = list.split(/\s*,\s*/);
 		}
 		else { // Element or CSS selector
+			console.log('list type unknown');
 			list = $(list);
 
 			if (list && list.children) {
@@ -157,6 +158,19 @@ _.prototype = {
 		}
 
 		$.fire(this.input, "awesomplete-open");
+	},
+
+	toggle: function () {
+		if (this.ul.childNodes.length == 0) {
+			this.minChars = 0;
+			this.evaluate();
+		}
+		else if (this.ul.hasAttribute('hidden')) {
+			this.open();
+		}
+		else {
+			this.close();
+		}
 	},
 
 	next: function () {
