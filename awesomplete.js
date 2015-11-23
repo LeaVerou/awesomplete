@@ -120,7 +120,6 @@ _.prototype = {
 				this._list = list.split(/\s*,\s*/);
 		}
 		else { // Element or CSS selector
-			console.log('list type unknown');
 			list = $(list);
 
 			if (list && list.children) {
