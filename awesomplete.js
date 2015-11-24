@@ -309,7 +309,7 @@ function $$(expr, con) {
 	return slice.call((con || document).querySelectorAll(expr));
 }
 
-$.set(element, o) {
+$.set = function(element, o) {
 	for (var i in o) {
 		var val = o[i];
 
