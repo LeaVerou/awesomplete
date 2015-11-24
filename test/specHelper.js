@@ -8,6 +8,8 @@ function $ (str, context) {
 // bundled fixture load/cleanup
 $.fixture = function (fixtureName) {
 	beforeEach(function () {
+		// Awesomplete probably needs to cleanup this by itself
+		try { Awesomplete.all = []; } catch(e) {};
 		fixture.load(fixtureName + ".html");
 	});
 
