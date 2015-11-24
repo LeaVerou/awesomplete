@@ -60,6 +60,7 @@ describe("awesomplete",function(){
 			shared.awesompleter = awesompleter;
 		})
 
+
 		it("should have a non-empty list", shared.expectListLengthToBe(12));
 
 		it("should have 3 min chars", shared.expectMinCharsToBe(3));
@@ -79,7 +80,21 @@ describe("awesomplete",function(){
 		it("should autocomplete when a suggestion is selected", shared.expectSelectingFirstSuggestionToWorkWith('test'));
 
 		it("should autocomplete the first suggestion when autoFirst is true", shared.expectAutoFirstToWorkWith('test'));
-	})
+
+        // see http://www.ecma-international.org/ecma-262/5.1/#sec-15.4.4.11
+        // Chrome's native Array.prototype.sort does not perform stable sorts with arrays above 10 items.
+        it("should perform a stable sort inside evaluation chain",function(){
+            var origList = ["New York","Staten Island","Jamaica","Schenectady","Flushing","White Plains","Great Neck","Yonkers","Utica","Elmira","Binghamton"];
+
+			awesompleter = new Awesomplete(dummyInput,{minChars:0, maxItems:20, sort: function(a,b){ return 0;}});
+            awesompleter.list = origList;
+            awesompleter.evaluate();
+
+            expect(shared.getListFromResults(awesompleter)).toEqual(origList);
+        });
+
+
+	});
 });
 
 describe("awesomplete helpers",function(){

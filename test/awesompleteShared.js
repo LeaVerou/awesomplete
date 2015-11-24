@@ -41,5 +41,12 @@ var shared = {
 			expect(li.getAttribute('aria-selected')).toBe('true');
       expect(shared.awesompleter.status.textContent).toBe(li.textContent);
 		}
+  },
+  getListFromResults: function (awesompleter){
+      return [].slice.call(awesompleter.ul.children)
+      .map(function(value){
+           return value.textContent;
+      });
   }
+
 };
