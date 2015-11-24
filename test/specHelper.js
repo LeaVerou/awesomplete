@@ -42,6 +42,17 @@ $.type = function (input, text) {
 	$.fire(input, "input");
 }
 
+// simulates keydown events
+$.keydown = function(target, keyCode) {
+	$.fire(target, "keydown", { keyCode: keyCode });
+};
+$.k = {
+	ENTER: 13,
+	ESC:   27,
+	DOWN:  40,
+	UP:    38
+};
+
 // $.noop returns a new empty function each time it's being called
 Object.defineProperty($, "noop", {
 	get: function () {
