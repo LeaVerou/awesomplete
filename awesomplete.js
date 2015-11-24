@@ -22,6 +22,7 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
+		dropdown: null,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: function (text, input) {
@@ -45,10 +46,17 @@ var _ = function (input, o) {
 		around: input
 	});
 
-	this.ul = $.create("ul", {
-		hidden: "",
-		inside: this.container
-	});
+	this.ul = this.dropdown ?
+		$.set(this.dropdown, {
+			hidden: '',
+			className: 'awesomplete-dropdown',
+			inside: this.container
+		}) :
+		$.create('ul', {
+			hidden: '',
+			className: 'awesomplete-dropdown',
+			inside: this.container
+		});
 
 	this.status = $.create("span", {
 		className: "visually-hidden",
@@ -301,9 +309,7 @@ function $$(expr, con) {
 	return slice.call((con || document).querySelectorAll(expr));
 }
 
-$.create = function(tag, o) {
-	var element = document.createElement(tag);
-
+$.set(element, o) {
 	for (var i in o) {
 		var val = o[i];
 
@@ -324,6 +330,12 @@ $.create = function(tag, o) {
 	}
 
 	return element;
+}
+
+$.create = function(tag, o) {
+	var element = document.createElement(tag);
+
+	return $.set(element, o);
 };
 
 $.bind = function(element, o) {
