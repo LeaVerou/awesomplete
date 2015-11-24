@@ -25,8 +25,9 @@ var _ = function (input, o) {
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: function (text, input) {
+			var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 			return $.create("li", {
-				innerHTML: text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>"),
+				innerHTML: html,
 				"aria-selected": "false"
 			});
 		},
@@ -410,7 +411,7 @@ function init() {
 }
 
 // Are we in a browser? Check for Document constructor
-if (typeof Document !== 'undefined') {
+if (typeof Document !== "undefined") {
 	// DOM already loaded?
 	if (document.readyState !== "loading") {
 		init();
@@ -425,12 +426,12 @@ _.$ = $;
 _.$$ = $$;
 
 // Make sure to export Awesomplete on self when in a browser
-if (typeof self !== 'undefined') {
+if (typeof self !== "undefined") {
 	self.Awesomplete = _;
 }
 
 // Expose Awesomplete as a CJS module
-if (typeof exports === 'object') {
+if (typeof exports === "object") {
 	module.exports = _;
 }
 
