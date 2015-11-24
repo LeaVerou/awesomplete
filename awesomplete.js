@@ -22,6 +22,7 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
+		dropdown: null,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: function (text, input) {
@@ -45,10 +46,18 @@ var _ = function (input, o) {
 		around: input
 	});
 
-	this.ul = $.create("ul", {
-		hidden: "",
-		inside: this.container
-	});
+	this.ul = this.dropdown ?
+		$.update(this.dropdown, {
+			hidden: '',
+			className: 'awesomplete-dropdown',
+			inside: this.container
+		}) :
+		$.create('ul', {
+			hidden: '',
+			className: 'awesomplete-dropdown',
+			inside: this.container
+		});
+
 
 	this.status = $.create("span", {
 		className: "visually-hidden",
@@ -301,29 +310,33 @@ function $$(expr, con) {
 	return slice.call((con || document).querySelectorAll(expr));
 }
 
+$.update = function(element, o) {
+  for (var i in o) {
+    var val = o[i];
+
+    if (i === 'inside') {
+      $(val).appendChild(element);
+    }
+    else if (i === 'around') {
+      var ref = $(val);
+      ref.parentNode.insertBefore(element, ref);
+      element.appendChild(ref);
+    }
+    else if (i in element) {
+      element[i] = val;
+    }
+    else {
+      element.setAttribute(i, val);
+    }
+  }
+
+  return element;
+};
+
 $.create = function(tag, o) {
-	var element = document.createElement(tag);
+  var element = document.createElement(tag);
 
-	for (var i in o) {
-		var val = o[i];
-
-		if (i === "inside") {
-			$(val).appendChild(element);
-		}
-		else if (i === "around") {
-			var ref = $(val);
-			ref.parentNode.insertBefore(element, ref);
-			element.appendChild(ref);
-		}
-		else if (i in element) {
-			element[i] = val;
-		}
-		else {
-			element.setAttribute(i, val);
-		}
-	}
-
-	return element;
+  return $.update(element, o);
 };
 
 $.bind = function(element, o) {
