@@ -5,6 +5,10 @@ function $ (str, context) {
 	return (context || fixture.el).querySelector(str);
 }
 
+function $$(str, context) {
+	return (context || fixture.el).querySelectorAll(str);
+}
+
 // bundled fixture load/cleanup
 $.fixture = function (fixtureName) {
 	beforeEach(function () {
