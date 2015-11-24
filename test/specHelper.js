@@ -5,7 +5,7 @@ function $ (str, context) {
 	return (context || fixture.el).querySelector(str);
 }
 
-function $$(str, context) {
+function $$ (str, context) {
 	return (context || fixture.el).querySelectorAll(str);
 }
 
@@ -20,7 +20,11 @@ $.fixture = function (fixtureName) {
 	afterEach(function () {
 		fixture.cleanup();
 	});
-}
+};
+
+$.on = function (element, event, callback) {
+	element.addEventListener(event, callback);
+};
 
 // $.noop returns a new empty function each time it's being called
 Object.defineProperty($, "noop", {
