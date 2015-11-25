@@ -42,6 +42,20 @@ describe("keydown event", function () {
 		expect(this.subject.previous).toHaveBeenCalled();
 	});
 
+	it("ignores other keys", function() {
+		spyOn(this.subject, "select");
+		spyOn(this.subject, "close");
+		spyOn(this.subject, "next");
+		spyOn(this.subject, "previous");
+
+		$.keydown(this.subject.input, 111);
+
+		expect(this.subject.select).not.toHaveBeenCalled();
+		expect(this.subject.close).not.toHaveBeenCalled();
+		expect(this.subject.next).not.toHaveBeenCalled();
+		expect(this.subject.previous).not.toHaveBeenCalled();
+	});
+
 	it("does nothing if not opened", function () {
 		this.subject.close();
 

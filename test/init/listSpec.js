@@ -40,6 +40,19 @@ describe("Awesomplete list", function () {
 			this.subject.list = "#empty-list";
 			expect(this.subject._list).toEqual([]);
 		});
+
+		describe("with active input", function() {
+			beforeEach(function() {
+				this.subject.input.focus();
+			});
+
+			it("evaluates completer", function() {
+				spyOn(this.subject, "evaluate");
+				this.subject.list = "#data-list";
+
+				expect(this.subject.evaluate).toHaveBeenCalled();
+			});
+		});
 	});
 
 	describe("constructor option", function () {

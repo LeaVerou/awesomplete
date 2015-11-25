@@ -33,7 +33,6 @@ describe("mousedown event", function () {
 	});
 
 	describe("with child of li target", function () {
-
 		it("selects item", function () {
 			var li = this.subject.ul.children[1];
 			spyOn(this.subject, "select");

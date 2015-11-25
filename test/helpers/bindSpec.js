@@ -42,7 +42,6 @@ describe("Awesomplete.$.bind", function () {
 
 		it("adds event listeners for all events", function () {
 			this.events = { click: $.noop, input: $.noop };
-
 			this.subject();
 
 			expect(this.element.addEventListener).toHaveBeenCalledWith("click", this.events.click);
@@ -51,7 +50,6 @@ describe("Awesomplete.$.bind", function () {
 
 		it("adds single event listener for multiple events", function () {
 			this.events = { "click input": $.noop };
-
 			this.subject();
 
 			expect(this.element.addEventListener).toHaveBeenCalledWith("click", this.events["click input"]);
