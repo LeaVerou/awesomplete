@@ -4,8 +4,6 @@ describe("awesomplete.open", function () {
 
 	subject(function () { return new Awesomplete("#plain", this.options) });
 
-	def("events", function () { return { opened: $.noop } });
-
 	it("opens completer", function () {
 		this.subject.open();
 		expect(this.subject.ul.hasAttribute("hidden")).toBe(false);
@@ -22,11 +20,10 @@ describe("awesomplete.open", function () {
 	});
 
 	it("fires awesomplete-open event", function () {
-		spyOn(this.events, "opened")
-		$.on(this.subject.input, "awesomplete-open", this.events.opened);
+		var handler = $.spyOnEvent(this.subject.input, "awesomplete-open");
 		this.subject.open();
 
-		expect(this.events.opened).toHaveBeenCalled();
+		expect(handler).toHaveBeenCalled();
 	});
 
 	describe("with autoFirst: true", function () {

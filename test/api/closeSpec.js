@@ -4,8 +4,6 @@ describe("awesomplete.close", function () {
 
 	subject(function () { return new Awesomplete("#plain") });
 
-	def("events", function () { return { closed: $.noop } });
-
 	beforeEach(function () {
 		this.subject.open();
 		this.subject.next();
@@ -24,10 +22,9 @@ describe("awesomplete.close", function () {
 	});
 
 	it("fires awesomplete-close event", function () {
-		spyOn(this.events, "closed")
-		$.on(this.subject.input, "awesomplete-close", this.events.closed);
-
+		var handler = $.spyOnEvent(this.subject.input, "awesomplete-close");
 		this.subject.close();
-		expect(this.events.closed).toHaveBeenCalled();
+
+		expect(handler).toHaveBeenCalled();
 	});
 });

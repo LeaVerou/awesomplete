@@ -6,7 +6,6 @@ describe("awesomplete.select", function () {
 		return new Awesomplete("#plain", { list: ["item1", "item2", "item3"] });
 	});
 
-	def("events", function () { return { select: $.noop, complete: $.noop} });
 	def("firstIndex", function () { return 0 });
 	def("lastIndex", function () { return this.subject.ul.children.length - 1 });
 	def("lastLi", function () { return this.subject.ul.children[this.lastIndex] });
@@ -43,17 +42,15 @@ describe("awesomplete.select", function () {
 
 	function itSelects(expectedTxt) {
 		it("fires awesomplete-select event", function () {
-			spyOn(this.events, "select");
-			$.on(this.subject.input, "awesomplete-select", this.events.select);
+			var handler = $.spyOnEvent(this.subject.input, "awesomplete-select");
 			this.subject.select(this.selectArgument);
 
-			expect(this.events.select).toHaveBeenCalledWith(jasmine.objectContaining({ text: expectedTxt }));
+			expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({ text: expectedTxt }));
 		});
 
 		describe("and awesomplete-select event was not prevented", function () {
 			beforeEach(function () {
-				this.events.select = $.noop;
-				$.on(this.subject.input, "awesomplete-select", this.events.select);
+				$.on(this.subject.input, "awesomplete-select", $.noop);
 			});
 
 			it("changes the input value", function () {
@@ -69,18 +66,16 @@ describe("awesomplete.select", function () {
 			});
 
 			it("fires awesomplete-selectcomplete event", function () {
-				spyOn(this.events, "complete");
-				this.subject.input.addEventListener("awesomplete-selectcomplete", this.events.complete);
+				var handler = $.spyOnEvent(this.subject.input, "awesomplete-selectcomplete");
 				this.subject.select(this.selectArgument);
 
-				expect(this.events.complete).toHaveBeenCalled();
+				expect(handler).toHaveBeenCalled();
 			});
 		});
 
 		describe("and awesomplete-select event was prevented", function () {
 			beforeEach(function () {
-				this.events.select = function(evt) { evt.preventDefault() };
-				$.on(this.subject.input, "awesomplete-select", this.events.select);
+				$.on(this.subject.input, "awesomplete-select", function (evt) { evt.preventDefault() });
 			});
 
 			it("does not change the input value", function () {
@@ -96,11 +91,10 @@ describe("awesomplete.select", function () {
 			});
 
 			it("does not fire awesomplete-selectcomplete event", function () {
-				spyOn(this.events, "complete");
-				this.subject.input.addEventListener("awesomplete-selectcomplete", this.events.complete);
+				var handler = $.spyOnEvent(this.subject.input, "awesomplete-selectcomplete");
 				this.subject.select(this.selectArgument);
 
-				expect(this.events.complete).not.toHaveBeenCalled();
+				expect(handler).not.toHaveBeenCalled();
 			});
 		});
 	}
@@ -112,19 +106,17 @@ describe("awesomplete.select", function () {
 		});
 
 		it("does not fire awesomplete-select event", function () {
-			spyOn(this.events, "select");
-			$.on(this.subject.input, "awesomplete-select", this.events.select);
+			var handler = $.spyOnEvent(this.subject.input, "awesomplete-select");
 			this.subject.select();
 
-			expect(this.events.select).not.toHaveBeenCalled();
+			expect(handler).not.toHaveBeenCalled();
 		});
 
 		it("does not fire awesomplete-selectcomplete event", function () {
-			spyOn(this.events, "complete");
-			this.subject.input.addEventListener("awesomplete-selectcomplete", this.events.complete);
+			var handler = $.spyOnEvent(this.subject.input, "awesomplete-selectcomplete");
 			this.subject.select();
 
-			expect(this.events.complete).not.toHaveBeenCalled();
+			expect(handler).not.toHaveBeenCalled();
 		});
 	}
 });

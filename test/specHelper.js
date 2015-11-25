@@ -22,8 +22,15 @@ $.fixture = function (fixtureName) {
 	});
 };
 
-$.on = function (element, event, callback) {
-	element.addEventListener(event, callback);
+// spy to check if event was fired or not
+$.spyOnEvent = function (target, type) {
+	var handler = jasmine.createSpy(type);
+	$.on(target, type, handler);
+	return handler;
+};
+
+$.on = function (target, type, callback) {
+	target.addEventListener(type, callback);
 };
 
 $.fire = function (target, type, properties) {
@@ -40,10 +47,10 @@ $.type = function (input, text) {
 	input.focus();
 	input.value = text;
 	$.fire(input, "input");
-}
+};
 
 // simulates keydown events
-$.keydown = function(target, keyCode) {
+$.keydown = function (target, keyCode) {
 	$.fire(target, "keydown", { keyCode: keyCode });
 };
 $.k = {

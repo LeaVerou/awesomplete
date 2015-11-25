@@ -11,9 +11,7 @@ describe("form submit event", function () {
 		this.subject.input.focus();
 		this.subject.open();
 		// prevent full page reload in Firefox, which causes tests to stop running
-		$.on(this.subject.input.form, "submit", function(evt) {
-			evt.preventDefault();
-		});
+		$.on(this.subject.input.form, "submit", function (evt) { evt.preventDefault() });
 	});
 
 	it("closes completer", function () {

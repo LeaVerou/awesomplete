@@ -31,12 +31,10 @@ describe("awesomplete.goto", function () {
 	});
 
 	it("fires awesomplete-highlight event", function () {
-		var events = { highlight: $.noop};
-		spyOn(events, "highlight");
-		$.on(this.subject.input, "awesomplete-highlight", events.highlight);
+		var handler = $.spyOnEvent(this.subject.input, "awesomplete-highlight");
 		this.subject.goto(1);
 
-		expect(events.highlight).toHaveBeenCalled();
+		expect(handler).toHaveBeenCalled();
 	});
 
 	describe("with item index > -1", function () {
