@@ -53,7 +53,7 @@ rules:
   - false
   no-mixed-spaces-and-tabs:
   - 2
-  - false
+  - smart-tabs
   linebreak-style:
   - 0
   - unix
