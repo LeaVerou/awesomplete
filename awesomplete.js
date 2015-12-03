@@ -95,7 +95,7 @@ var _ = function (input, o) {
 				li = li.parentNode;
 			}
 
-			if (li) {
+			if (li && evt.button === 0) {  // Only select on left click
 				me.select(li);
 			}
 		}
