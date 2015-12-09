@@ -197,6 +197,7 @@ _.prototype = {
 			var prevented;
 
 			$.fire(this.input, "awesomplete-select", {
+        dataset: selected.dataset,
 				text: selected.textContent,
 				preventDefault: function () {
 					prevented = true;
@@ -206,7 +207,7 @@ _.prototype = {
 			if (!prevented) {
 				this.replace(selected.textContent);
 				this.close();
-				$.fire(this.input, "awesomplete-selectcomplete");
+				$.fire(this.input, "awesomplete-selectcomplete", {dataset: selected.dataset});
 			}
 		}
 	},
