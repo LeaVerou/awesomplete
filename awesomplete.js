@@ -24,6 +24,10 @@ var _ = function (input, o) {
 		autoFirst: false,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
+		initialStatus: function(itemCount) {
+    	return itemCount + ' matches were found.\n' +
+    	       'Use the Up and Down arrow keys to navigate them.';
+    }
 		item: function (text, input) {
 			var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 			return $.create("li", {
@@ -146,6 +150,7 @@ _.prototype = {
 	close: function () {
 		this.ul.setAttribute("hidden", "");
 		this.index = -1;
+		this.status.textContent = '' // Clear status when results window  is closed
 
 		$.fire(this.input, "awesomplete-close");
 	},
@@ -214,6 +219,7 @@ _.prototype = {
 	evaluate: function() {
 		var me = this;
 		var value = this.input.value;
+    var itemCount = this.ul.children.length;
 
 		if (value.length >= this.minChars && this._list.length > 0) {
 			this.index = -1;
@@ -231,10 +237,12 @@ _.prototype = {
 					return i < me.maxItems - 1;
 				});
 
-			if (this.ul.children.length === 0) {
+			if (itemCount === 0) {
 				this.close();
 			} else {
 				this.open();
+				if(!this.autoFirst) {
+					this.status.textContent = this.initialStatus(itemCount);
 			}
 		}
 		else {
