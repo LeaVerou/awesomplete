@@ -383,7 +383,7 @@ if (typeof self !== "undefined") {
 }
 
 // Expose Awesomplete as a CJS module
-if (typeof exports === "object") {
+if (typeof module === "object" && module.exports) {
 	module.exports = _;
 }
 
