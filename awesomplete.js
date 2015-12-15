@@ -243,6 +243,7 @@ _.prototype = {
 				this.open();
 				if(!this.autoFirst) {
 					this.status.textContent = this.initialStatus(itemCount);
+				}
 			}
 		}
 		else {
