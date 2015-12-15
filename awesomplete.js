@@ -27,7 +27,7 @@ var _ = function (input, o) {
 		initialStatus: function(itemCount) {
     	return itemCount + ' matches were found.\n' +
     	       'Use the Up and Down arrow keys to navigate them.';
-    }
+    },
 		item: function (text, input) {
 			var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 			return $.create("li", {
