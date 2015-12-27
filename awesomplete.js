@@ -96,7 +96,7 @@ var _ = function (input, o) {
 			}
 
 			if (li && evt.button === 0) {  // Only select on left click
-				me.select(li);
+				me.select(li, evt);
 			}
 		}
 	}});
@@ -190,7 +190,7 @@ _.prototype = {
 		$.fire(this.input, "awesomplete-highlight");
 	},
 
-	select: function (selected) {
+	select: function (selected, originalEvent) {
 		selected = selected || this.ul.children[this.index];
 
 		if (selected) {
@@ -200,7 +200,8 @@ _.prototype = {
 				text: selected.textContent,
 				preventDefault: function () {
 					prevented = true;
-				}
+				},
+				originalEvent: originalEvent
 			});
 
 			if (!prevented) {
