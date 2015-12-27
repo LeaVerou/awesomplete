@@ -46,7 +46,7 @@ var _ = function (input, o) {
 	});
 
 	this.ul = $.create("ul", {
-		hidden: "",
+		hidden: "hidden",
 		inside: this.container
 	});
 
@@ -102,8 +102,8 @@ var _ = function (input, o) {
 	}});
 
 	if (this.input.hasAttribute("list")) {
-		this.list = "#" + input.getAttribute("list");
-		input.removeAttribute("list");
+		this.list = "#" + this.input.getAttribute("list");
+		this.input.removeAttribute("list");
 	}
 	else {
 		this.list = this.input.getAttribute("data-list") || o.list || [];
