@@ -46,7 +46,7 @@ var _ = function (input, o) {
 	});
 
 	this.ul = $.create("ul", {
-		hidden: "",
+		hidden: "hidden",
 		inside: this.container
 	});
 
@@ -95,15 +95,15 @@ var _ = function (input, o) {
 				li = li.parentNode;
 			}
 
-			if (li) {
-				me.select(li);
+			if (li && evt.button === 0) {  // Only select on left click
+				me.select(li, evt);
 			}
 		}
 	}});
 
 	if (this.input.hasAttribute("list")) {
-		this.list = "#" + input.getAttribute("list");
-		input.removeAttribute("list");
+		this.list = "#" + this.input.getAttribute("list");
+		this.input.removeAttribute("list");
 	}
 	else {
 		this.list = this.input.getAttribute("data-list") || o.list || [];
@@ -190,7 +190,7 @@ _.prototype = {
 		$.fire(this.input, "awesomplete-highlight");
 	},
 
-	select: function (selected) {
+	select: function (selected, originalEvent) {
 		selected = selected || this.ul.children[this.index];
 
 		if (selected) {
@@ -200,7 +200,8 @@ _.prototype = {
 				text: selected.textContent,
 				preventDefault: function () {
 					prevented = true;
-				}
+				},
+				originalEvent: originalEvent
 			});
 
 			if (!prevented) {
@@ -383,7 +384,7 @@ if (typeof self !== "undefined") {
 }
 
 // Expose Awesomplete as a CJS module
-if (typeof exports === "object") {
+if (typeof module === "object" && module.exports) {
 	module.exports = _;
 }
 

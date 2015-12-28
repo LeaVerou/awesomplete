@@ -5,12 +5,17 @@ module.exports = function(config) {
 
 		// frameworks to use
 		// available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-		frameworks: ['jasmine'],
+		frameworks: ['jasmine', 'jasmine-def', 'fixture'],
 
 		// list of files / patterns to load in the browser
 		files: [
 			'awesomplete.js',
-      'test/**/*Shared.js',
+			'test/specHelper.js',
+			{
+				pattern: 'test/fixtures/**/*.html',
+				watched: true, included: true, served: true
+			},
+			'test/**/*Shared.js',
 			'test/**/*Spec.js'
 		],
 
@@ -23,12 +28,13 @@ module.exports = function(config) {
 		// available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
 		preprocessors: {
 			'awesomplete.js': ['coverage']
+			'**/*.html' : ['html2js']
 		},
 
 		// test results reporter to use
 		// possible values: 'dots', 'progress'
 		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
-		reporters: ['progress', 'coverage'],
+		reporters: ['dots', 'coverage'],
 		coverageReporter: {
 			type: 'lcov',
 			subdir: '.'
