@@ -72,7 +72,7 @@ var _ = function (input, o) {
 				if (c === 13 && me.selected) { // Enter
 					var li = me.ul.children[me.index];
 					evt.preventDefault();
-					evt.originalTarget = li
+					evt.originalTarget = li;
 					me.select(li, evt);
 				}
 				else if (c === 27) { // Esc
@@ -202,10 +202,10 @@ _.prototype = {
 			$.fire(this.input, "awesomplete-select", {
         dataset: selected.dataset,
 				text: selected.textContent,
-				originalTarget: originalEvent.originalTarget
+				originalTarget: originalEvent.originalTarget,
 				preventDefault: function () {
 					prevented = true;
-				},
+				}
 			});
 
 			if (!prevented) {
