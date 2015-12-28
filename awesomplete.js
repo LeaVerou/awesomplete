@@ -21,6 +21,9 @@ var _ = function (input, o) {
 	configure.call(this, {
 		minChars: 2,
 		maxItems: 10,
+    containerClass: "awesomplete-wrapper",
+    ulClass: null,
+    statusClass: "visually-hidden",
 		autoFirst: false,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
@@ -40,18 +43,20 @@ var _ = function (input, o) {
 
 	// Create necessary elements
 
-	this.container = $.create("div", {
-		className: "awesomplete",
-		around: input
-	});
+  this.container = $("." + this.containerClass, this.input.parentNode) ||
+    $.create("div", {
+      className: this.containerClass,
+      around: input
+    });
 
 	this.ul = $.create("ul", {
+    className: this.ulClass || "",
 		hidden: "hidden",
 		inside: this.container
 	});
 
 	this.status = $.create("span", {
-		className: "visually-hidden",
+		className: this.statusClass,
 		role: "status",
 		"aria-live": "assertive",
 		"aria-relevant": "additions",
@@ -140,7 +145,7 @@ _.prototype = {
 	},
 
 	get opened() {
-		return this.ul && this.ul.getAttribute("hidden") == null;
+		return this.ul && this.ul.getAttribute("hidden") === null;
 	},
 
 	close: function () {
@@ -353,7 +358,7 @@ $.fire = function(target, type, properties) {
 
 $.regExpEscape = function (s) {
 	return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
-}
+};
 
 // Initialization
 
