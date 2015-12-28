@@ -70,8 +70,10 @@ var _ = function (input, o) {
 			// Enter / Esc / Up / Down
 			if(me.opened) {
 				if (c === 13 && me.selected) { // Enter
+					var li = me.ul.children[me.index];
 					evt.preventDefault();
-					me.select();
+					evt.originalTarget = li
+					me.select(li, evt);
 				}
 				else if (c === 27) { // Esc
 					me.close();
@@ -96,6 +98,7 @@ var _ = function (input, o) {
 			}
 
 			if (li && evt.button === 0) {  // Only select on left click
+				evt.originalTarget = li;
 				me.select(li, evt);
 			}
 		}
@@ -199,16 +202,18 @@ _.prototype = {
 			$.fire(this.input, "awesomplete-select", {
         dataset: selected.dataset,
 				text: selected.textContent,
+				originalTarget: originalEvent.originalTarget
 				preventDefault: function () {
 					prevented = true;
 				},
-				originalEvent: originalEvent
 			});
 
 			if (!prevented) {
 				this.replace(selected.textContent);
 				this.close();
-				$.fire(this.input, "awesomplete-selectcomplete", {dataset: selected.dataset});
+				$.fire(this.input, "awesomplete-selectcomplete", {
+					originalTarget: originalEvent.originalTarget
+				});
 			}
 		}
 	},

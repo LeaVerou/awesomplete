@@ -424,8 +424,8 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	});
 
 	arrOfObj.addEventListener('awesomplete-selectcomplete', fucntion(e) {
-	 // You can no do something with e.dataset.url
-	 console.log(e.dataset.url);
+   // You can no do something with e.originalTarget.getAttribute('data-*')
+	 console.log(e.originalTarget.getAttribute('data-url');
 	});
 	</script></code></pre>
 	</section>
