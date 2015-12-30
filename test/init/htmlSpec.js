@@ -16,7 +16,7 @@ describe("Html modifications", function () {
 	describe("HTML tweaks", function () {
 		it("creates container", function () {
 			expect(this.subject.container instanceof HTMLElement).toBe(true);
-			expect(this.subject.container.className).toBe("awesomplete-wrapper");
+			expect(this.subject.container.className).toBe("awesomplete");
 		});
 
 		it("places input inside container", function () {
