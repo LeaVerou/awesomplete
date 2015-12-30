@@ -40,18 +40,19 @@ $.fire = function (target, type, properties) {
 		evt[j] = properties[j];
 	}
 	target.dispatchEvent(evt);
+	return evt;
 };
 
 // simulates text input (very simple, only "input" event is fired)
 $.type = function (input, text) {
 	input.focus();
 	input.value = text;
-	$.fire(input, "input");
+	return $.fire(input, "input");
 };
 
 // simulates keydown events
 $.keydown = function (target, keyCode) {
-	$.fire(target, "keydown", { keyCode: keyCode });
+	return $.fire(target, "keydown", { keyCode: keyCode });
 };
 $.k = {
 	ENTER: 13,
