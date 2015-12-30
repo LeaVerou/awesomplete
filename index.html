@@ -48,9 +48,9 @@
 
 <p>For the autocomplete, you just need an <code>&lt;input></code> text field (might work on <code>&lt;textarea></code> and elements with <code>contentEditable</code>, but that hasn’t been tested). Add <code>class="awesomplete"</code> for it to be <strong>automatically processed</strong> (you can still specify many options via HTML attributes), otherwise you can instantiate with a few lines of JS code, which allow for more customization.</p>
 
-<p><strong>Note:</strong> By default, Awesomplete will wrap your input in a div with a class of 'awesomplete-wrapper'. If other elements need to stay a sibling of your input, such as a label, you can simply place the input in an element with the that class beforehand, and Awesomplete will pick it up:</p>
+<p><strong>Note:</strong> By default, Awesomplete will wrap your input in a div with a class of 'awesomplete'. If other elements need to stay a sibling of your input, such as a label, you can simply place the input in an element with the that class beforehand, and Awesomplete will pick it up:</p>
 
-<pre class="language-markup"><code>&lt;div class="awesomplete-wrapper">
+<pre class="language-markup"><code>&lt;div class="awesomplete">
   &lt;input class="awesomplete" 
     data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" />
   &lt;label>My label&lt;/label>
@@ -190,7 +190,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 				<td><code>data-containerclass</code></td>
 				<td>The class of the element wrapping the input. If no element with is class is found wrapping the input, one will be created.</td>
 				<td>String</td>
-				<td>"awesomplete-wrapper"</td>
+				<td>"awesomplete"</td>
 			</tr>
 			<tr>
 				<td><code>ulClass</code></td>

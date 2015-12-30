@@ -21,7 +21,7 @@ var _ = function (input, o) {
 	configure.call(this, {
 		minChars: 2,
 		maxItems: 10,
-    containerClass: "awesomplete-wrapper",
+    containerClass: "awesomplete",
     ulClass: null,
     statusClass: "visually-hidden",
 		autoFirst: false,
