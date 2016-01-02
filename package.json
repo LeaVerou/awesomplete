@@ -17,6 +17,7 @@
     "jasmine-core": "^2.3.0",
     "karma": "^0.13.15",
     "karma-chrome-launcher": "^0.2.1",
+    "karma-coverage": "^0.5.3",
     "karma-fixture": "^0.2.5",
     "karma-html2js-preprocessor": "^0.1.0",
     "karma-jasmine": "^0.3.6",
