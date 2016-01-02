@@ -200,7 +200,6 @@ _.prototype = {
 			var prevented;
 
 			$.fire(this.input, "awesomplete-select", {
-        dataset: selected.dataset,
 				text: selected.textContent,
 				originalTarget: originalEvent.originalTarget,
 				preventDefault: function () {
