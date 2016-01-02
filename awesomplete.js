@@ -201,7 +201,7 @@ _.prototype = {
 
 			$.fire(this.input, "awesomplete-select", {
 				text: selected.textContent,
-				originalTarget: originalEvent.originalTarget,
+        originalTarget: typeof originalEvent === 'object' ? originalEvent.originalTarget : 'undefined',
 				preventDefault: function () {
 					prevented = true;
 				}
@@ -211,7 +211,7 @@ _.prototype = {
 				this.replace(selected.textContent);
 				this.close();
 				$.fire(this.input, "awesomplete-selectcomplete", {
-					originalTarget: originalEvent.originalTarget
+          originalTarget: typeof originalEvent === 'object' ? originalEvent.originalTarget : 'undefined'
 				});
 			}
 		}
