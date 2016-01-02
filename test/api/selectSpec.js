@@ -9,6 +9,7 @@ describe("awesomplete.select", function () {
 	def("firstIndex", function () { return 0 });
 	def("lastIndex", function () { return this.subject.ul.children.length - 1 });
 	def("lastLi", function () { return this.subject.ul.children[this.lastIndex] });
+	def("mockEvt", function () { return { 'originalTarget': this.lastLi } });
 
 	beforeEach(function () {
 		$.type(this.subject.input, "ite");
@@ -43,7 +44,7 @@ describe("awesomplete.select", function () {
 	function itSelects(expectedTxt) {
 		it("fires awesomplete-select event", function () {
 			var handler = $.spyOnEvent(this.subject.input, "awesomplete-select");
-			this.subject.select(this.selectArgument);
+			this.subject.select(this.selectArgument, this.mockEvt);
 
 			expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({ text: expectedTxt }));
 		});
@@ -54,20 +55,20 @@ describe("awesomplete.select", function () {
 			});
 
 			it("changes the input value", function () {
-				this.subject.select(this.selectArgument);
+				this.subject.select(this.selectArgument, this.mockEvt);
 				expect(this.subject.input.value).toBe(expectedTxt);
 			});
 
 			it("closes completer", function () {
 				spyOn(this.subject, "close");
-				this.subject.select(this.selectArgument);
+				this.subject.select(this.selectArgument, this.mockEvt);
 
 				expect(this.subject.close).toHaveBeenCalled();
 			});
 
 			it("fires awesomplete-selectcomplete event", function () {
 				var handler = $.spyOnEvent(this.subject.input, "awesomplete-selectcomplete");
-				this.subject.select(this.selectArgument);
+				this.subject.select(this.selectArgument, this.mockEvt);
 
 				expect(handler).toHaveBeenCalled();
 			});
@@ -79,20 +80,20 @@ describe("awesomplete.select", function () {
 			});
 
 			it("does not change the input value", function () {
-				this.subject.select(this.selectArgument);
+				this.subject.select(this.selectArgument, this.mockEvt);
 				expect(this.subject.input.value).toBe("ite");
 			});
 
 			it("does not close completer", function () {
 				spyOn(this.subject, "close");
-				this.subject.select(this.selectArgument);
+				this.subject.select(this.selectArgument, this.mockEvt);
 
 				expect(this.subject.close).not.toHaveBeenCalled();
 			});
 
 			it("does not fire awesomplete-selectcomplete event", function () {
 				var handler = $.spyOnEvent(this.subject.input, "awesomplete-selectcomplete");
-				this.subject.select(this.selectArgument);
+				this.subject.select(this.selectArgument, this.mockEvt);
 
 				expect(handler).not.toHaveBeenCalled();
 			});
