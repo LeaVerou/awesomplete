@@ -24,12 +24,10 @@ var shared = {
   expectSelectingFirstSuggestionToWorkWith: function(val){
     return function(){
 			var li;
-      var evt;
 			shared.awesompleter.input.value = val;
 			shared.awesompleter.evaluate();
 			li = shared.awesompleter.ul.children[0];
-      evt = {originalTarget: li};
-			shared.awesompleter.select(li, evt);
+			shared.awesompleter.select(li);
 			expect(shared.awesompleter.input.value).toBe(li.textContent);
 		}
   },
