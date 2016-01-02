@@ -9,5 +9,6 @@ ratings:
 exclude_paths:
 - "**.min.js"
 - karma*.conf.js
+- prism/**/*
 - test/**/*
 - .*
