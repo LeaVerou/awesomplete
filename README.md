@@ -107,6 +107,12 @@ describe("A fact", function(){
 
 See existing tests in ```test``` directory as an example. More expectations and examples on how to use Jasmine can be found on the official [documentation](http://jasmine.github.io/2.2/introduction.html).
 
+**Build minified version**
+
+```
+gulp
+```
+
 ## License
 
 Awesomplete is released under the MIT License. See [LICENSE][1] file for
