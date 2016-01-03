@@ -47,6 +47,15 @@
 <p>Before you try anything, you need to include <code>awesomplete.css</code> and <code>awesomplete.js</code> in your page, via the usual <code>&lt;link rel="stylesheet" href="awesomplete.css" /></code> and <code>&lt;script src="awesomplete.js" async>&lt;/script></code> tags.</p>
 
 <p>For the autocomplete, you just need an <code>&lt;input></code> text field (might work on <code>&lt;textarea></code> and elements with <code>contentEditable</code>, but that hasn’t been tested). Add <code>class="awesomplete"</code> for it to be <strong>automatically processed</strong> (you can still specify many options via HTML attributes), otherwise you can instantiate with a few lines of JS code, which allow for more customization.</p>
+
+<p><strong>Note:</strong> By default, Awesomplete will wrap your input in a div with a class of 'awesomplete'. If other elements need to stay a sibling of your input, such as a label, you can simply place the input in an element with the that class beforehand, and Awesomplete will pick it up:</p>
+
+<pre class="language-markup"><code>&lt;div class="awesomplete">
+  &lt;input class="awesomplete" 
+    data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" />
+  &lt;label>My label&lt;/label>
+&lt;/div></code></pre>
+
 <p>There are many ways <strong>to link an input to a list of suggestions</strong>. The simple example above could have also been made with the following markup, which provides a nice native fallback in case the script doesn’t load:</p>
 
 <pre class="language-markup"><code>&lt;input class="awesomplete" list="mylist" />
@@ -175,6 +184,30 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 				<td>Maximum number of suggestions to display.</td>
 				<td>Number</td>
 				<td>10</td>
+			</tr>
+			<tr>
+				<td><code>containerClass</code></td>
+				<td><code>data-containerclass</code></td>
+				<td>The class of the element wrapping the input. If no element with is class is found wrapping the input, one will be created.</td>
+				<td>String</td>
+				<td>"awesomplete"</td>
+			</tr>
+			<tr>
+				<td><code>ulClass</code></td>
+				<td><code>data-ulclass</code></td>
+        <td>The class that will be attached to the results <code>ul</code></td>
+        <td><ul>
+          <li>String</li>
+          <li>Null</li>
+        </ul></td>
+				<td>null</td>
+			</tr>
+			<tr>
+				<td><code>statusClass</code></td>
+				<td><code>data-statusclass</code></td>
+				<td>The class that will be attached to the status class</td>
+				<td>String</td>
+				<td>"visually-hihdden"</td>
 			</tr>
 			<tr>
 				<td><code>autoFirst</code></td>
