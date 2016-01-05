@@ -219,6 +219,12 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 				<td>Sorted by length first, order second.</td>
 			</tr>
 			<tr>
+				<td><code>initialStatus</code></td>
+        <td>Controls how the hidden status line is populated when results are returned</td>
+        <td>Function that takes one parameter, the number of items currently in the results box, and is responsible for generating the string which will be read to users of assistive technology when results are returned after a search. Can be used for localisation purposes</td>
+        <td>Generates a string with the number of presented results and instructions on using the key arrows to navigate the results</td>
+			</tr>
+			<tr>
 				<td><code>item</code></td>
 				<td>Controls how list items are generated.</td>
 				<td>Function that takes two parameters, the first one being the suggestion text and the second one the user’s input and returns a list item.</td>
