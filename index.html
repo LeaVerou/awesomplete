@@ -4,7 +4,7 @@
 
 <meta charset="utf-8" />
 <title>Awesomplete: Ultra lightweight, highly customizable, simple autocomplete, by Lea Verou</title>
-<link rel="stylesheet" href="https://leaverou.github.io/prism/themes/prism.css" />
+<link rel="stylesheet" href="prism/prism.css" />
 <link rel="stylesheet" href="awesomplete.css" />
 <link rel="stylesheet" href="style.css" />
 
@@ -382,6 +382,26 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	}
 });</script></code></pre>
 	</section>
+
+	<section id="ajax-example">
+	<h2>Ajax example <small>(restcountries.eu api)</small></h2>
+	<label class="">Select French speaking country <input type="text"></label>
+
+	</div>
+	<pre class="language-javascript"><code>		<script>
+		var ajax
+		ajax = new XMLHttpRequest()
+		ajax.open("GET", "https://restcountries.eu/rest/v1/lang/fr", true)
+		ajax.onload = function() {
+			{
+					var list = JSON.parse(ajax.responseText).map(function(i) {
+					return i.name;
+					})
+					new Awesomplete(document.querySelector("#ajax-example input"),{list:list});
+		}
+	}
+		ajax.send();
+	</script></code></pre>
 </section>
 
 <section id="download">
@@ -392,6 +412,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 		<li><a href="https://github.com/LeaVerou/awesomplete">Fork me on Github</a></li>
 		<li><a href="https://github.com/LeaVerou/awesomplete/issues/new">File a bug</a> </li>
 		<li><a href="https://github.com/LeaVerou/awesomplete/issues/new">Suggest a feature</a> </li>
+		<li><a href="https://github.com/LeaVerou/awesomplete/blob/gh-pages/LICENSE">License: MIT license</a></li>
 	</ul>
 
 	<p><strong>Pull requests are very welcome</strong>, as long as you maintain the code style and ask before adding tons of LOCs to the codebase!</p>
@@ -400,7 +421,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 <footer>Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> &bull; <a href="http://lea.verou.me/2015/02/awesomplete-2kb-autocomplete-with-zero-dependencies">Read the blog post</a> &bull; <a href="http://shop.oreilly.com/product/0636920031123.do">Buy my book!</a> </footer>
 
 
-<script src="https://leaverou.github.io/prism/prism.js" defer></script>
+<script src="prism/prism.js" defer></script>
 
 <a href="https://twitter.com/share" class="twitter-share-button" data-via="LeaVerou" data-size="large">Tweet</a>
 <script async src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=leaveroume" id="_carbonads_js"></script>
