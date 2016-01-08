@@ -96,6 +96,7 @@ var _ = function (input, o) {
 			}
 
 			if (li && evt.button === 0) {  // Only select on left click
+				evt.preventDefault();
 				me.select(li, evt);
 			}
 		}
