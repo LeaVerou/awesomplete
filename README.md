@@ -1,5 +1,7 @@
 # Awesomplete
 [![Build Status](https://img.shields.io/travis/LeaVerou/awesomplete/gh-pages.svg)](https://travis-ci.org/LeaVerou/awesomplete)
+[![Code Climate](https://img.shields.io/codeclimate/github/LeaVerou/awesomplete.svg)](https://codeclimate.com/github/LeaVerou/awesomplete)
+[![Test Coverage](https://img.shields.io/codeclimate/coverage/github/LeaVerou/awesomplete.svg)](https://codeclimate.com/github/LeaVerou/awesomplete/coverage)
 
 http://leaverou.github.io/awesomplete/
 
@@ -104,6 +106,12 @@ describe("A fact", function(){
 ```
 
 See existing tests in ```test``` directory as an example. More expectations and examples on how to use Jasmine can be found on the official [documentation](http://jasmine.github.io/2.2/introduction.html).
+
+**Build minified version**
+
+```
+gulp
+```
 
 ## License
 

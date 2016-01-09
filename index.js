@@ -1,3 +1,4 @@
+/* global Awesomplete, $:true, $$:true */
 $ = Awesomplete.$;
 $$ = Awesomplete.$$;
 
