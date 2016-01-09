@@ -197,6 +197,7 @@ _.prototype = {
 			var prevented;
 
 			$.fire(this.input, "awesomplete-select", {
+				selected: selected,
 				text: selected.textContent,
 				preventDefault: function () {
 					prevented = true;
