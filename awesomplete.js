@@ -208,7 +208,7 @@ _.prototype = {
 			});
 
 			if (!prevented) {
-				this.replace(selected);
+				this.replace(selected.textContent, selected);
 				this.close();
 				$.fire(this.input, "awesomplete-selectcomplete");
 			}
@@ -282,12 +282,12 @@ _.RENDER_OBJ = function (obj, input) {
 	});
 };
 
-_.REPLACE_STRING = function (li) {
-	this.input.value = li.textContent;
+_.REPLACE_STRING = function (text, li) {
+	this.input.value = text;
 };
 
-_.REPLACE_OBJ = function (li) {
-	this.input.value = li.textContent;
+_.REPLACE_OBJ = function (text, li) {
+	this.input.value = text;
 	this.hidden.value = li.getAttribute("data-id");
 };
 

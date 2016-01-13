@@ -241,12 +241,12 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 				</td>
 				<td>
 					For simple input:
-					<pre class="language-javascript"><code>function (li) {
-	this.input.value = li.textContent;
+					<pre class="language-javascript"><code>function (text, li) {
+	this.input.value = text;
 }</code></pre>
 					For complex input (strings mapped to ids):
-					<pre class="language-javascript"><code>function (li) {
-	this.input.value = li.textContent;
+					<pre class="language-javascript"><code>function (text, li) {
+	this.input.value = text;
 	this.hidden.value = li.getAttribute('data-id');
 }</code></pre>
 				</td>
