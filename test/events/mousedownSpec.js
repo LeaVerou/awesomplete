@@ -10,7 +10,6 @@ describe("mousedown event", function () {
 		this.subject.input.focus();
 		this.subject.open();
 		$.type(this.subject.input, "ite");
-		this.subject.next();
 
 		spyOn(this.subject, "select");
 	});
@@ -33,6 +32,7 @@ describe("mousedown event", function () {
 			it("selects item", function () {
 				var event = $.fire(this.target, "mousedown", { button: 0 });
 				expect(this.subject.select).toHaveBeenCalledWith(this.li, event);
+				expect(event.defaultPrevented).toBe(true);
 			});
 		});
 
@@ -50,6 +50,7 @@ describe("mousedown event", function () {
 		it("selects item", function () {
 			var event = $.fire(this.target, "mousedown", { button: 0 });
 			expect(this.subject.select).toHaveBeenCalledWith(this.li, event);
+			expect(event.defaultPrevented).toBe(true);
 		});
 	});
 });
