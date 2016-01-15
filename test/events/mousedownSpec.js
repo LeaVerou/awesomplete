@@ -31,8 +31,8 @@ describe("mousedown event", function () {
 
 		describe("on left click", function () {
 			it("selects item", function () {
-				var event = $.fire(this.target, "mousedown", { button: 0 });
-				expect(this.subject.select).toHaveBeenCalledWith(this.li, event);
+				$.fire(this.target, "mousedown", { button: 0 });
+				expect(this.subject.select).toHaveBeenCalledWith(this.li, this.target);
 			});
 		});
 
@@ -48,8 +48,8 @@ describe("mousedown event", function () {
 		def("target", function () { return $("mark", this.li) });
 
 		it("selects item", function () {
-			var event = $.fire(this.target, "mousedown", { button: 0 });
-			expect(this.subject.select).toHaveBeenCalledWith(this.li, event);
+			$.fire(this.target, "mousedown", { button: 0 });
+			expect(this.subject.select).toHaveBeenCalledWith(this.li, this.target);
 		});
 	});
 });

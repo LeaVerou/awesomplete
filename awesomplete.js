@@ -87,7 +87,7 @@ var _ = function (input, o) {
 	$.bind(this.input.form, {"submit": this.close.bind(this)});
 
 	$.bind(this.ul, {"mousedown": function(evt) {
-		var li = evt.target;
+		var li = target = evt.target;
 
 		if (li !== this) {
 
@@ -96,7 +96,7 @@ var _ = function (input, o) {
 			}
 
 			if (li && evt.button === 0) {  // Only select on left click
-				me.select(li, evt);
+				me.select(li, target);
 			}
 		}
 	}});
@@ -190,7 +190,7 @@ _.prototype = {
 		$.fire(this.input, "awesomplete-highlight");
 	},
 
-	select: function (selected, originalEvent) {
+	select: function (selected, target) {
 		selected = selected || this.ul.children[this.index];
 
 		if (selected) {
@@ -201,7 +201,7 @@ _.prototype = {
 				preventDefault: function () {
 					prevented = true;
 				},
-				originalEvent: originalEvent
+				target: target
 			});
 
 			if (!prevented) {
