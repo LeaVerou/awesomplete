@@ -192,6 +192,7 @@ _.prototype = {
 
 	select: function (selected, target) {
 		selected = selected || this.ul.children[this.index];
+		target = target || selected;
 
 		if (selected) {
 			var prevented;
