@@ -87,8 +87,7 @@ var _ = function (input, o) {
 	$.bind(this.input.form, {"submit": this.close.bind(this)});
 
 	$.bind(this.ul, {"mousedown": function(evt) {
-		var target = evt.target;
-		var li = target;
+		var li = evt.target;
 
 		if (li !== this) {
 
@@ -97,7 +96,7 @@ var _ = function (input, o) {
 			}
 
 			if (li && evt.button === 0) {  // Only select on left click
-				me.select(li, target);
+				me.select(li, evt.target);
 			}
 		}
 	}});
