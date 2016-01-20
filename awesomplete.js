@@ -190,7 +190,7 @@ _.prototype = {
 		$.fire(this.input, "awesomplete-highlight");
 	},
 
-	select: function (selected, target) {
+	select: function (selected, origin) {
 		selected = selected || this.ul.children[this.index];
 
 		if (selected) {
@@ -201,7 +201,7 @@ _.prototype = {
 				preventDefault: function () {
 					prevented = true;
 				},
-				target: target || selected
+				origin: origin || selected
 			});
 
 			if (!prevented) {
