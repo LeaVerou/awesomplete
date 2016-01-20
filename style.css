@@ -268,16 +268,16 @@ td {
 		display: block;
 	}
 
-.dropdown-input {
+#combobox .dropdown-input {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-.dropdown-btn {
+#combobox .dropdown-btn {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.caret {
+#combobox .caret {
     display: inline-block;
     width: 0;
     height: 0;
