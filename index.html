@@ -386,6 +386,28 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	</script></code></pre>
 </section>
 
+<script src="https://leaverou.github.io/awesomplete/awesomplete.js"></script>
+<section id="combobox">
+  <h2>Combobox dropdown</h2>
+  <label>Type or click dropdown: <input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" class="dropdown-input" /><button class="dropdown-btn" type="button"><span class="caret"></span></button></label>
+  <pre class="language-markup"><code>&lt;input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" class="dropdown-input" /></code></pre>
+  <pre class="language-javascript"><code><script>var comboplete = new Awesomplete(Awesomplete.$('input.dropdown-input'), {
+  minChars: 0,
+});
+Awesomplete.$('.dropdown-btn').addEventListener("click", function() {
+  if (comboplete.ul.childNodes.length === 0) {
+    comboplete.minChars = 0;
+    comboplete.evaluate();
+  }
+  else if (comboplete.ul.hasAttribute('hidden')) {
+    comboplete.open();
+  }
+  else {
+    comboplete.close();
+  }
+});</script></code></pre>
+  </section>
+
 <section id="download">
 	<h1>Download!</h1>
 
