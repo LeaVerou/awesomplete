@@ -161,19 +161,6 @@ _.prototype = {
 		$.fire(this.input, "awesomplete-open");
 	},
 
-	toggle: function () {
-		if (this.ul.childNodes.length == 0) {
-			this.minChars = 0;
-			this.evaluate();
-		}
-		else if (this.ul.hasAttribute('hidden')) {
-			this.open();
-		}
-		else {
-			this.close();
-		}
-	},
-
 	next: function () {
 		var count = this.ul.children.length;
 
