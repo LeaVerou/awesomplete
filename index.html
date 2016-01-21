@@ -384,6 +384,54 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	}
 		ajax.send();
 	</script></code></pre>
+	</section>
+
+	<section id="array-of-objects">
+	<h2>Working with an array of objects</h2>
+	<label class="">Search for one of Lea's projects: <input type="text"></label>
+	
+	<pre class="language-javascript"><code>		<script>
+	var arrOfObj = document.querySelector('#array-of-objects input');
+
+	new Awesomplete(arrOfObj,{
+	 list: [
+		{
+			"name": "Awesomplete",
+			"url": "https://leaverou.github.io/awesomplete/"
+		},
+		{
+			"name": "Bliss",
+			"url": "https://blissfuljs.com"
+		},
+		{
+			"name": "Stretchy",
+			"url": "https://leaverou.github.io/stretchy/"
+		},
+		{
+			"name": "chainvas",
+			"url": "https://leaverou.github.com/chainvas"
+		}
+	 ],
+		filter: function(text, input) {
+			return Awesomplete.FILTER_CONTAINS(text.name, input)
+		},
+	 item: function(item, input) {
+		var html = item.name.replace(RegExp(Awesomplete.$.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>") +
+		           " (" + item.url + ")";
+		return Awesomplete.$.create("li", {
+			innerHTML: html,
+			"data-url": item.url,
+			"aria-selected": "false"
+		})
+	 }
+	});
+
+	arrOfObj.addEventListener('awesomplete-selectcomplete', function(e){
+   // Do something with e.originalTarget.getAttribute('data-*')
+	 console.log(e.originalTarget.getAttribute('data-url'));
+	});
+	</script></code></pre>
+	</section>
 </section>
 
 <script src="https://leaverou.github.io/awesomplete/awesomplete.js"></script>

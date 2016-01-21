@@ -70,8 +70,9 @@ var _ = function (input, o) {
 			// Enter / Esc / Up / Down
 			if(me.opened) {
 				if (c === 13 && me.selected) { // Enter
+					var li = me.ul.children[me.index];
 					evt.preventDefault();
-					me.select();
+					me.select(li, evt);
 				}
 				else if (c === 27) { // Esc
 					me.close();
@@ -199,16 +200,18 @@ _.prototype = {
 
 			$.fire(this.input, "awesomplete-select", {
 				text: selected.textContent,
+        originalTarget: selected,
 				preventDefault: function () {
 					prevented = true;
-				},
-				originalEvent: originalEvent
+				}
 			});
 
 			if (!prevented) {
 				this.replace(selected.textContent);
 				this.close();
-				$.fire(this.input, "awesomplete-selectcomplete");
+				$.fire(this.input, "awesomplete-selectcomplete", {
+          originalTarget: selected
+				});
 			}
 		}
 	},
