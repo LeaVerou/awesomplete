@@ -31,7 +31,7 @@ describe("mousedown event", function () {
 		describe("on left click", function () {
 			it("selects item", function () {
 				var event = $.fire(this.target, "mousedown", { button: 0 });
-				expect(this.subject.select).toHaveBeenCalledWith(this.li, event);
+				expect(this.subject.select).toHaveBeenCalledWith(this.li, this.target);
 				expect(event.defaultPrevented).toBe(true);
 			});
 		});
@@ -49,7 +49,7 @@ describe("mousedown event", function () {
 
 		it("selects item", function () {
 			var event = $.fire(this.target, "mousedown", { button: 0 });
-			expect(this.subject.select).toHaveBeenCalledWith(this.li, event);
+			expect(this.subject.select).toHaveBeenCalledWith(this.li, this.target);
 			expect(event.defaultPrevented).toBe(true);
 		});
 	});
