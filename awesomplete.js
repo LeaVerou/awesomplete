@@ -141,7 +141,7 @@ _.prototype = {
 	},
 
 	get opened() {
-		return this.ul && this.ul.getAttribute("hidden") == null;
+		return !this.ul.hasAttribute("hidden");
 	},
 
 	close: function () {
