@@ -195,17 +195,12 @@ _.prototype = {
 		selected = selected || this.ul.children[this.index];
 
 		if (selected) {
-			var prevented;
-
-			$.fire(this.input, "awesomplete-select", {
+			var allowed = $.fire(this.input, "awesomplete-select", {
 				text: selected.textContent,
-				preventDefault: function () {
-					prevented = true;
-				},
 				origin: origin || selected
 			});
 
-			if (!prevented) {
+			if (allowed) {
 				this.replace(selected.textContent);
 				this.close();
 				$.fire(this.input, "awesomplete-selectcomplete");
@@ -349,7 +344,7 @@ $.fire = function(target, type, properties) {
 		evt[j] = properties[j];
 	}
 
-	target.dispatchEvent(evt);
+	return target.dispatchEvent(evt);
 };
 
 $.regExpEscape = function (s) {
