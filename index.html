@@ -115,6 +115,16 @@ new Awesomplete(input, {
 	list: ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"]
 });</code></pre>
 
+<p>We can also use an <strong>array of arrays</strong> to map strings to ids.</p>
+
+<p>This will create a hidden input with the same name as the original input, removing it from the original:</p>
+
+<pre class="language-markup"><code>&lt;input id="myinput" name="lang" /></code></pre>
+	<pre class="language-javascript"><code>var input = document.getElementById("myinput");
+new Awesomplete(input, {
+	list: [[1, "Ada"], [2, "Java"], [3, "JavaScript"], [4, "Brainfuck"], [5, "LOLCODE"], [6, "Node.js"], [7, "Ruby on Rails"]]
+});</code></pre>
+
 <p>We can even set it (or override it) later and it will just work:</p>
 
 <pre class="language-markup"><code>&lt;input id="myinput" /></code></pre>
@@ -227,11 +237,19 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 			<tr>
 				<td><code>replace</code></td>
 				<td>Controls how the user’s selection replaces the user’s input. For example, this is useful if you want the selection to only partially replace the user’s input.</td>
-				<td>Function that takes one parameter, the text of the selected option, and is responsible for replacing the current input value with it.
+				<td>Function that takes one parameter, the li element of the selected option, and is responsible for replacing the current input value with it.
 				</td>
-				<td><pre class="language-javascript"><code>function (text) {
+				<td>
+					For simple input:
+					<pre class="language-javascript"><code>function (text, li) {
 	this.input.value = text;
-}</code></pre></td>
+}</code></pre>
+					For complex input (strings mapped to ids):
+					<pre class="language-javascript"><code>function (text, li) {
+	this.input.value = text;
+	this.hidden.value = li.getAttribute('data-id');
+}</code></pre>
+				</td>
 			</tr>
 		</tbody>
 	</table>

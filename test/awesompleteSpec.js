@@ -2,9 +2,10 @@ describe("awesomplete",function(){
 
 	var awesompleter;
 	var dummyInput;
+	var dummyBody;
 
 	beforeEach(function(){
-		var dummyBody = document.createElement('body');
+		dummyBody = document.createElement('body');
 		dummyInput = document.createElement('input');
 		dummyBody.appendChild(dummyInput);
 		awesompleter = new Awesomplete(dummyInput);
@@ -79,6 +80,20 @@ describe("awesomplete",function(){
 		it("should autocomplete when a suggestion is selected", shared.expectSelectingFirstSuggestionToWorkWith('test'));
 
 		it("should autocomplete the first suggestion when autoFirst is true", shared.expectAutoFirstToWorkWith('test'));
+	})
+
+	describe("key value object",function(){
+		it("should support key value pairs", function(){
+			var dummyBody = document.createElement('body');
+			dummyInput = document.createElement('input');
+			dummyBody.appendChild(dummyInput);
+			awesompleter = new Awesomplete(dummyInput,{list:[[0,'Test0'],[1,'Test1']]});
+			awesompleter.input.value = 'Tes';
+			awesompleter.evaluate();
+			awesompleter.select(dummyBody.querySelector('[data-id="1"]'));
+			expect(awesompleter.hidden.value).toBe('1');
+			expect(awesompleter.input.value).toBe('Test1');
+		})
 	})
 });
 
