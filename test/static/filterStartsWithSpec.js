@@ -2,10 +2,6 @@ describe("Awesomplete.FILTER_STARTSWITH", function () {
 
 	subject(function () { return Awesomplete.FILTER_STARTSWITH });
 
-	it("is a function", function () {
-		expect(this.subject).toEqual(jasmine.any(Function));
-	});
-
 	describe("search in plain string", function () {
 		it("matches at the start", function () {
 			expect(this.subject("Hello world", "Hello")).toBe(true);

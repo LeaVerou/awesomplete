@@ -41,7 +41,7 @@ describe("Constructor options", function () {
 		def("options", function () {
 			return {
 				minChars: 3,
-				maxItems: 7,
+				maxItems: 9,
 				autoFirst: true,
 				filter: $.noop,
 				sort: $.noop,
@@ -52,7 +52,7 @@ describe("Constructor options", function () {
 
 		it("overrides simple default options", function () {
 			expect(this.subject.minChars).toBe(3);
-			expect(this.subject.maxItems).toBe(7);
+			expect(this.subject.maxItems).toBe(9);
 			expect(this.subject.autoFirst).toBe(true);
 		});
 

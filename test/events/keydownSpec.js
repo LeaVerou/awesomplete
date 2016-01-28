@@ -7,8 +7,6 @@ describe("keydown event", function () {
 	});
 
 	beforeEach(function () {
-		this.subject.open();
-		this.subject.input.focus();
 		$.type(this.subject.input, "ite");
 	});
 

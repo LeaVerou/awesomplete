@@ -6,7 +6,6 @@ describe("awesomplete.previous", function () {
 		return new Awesomplete("#plain", { list: ["item1", "item2", "item3"] });
 	});
 
-	def("firstIndex", function () { return 0 });
 	def("lastIndex", function () { return this.subject.ul.children.length - 1 });
 
 	describe("without any items found", function () {
@@ -17,7 +16,7 @@ describe("awesomplete.previous", function () {
 
 		it("does not select any item", function () {
 			this.subject.previous();
-			expect(this.subject.selected).toBe(false);
+			expect(this.subject.index).toBe(-1);
 		});
 	});
 
@@ -42,15 +41,15 @@ describe("awesomplete.previous", function () {
 			});
 
 			it("selects the first item", function () {
-				this.subject.goto(this.firstIndex + 1);
+				this.subject.goto(1);
 				this.subject.previous();
-				expect(this.subject.index).toBe(this.firstIndex);
+				expect(this.subject.index).toBe(0);
 			});
 
 			it("selects no item after reaching the start", function () {
-				this.subject.goto(this.firstIndex);
+				this.subject.goto(0);
 				this.subject.previous();
-				expect(this.subject.selected).toBe(false);
+				expect(this.subject.index).toBe(-1);
 			});
 		});
 	});

@@ -6,7 +6,6 @@ describe("awesomplete.select", function () {
 		return new Awesomplete("#plain", { list: ["item1", "item2", "item3"] });
 	});
 
-	def("firstIndex", function () { return 0 });
 	def("lastIndex", function () { return this.subject.ul.children.length - 1 });
 	def("lastLi", function () { return this.subject.ul.children[this.lastIndex] });
 
@@ -25,7 +24,7 @@ describe("awesomplete.select", function () {
 
 		describe("and current item", function () {
 			beforeEach(function () {
-				this.subject.goto(this.firstIndex);
+				this.subject.goto(0);
 			});
 
 			itSelects("item1");
@@ -45,7 +44,12 @@ describe("awesomplete.select", function () {
 			var handler = $.spyOnEvent(this.subject.input, "awesomplete-select");
 			this.subject.select(this.selectArgument);
 
-			expect(handler).toHaveBeenCalledWith(jasmine.objectContaining({ text: expectedTxt }));
+			expect(handler).toHaveBeenCalledWith(
+				jasmine.objectContaining({
+					text: expectedTxt,
+					origin: this.selectArgument || this.subject.ul.children[0]
+				})
+			);
 		});
 
 		describe("and awesomplete-select event was not prevented", function () {

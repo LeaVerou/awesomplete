@@ -2,10 +2,6 @@ describe("Awesomplete.SORT_BYLENGTH", function () {
 
 	subject(function () { return Awesomplete.SORT_BYLENGTH });
 
-	it("is a function", function () {
-		expect(this.subject).toEqual(jasmine.any(Function));
-	});
-
 	describe("with strings of different length", function () {
 		it("returns negative number if the first string is shorter", function () {
 			expect(this.subject("a", "aa")).toBe(-1);
