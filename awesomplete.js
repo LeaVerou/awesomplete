@@ -18,7 +18,7 @@ var _ = function (input, o) {
 
 	o = o || {};
 
-	configure.call(this, {
+	configure(this, {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
@@ -262,26 +262,26 @@ _.SORT_BYLENGTH = function (a, b) {
 
 // Private functions
 
-function configure(properties, o) {
+function configure(instance, properties, o) {
 	for (var i in properties) {
 		var initial = properties[i],
-		    attrValue = this.input.getAttribute("data-" + i.toLowerCase());
+		    attrValue = instance.input.getAttribute("data-" + i.toLowerCase());
 
 		if (typeof initial === "number") {
-			this[i] = parseInt(attrValue);
+			instance[i] = parseInt(attrValue);
 		}
 		else if (initial === false) { // Boolean options must be false by default anyway
-			this[i] = attrValue !== null;
+			instance[i] = attrValue !== null;
 		}
 		else if (initial instanceof Function) {
-			this[i] = null;
+			instance[i] = null;
 		}
 		else {
-			this[i] = attrValue;
+			instance[i] = attrValue;
 		}
 
-		if (!this[i] && this[i] !== 0) {
-			this[i] = (i in o)? o[i] : initial;
+		if (!instance[i] && instance[i] !== 0) {
+			instance[i] = (i in o)? o[i] : initial;
 		}
 	}
 }
