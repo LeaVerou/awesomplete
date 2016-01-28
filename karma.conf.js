@@ -15,7 +15,6 @@ module.exports = function(config) {
 				pattern: 'test/fixtures/**/*.html',
 				watched: true, included: true, served: true
 			},
-			'test/**/*Shared.js',
 			'test/**/*Spec.js'
 		],
 

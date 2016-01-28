@@ -17,7 +17,7 @@ describe("Awesomplete list", function () {
 		});
 
 		it("assigns from comma separated list", function () {
-			this.subject.list = "From,Inline,List";
+			this.subject.list = "From, Inline, List";
 			expect(this.subject._list).toEqual([ "From", "Inline", "List" ]);
 		});
 
@@ -62,7 +62,7 @@ describe("Awesomplete list", function () {
 		});
 
 		it("assigns from comma separated list", function () {
-			this.options = { list: "From,Inline,List" };
+			this.options = { list: "From, Inline, List" };
 			expect(this.subject._list).toEqual([ "From", "Inline", "List" ]);
 		});
 

@@ -28,7 +28,7 @@ describe("Html modifications", function () {
 			expect(this.subject.ul.tagName).toBe("UL");
 		});
 
-		it("places list inside container", function () {
+		it("puts list inside container", function () {
 			expect(this.subject.ul.parentNode).toBe(this.subject.container);
 		});
 
