@@ -24,16 +24,8 @@ var _ = function (input, o) {
 		autoFirst: false,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
-		item: function (text, input) {
-			var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
-			return $.create("li", {
-				innerHTML: html,
-				"aria-selected": "false"
-			});
-		},
-		replace: function (text) {
-			this.input.value = text;
-		}
+		item: _.ITEM,
+		replace: _.REPLACE
 	}, o);
 
 	this.index = -1;
@@ -258,6 +250,18 @@ _.SORT_BYLENGTH = function (a, b) {
 	}
 
 	return a < b? -1 : 1;
+};
+
+_.ITEM = function (text, input) {
+	var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
+	return $.create("li", {
+		innerHTML: html,
+		"aria-selected": "false"
+	});
+};
+
+_.REPLACE = function (text) {
+	this.input.value = text;
 };
 
 // Private functions
