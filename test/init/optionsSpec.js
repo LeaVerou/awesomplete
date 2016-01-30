@@ -27,12 +27,12 @@ describe("Constructor options", function () {
 			expect(this.subject.sort).toBe(Awesomplete.SORT_BYLENGTH);
 		});
 
-		it("generates each completer item with built-in function", function () {
-			expect(this.subject.item).toEqual(jasmine.any(Function));
+		it("creates item with ITEM", function () {
+			expect(this.subject.item).toEqual(Awesomplete.ITEM);
 		});
 
-		it("mirrors found item into input with built-in function", function () {
-			expect(this.subject.replace).toEqual(jasmine.any(Function));
+		it("replaces input value with REPLACE", function () {
+			expect(this.subject.replace).toEqual(Awesomplete.REPLACE);
 		});
 	});
 
