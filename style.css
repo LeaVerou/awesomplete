@@ -273,8 +273,10 @@ td {
   border-bottom-right-radius: 0;
 }
 #combobox .dropdown-btn {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+	vertical-align: top;
+	height: 36.5px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
 }
 
 #combobox .caret {
