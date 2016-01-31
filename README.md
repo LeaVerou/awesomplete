@@ -81,7 +81,7 @@ Run tests once and exit:
 npm test
 ```
 
-Continious mode. Whenever any source or test file changes, tests will run automatically:
+Continuous mode. Whenever any source or test file changes, tests will run automatically:
 ```
 karma start
 ```
