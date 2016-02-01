@@ -189,6 +189,7 @@ _.prototype = {
 		if (selected) {
 			var allowed = $.fire(this.input, "awesomplete-select", {
 				text: selected.textContent,
+				data: this._suggestions[elementSiblingIndex(selected)],
 				origin: origin || selected
 			});
 
@@ -209,15 +210,15 @@ _.prototype = {
 			// Populate list with options that match
 			this.ul.innerHTML = "";
 
-			this._list
+			this._suggestions = this._list
 				.filter(function(item) {
 					return me.filter(item, value);
 				})
 				.sort(this.sort)
-				.every(function(text, i) {
-					me.ul.appendChild(me.item(text, value));
+				.slice(0, this.maxItems);
 
-					return i < me.maxItems - 1;
+			this._suggestions.forEach(function(text) {
+					me.ul.appendChild(me.item(text, value));
 				});
 
 			if (this.ul.children.length === 0) {
@@ -288,6 +289,12 @@ function configure(instance, properties, o) {
 			instance[i] = (i in o)? o[i] : initial;
 		}
 	}
+}
+
+function elementSiblingIndex(el) {
+	/* eslint-disable no-cond-assign */
+	for (var i = 0; el = el.previousElementSibling; i++);
+	return i;
 }
 
 // Helpers
