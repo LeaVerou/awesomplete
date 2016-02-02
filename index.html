@@ -335,17 +335,17 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	<pre class="language-markup"><code>&lt;input type="email" /></code></pre>
 	<pre class="language-javascript"><code><script>new Awesomplete($('input[type="email"]'), {
 	list: ["@aol.com", "@att.net", "@comcast.net", "@facebook.com", "@gmail.com", "@gmx.com", "@googlemail.com", "@google.com", "@hotmail.com", "@hotmail.co.uk", "@mac.com", "@me.com", "@mail.com", "@msn.com", "@live.com", "@sbcglobal.net", "@verizon.net", "@yahoo.com", "@yahoo.co.uk"],
-	item: function(text, input){
+	item: function(text, input) {
 		var newText = input.slice(0, input.indexOf("@")) + text;
 
 		return Awesomplete.$.create("li", {
-		    innerHTML: newText.replace(RegExp(input.trim(), "gi"), "<mark>$&</mark>"),
-		    "aria-selected": "false"
+			innerHTML: newText.replace(RegExp(input.trim(), "gi"), "<mark>$&</mark>"),
+			"aria-selected": "false"
 		});
-    },
-	filter: function(text, input){
+	},
+	filter: function(text, input) {
 		return RegExp("^" + Awesomplete.$.regExpEscape(input.replace(/^.+?(?=@)/, ''), "i")).test(text);
-    }
+	}
 });</script></code></pre>
 	</section>
 
@@ -368,44 +368,35 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	<section id="ajax-example">
 	<h2>Ajax example <small>(restcountries.eu api)</small></h2>
 	<label class="">Select French speaking country <input type="text"></label>
+	<pre class="language-javascript"><code><script>var ajax = new XMLHttpRequest();
+ajax.open("GET", "https://restcountries.eu/rest/v1/lang/fr", true);
+ajax.onload = function() {
+	var list = JSON.parse(ajax.responseText).map(function(i) { return i.name; });
+	new Awesomplete(document.querySelector("#ajax-example input"),{ list: list });
+};
+ajax.send();</script></code></pre>
+	</section>
 
-	</div>
-	<pre class="language-javascript"><code>		<script>
-		var ajax
-		ajax = new XMLHttpRequest()
-		ajax.open("GET", "https://restcountries.eu/rest/v1/lang/fr", true)
-		ajax.onload = function() {
-			{
-					var list = JSON.parse(ajax.responseText).map(function(i) {
-					return i.name;
-					})
-					new Awesomplete(document.querySelector("#ajax-example input"),{list:list});
-		}
-	}
-		ajax.send();
-	</script></code></pre>
-</section>
-
-<section id="combobox">
-  <h2>Combobox dropdown</h2>
-  <label>Type or click dropdown: <input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" class="dropdown-input" /><button class="dropdown-btn" type="button"><span class="caret"></span></button></label>
-  <pre class="language-markup"><code>&lt;input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" class="dropdown-input" /></code></pre>
-  <pre class="language-javascript"><code><script>var comboplete = new Awesomplete(Awesomplete.$('input.dropdown-input'), {
-  minChars: 0,
+	<section id="combobox">
+	<h2>Combobox dropdown</h2>
+	<label>Type or click dropdown: <input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" class="dropdown-input" /><button class="dropdown-btn" type="button"><span class="caret"></span></button></label>
+	<pre class="language-markup"><code>&lt;input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" class="dropdown-input" /></code></pre>
+	<pre class="language-javascript"><code><script>var comboplete = new Awesomplete(Awesomplete.$('input.dropdown-input'), {
+	minChars: 0,
 });
 Awesomplete.$('.dropdown-btn').addEventListener("click", function() {
-  if (comboplete.ul.childNodes.length === 0) {
-    comboplete.minChars = 0;
-    comboplete.evaluate();
-  }
-  else if (comboplete.ul.hasAttribute('hidden')) {
-    comboplete.open();
-  }
-  else {
-    comboplete.close();
-  }
+	if (comboplete.ul.childNodes.length === 0) {
+		comboplete.minChars = 0;
+		comboplete.evaluate();
+	}
+	else if (comboplete.ul.hasAttribute('hidden')) {
+		comboplete.open();
+	}
+	else {
+		comboplete.close();
+	}
 });</script></code></pre>
-  </section>
+	</section>
 
 <section id="download">
 	<h1>Download!</h1>
