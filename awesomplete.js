@@ -189,7 +189,7 @@ _.prototype = {
 		if (selected) {
 			var allowed = $.fire(this.input, "awesomplete-select", {
 				text: selected.textContent,
-				data: this._suggestions[elementSiblingIndex(selected)],
+				data: this.suggestions[$.siblingIndex(selected)],
 				origin: origin || selected
 			});
 
@@ -210,14 +210,14 @@ _.prototype = {
 			// Populate list with options that match
 			this.ul.innerHTML = "";
 
-			this._suggestions = this._list
+			this.suggestions = this._list
 				.filter(function(item) {
 					return me.filter(item, value);
 				})
 				.sort(this.sort)
 				.slice(0, this.maxItems);
 
-			this._suggestions.forEach(function(text) {
+			this.suggestions.forEach(function(text) {
 					me.ul.appendChild(me.item(text, value));
 				});
 
@@ -291,12 +291,6 @@ function configure(instance, properties, o) {
 	}
 }
 
-function elementSiblingIndex(el) {
-	/* eslint-disable no-cond-assign */
-	for (var i = 0; el = el.previousElementSibling; i++);
-	return i;
-}
-
 // Helpers
 
 var slice = Array.prototype.slice;
@@ -360,7 +354,13 @@ $.fire = function(target, type, properties) {
 
 $.regExpEscape = function (s) {
 	return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
-}
+};
+
+$.siblingIndex = function (el) {
+	/* eslint-disable no-cond-assign */
+	for (var i = 0; el = el.previousElementSibling; i++);
+	return i;
+};
 
 // Initialization
 
