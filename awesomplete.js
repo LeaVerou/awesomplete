@@ -189,6 +189,7 @@ _.prototype = {
 		if (selected) {
 			var allowed = $.fire(this.input, "awesomplete-select", {
 				text: selected.textContent,
+				data: this.suggestions[$.siblingIndex(selected)],
 				origin: origin || selected
 			});
 
@@ -209,15 +210,15 @@ _.prototype = {
 			// Populate list with options that match
 			this.ul.innerHTML = "";
 
-			this._list
+			this.suggestions = this._list
 				.filter(function(item) {
 					return me.filter(item, value);
 				})
 				.sort(this.sort)
-				.every(function(text, i) {
-					me.ul.appendChild(me.item(text, value));
+				.slice(0, this.maxItems);
 
-					return i < me.maxItems - 1;
+			this.suggestions.forEach(function(text) {
+					me.ul.appendChild(me.item(text, value));
 				});
 
 			if (this.ul.children.length === 0) {
@@ -353,7 +354,13 @@ $.fire = function(target, type, properties) {
 
 $.regExpEscape = function (s) {
 	return s.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
-}
+};
+
+$.siblingIndex = function (el) {
+	/* eslint-disable no-cond-assign */
+	for (var i = 0; el = el.previousElementSibling; i++);
+	return i;
+};
 
 // Initialization
 
