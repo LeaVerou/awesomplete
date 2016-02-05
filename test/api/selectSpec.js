@@ -47,7 +47,7 @@ describe("awesomplete.select", function () {
 			expect(handler).toHaveBeenCalledWith(
 				jasmine.objectContaining({
 					text: expectedTxt,
-					data: expectedTxt,
+					data: jasmine.objectContaining({ title: expectedTxt, value: expectedTxt }),
 					origin: this.selectArgument || this.subject.ul.children[0]
 				})
 			);

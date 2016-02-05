@@ -24,6 +24,7 @@ var _ = function (input, o) {
 		autoFirst: false,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
+		data: _.DATA,
 		item: _.ITEM,
 		replace: _.REPLACE
 	}, o);
@@ -184,17 +185,21 @@ _.prototype = {
 	},
 
 	select: function (selected, origin) {
-		selected = selected || this.ul.children[this.index];
+		if (selected) {
+			this.index = $.siblingIndex(selected);
+		} else {
+			selected = this.ul.children[this.index];
+		}
 
 		if (selected) {
 			var allowed = $.fire(this.input, "awesomplete-select", {
 				text: selected.textContent,
-				data: this.suggestions[$.siblingIndex(selected)],
+				data: this.suggestions[this.index],
 				origin: origin || selected
 			});
 
 			if (allowed) {
-				this.replace(selected.textContent);
+				this.replace(this.suggestions[this.index]);
 				this.close();
 				$.fire(this.input, "awesomplete-selectcomplete");
 			}
@@ -211,6 +216,9 @@ _.prototype = {
 			this.ul.innerHTML = "";
 
 			this.suggestions = this._list
+				.map(function(item) {
+					return new Suggestion(me.data(item, value));
+				})
 				.filter(function(item) {
 					return me.filter(item, value);
 				})
@@ -262,10 +270,24 @@ _.ITEM = function (text, input) {
 };
 
 _.REPLACE = function (text) {
-	this.input.value = text;
+	this.input.value = text.value;
+};
+
+_.DATA = function (text, input) {
+	return { title: text, value: text };
 };
 
 // Private functions
+
+// List item data shim for 1.x API backward compatibility
+function Suggestion(data) {
+	this.title = data.title;
+	this.value = data.value;
+}
+Suggestion.prototype = new String;
+Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
+	return this.title;
+};
 
 function configure(instance, properties, o) {
 	for (var i in properties) {
