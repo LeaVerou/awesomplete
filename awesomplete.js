@@ -273,7 +273,7 @@ _.REPLACE = function (text) {
 	this.input.value = text.value;
 };
 
-_.DATA = function (text, input) {
+_.DATA = function (text) {
 	return { title: text, value: text };
 };
 
