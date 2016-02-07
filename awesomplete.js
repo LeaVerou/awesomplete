@@ -183,14 +183,14 @@ _.prototype = {
 		$.fire(this.input, "awesomplete-highlight");
 	},
 
-	select: function (selected, origin) {
+	select: function (selected, originalTarget) {
 		selected = selected || this.ul.children[this.index];
 
 		if (selected) {
 			var allowed = $.fire(this.input, "awesomplete-select", {
 				text: selected.textContent,
 				data: this.suggestions[$.siblingIndex(selected)],
-				origin: origin || selected
+				originalTarget: originalTarget || selected
 			});
 
 			if (allowed) {
