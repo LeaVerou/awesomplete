@@ -273,7 +273,8 @@ _.REPLACE = function (text) {
 	this.input.value = text.value;
 };
 
-_.DATA = function (text) {
+/* eslint-disable no-unused-vars */
+_.DATA = function (text, input) {
 	return { title: text, value: text };
 };
 
