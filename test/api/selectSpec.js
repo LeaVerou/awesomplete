@@ -48,7 +48,7 @@ describe("awesomplete.select", function () {
 				jasmine.objectContaining({
 					text: jasmine.objectContaining({ title: expectedTxt, value: expectedTxt }),
 					data: jasmine.objectContaining({ title: expectedTxt, value: expectedTxt }),
-					origin: this.selectArgument || this.subject.ul.children[0]
+					originalTarget: this.selectArgument || this.subject.ul.children[0]
 				})
 			);
 		});

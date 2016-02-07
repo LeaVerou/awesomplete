@@ -184,7 +184,7 @@ _.prototype = {
 		$.fire(this.input, "awesomplete-highlight");
 	},
 
-	select: function (selected, origin) {
+	select: function (selected, originalTarget) {
 		if (selected) {
 			this.index = $.siblingIndex(selected);
 		} else {
@@ -195,7 +195,7 @@ _.prototype = {
 			var allowed = $.fire(this.input, "awesomplete-select", {
 				text: this.suggestions[this.index],
 				data: this.suggestions[this.index],
-				origin: origin || selected
+				originalTarget: originalTarget || selected
 			});
 
 			if (allowed) {
