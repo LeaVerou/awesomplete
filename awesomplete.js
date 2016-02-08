@@ -275,19 +275,19 @@ _.REPLACE = function (data) {
 
 /* eslint-disable no-unused-vars */
 _.DATA = function (data, input) {
-	return { title: data, value: data };
+	return { label: data, value: data };
 };
 
 // Private functions
 
 // List item data shim for 1.x API backward compatibility
 function Suggestion(data) {
-	this.title = data.title;
+	this.label = data.label;
 	this.value = data.value;
 }
 Suggestion.prototype = new String;
 Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
-	return this.title;
+	return this.label;
 };
 
 function configure(instance, properties, o) {

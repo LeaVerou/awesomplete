@@ -337,7 +337,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	list: ["aol.com", "att.net", "comcast.net", "facebook.com", "gmail.com", "gmx.com", "googlemail.com", "google.com", "hotmail.com", "hotmail.co.uk", "mac.com", "me.com", "mail.com", "msn.com", "live.com", "sbcglobal.net"],
 	data: function (text, input) {
 		var newText = input.slice(0, input.indexOf("@")) + "@" + text;
-		return { title: newText, value: newText };
+		return { label: newText, value: newText };
 	},
 	filter: Awesomplete.FILTER_STARTSWITH
 });</script></code></pre>
