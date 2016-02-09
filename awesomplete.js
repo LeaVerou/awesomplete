@@ -217,7 +217,9 @@ _.prototype = {
 
 			this.suggestions = this._list
 				.map(function(item) {
-					return new Suggestion(me.data(item, value));
+					var suggestion = new Suggestion(convert(item));
+					var data = me.data(suggestion, value);
+					return new Suggestion(convert(data));
 				})
 				.filter(function(data) {
 					return me.filter(data, value);
@@ -275,10 +277,14 @@ _.REPLACE = function (data) {
 
 /* eslint-disable no-unused-vars */
 _.DATA = function (data, input) {
-	return { label: data, value: data };
+	return data;
 };
 
 // Private functions
+
+function convert(data) {
+	return Array.isArray(data) ? { label: data[0], value: data[1] } : typeof data === "object" ? data : { label: data, value: data };
+}
 
 // List item data shim for 1.x API backward compatibility
 function Suggestion(data) {
