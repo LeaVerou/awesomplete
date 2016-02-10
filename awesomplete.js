@@ -109,17 +109,17 @@ var _ = function (input, o) {
 _.prototype = {
 	set list(list) {
 		if (Array.isArray(list)) {
-			this._list = list.map(convert);
+			this._list = list;
 		}
 		else if (typeof list === "string" && list.indexOf(",") > -1) {
-				this._list = list.split(/\s*,\s*/).map(convert);
+				this._list = list.split(/\s*,\s*/);
 		}
 		else { // Element or CSS selector
 			list = $(list);
 
 			if (list && list.children) {
 				this._list = slice.apply(list.children).map(function (el) {
-					return convert(el.textContent.trim());
+					return el.textContent.trim();
 				});
 			}
 		}
@@ -216,8 +216,8 @@ _.prototype = {
 			this.ul.innerHTML = "";
 
 			this.suggestions = this._list
-				.map(function(suggestion) {
-					return convert(me.data(suggestion, value));
+				.map(function(item) {
+					return new Suggestion(me.data(item, value));
 				})
 				.filter(function(data) {
 					return me.filter(data, value);
@@ -280,14 +280,12 @@ _.DATA = function (data, input) {
 
 // Private functions
 
-function convert(data) {
-	return new Suggestion(Array.isArray(data) ? { label: data[0], value: data[1] } : typeof data === "object" ? data : { label: data, value: data });
-}
-
 // List item data shim for 1.x API backward compatibility
 function Suggestion(data) {
-	this.label = data.label;
-	this.value = data.value;
+	var o = Array.isArray(data) ? { label: data[0], value: data[1] } : typeof data === "object" ? data : { label: data, value: data };
+
+	this.label = o.label;
+	this.value = o.value;
 }
 Suggestion.prototype = new String;
 Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
