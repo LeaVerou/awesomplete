@@ -282,10 +282,10 @@ function Suggestion(data) {
 	  ? { label: data[0], value: data[1] }
 	  : typeof data === "object" ? data : { label: data, value: data };
 
-	this.label = o.label;
+	this.length = (this.label = o.label).length;
 	this.value = o.value;
 }
-Suggestion.prototype = new String;
+Suggestion.prototype = Object.create(String.prototype);
 Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
 	return this.label;
 };
