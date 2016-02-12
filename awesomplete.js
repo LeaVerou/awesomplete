@@ -280,7 +280,7 @@ _.DATA = function (item/*, input*/) { return item; };
 function Suggestion(data) {
 	var o = Array.isArray(data)
 	  ? { label: data[0], value: data[1] }
-	  : typeof data === "object" ? data : { label: data, value: data };
+	  : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
 
 	var inst = new String(o.label);
 	inst.__proto__ = Suggestion.prototype;
