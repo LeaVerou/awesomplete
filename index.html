@@ -125,6 +125,29 @@ var awesomplete = new Awesomplete(input);
 
 awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"];</code></pre>
 
+<p>Suggestions with different <strong>label</strong> and <strong>value</strong> are supported too:</p>
+
+<pre class="language-markup"><code>&lt;input id="myinput" /></code></pre>
+	<pre class="language-javascript"><code>var input = document.getElementById("myinput");
+
+// Show label but insert value into the input:
+new Awesomplete(input, {
+	list: [
+		{ label: "Belarus", value: "BY" },
+		{ label: "China", value: "CN" },
+		{ label: "United States", value: "US" }
+	]
+});
+
+// Same with arrays:
+new Awesomplete(input, {
+	list: [
+		[ "Belarus", "BY" ],
+		[ "China", "CN" ],
+		[ "United States", "US" ]
+	]
+});</code></pre>
+
 </section>
 
 <section id="customization">
