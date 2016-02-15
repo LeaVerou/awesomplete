@@ -22,9 +22,9 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
+		data: _.DATA,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
-		data: _.DATA,
 		item: _.ITEM,
 		replace: _.REPLACE
 	}, o);
