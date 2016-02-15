@@ -282,13 +282,15 @@ function Suggestion(data) {
 	  ? { label: data[0], value: data[1] }
 	  : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
 
-	var inst = new String(o.label);
-	inst.__proto__ = Suggestion.prototype;
-	inst.label = o.label;
-	inst.value = o.value;
-	return inst;
+	this.label = o.label;
+	this.value = o.value;
 }
-Suggestion.prototype = Object.create(String.prototype);
+Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
+	get: function() { return this.label.length; }
+});
+Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
+	return this.label;
+};
 
 function configure(instance, properties, o) {
 	for (var i in properties) {
