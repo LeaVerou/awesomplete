@@ -46,7 +46,7 @@ describe("Awesomplete.$.fire", function () {
 		});
 
 		it("can't make event that does not bubble", function () {
-			this.subject("click", { bubles: false });
+			this.subject("click", { bubbles: false });
 			expect(this.element.dispatchEvent).toHaveBeenCalledWith(jasmine.objectContaining({ bubbles: true }));
 		});
 
