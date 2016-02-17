@@ -5,7 +5,7 @@ describe("Awesomplete.REPLACE", function () {
 	def("instance", function() { return { input: { value: "initial" } } });
 
 	it("replaces input value", function () {
-		this.subject.call(this.instance, "JavaScript");
+		this.subject.call(this.instance, { value: "JavaScript" });
 		expect(this.instance.input.value).toBe("JavaScript");
 	});
 });

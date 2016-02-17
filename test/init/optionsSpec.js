@@ -19,6 +19,10 @@ describe("Constructor options", function () {
 			expect(this.subject.autoFirst).toBe(false);
 		});
 
+		it("modifies list item with DATA", function () {
+			expect(this.subject.data).toBe(Awesomplete.DATA);
+		});
+
 		it("filters with FILTER_CONTAINS", function () {
 			expect(this.subject.filter).toBe(Awesomplete.FILTER_CONTAINS);
 		});
