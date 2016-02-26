@@ -24,13 +24,13 @@ describe("awesomplete.open", function () {
 			spyOn(this.subject, "goto");
 		});
 
-		it("selects first item if wasn't seleted before", function () {
+		it("selects first item if wasn't selected before", function () {
 			this.subject.open();
 
 			expect(this.subject.goto).toHaveBeenCalledWith(0);
 		});
 
-		it("does not select any item if was seleted before", function () {
+		it("does not select any item if was selected before", function () {
 			this.subject.index = 0;
 			this.subject.open();
 
