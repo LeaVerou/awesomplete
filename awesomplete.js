@@ -26,7 +26,7 @@
 			sort: _.SORT_BYLENGTH,
 			item: _.ITEM,
 			replace: _.REPLACE,
-			latinize: _.LATINIZE,
+			latinize: _.LATINIZE
 		}, o);
 
 		this.index = -1;
