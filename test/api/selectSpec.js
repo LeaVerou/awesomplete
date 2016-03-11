@@ -46,9 +46,9 @@ describe("awesomplete.select", function () {
 
 			expect(handler).toHaveBeenCalledWith(
 				jasmine.objectContaining({
-					text: expectedTxt,
-					data: expectedTxt,
-					origin: this.selectArgument || this.subject.ul.children[0]
+					text: jasmine.objectContaining({ label: expectedTxt, value: expectedTxt }),
+					data: jasmine.objectContaining({ label: expectedTxt, value: expectedTxt }),
+					originalTarget: this.selectArgument || this.subject.ul.children[0]
 				})
 			);
 		});

@@ -334,18 +334,12 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	<label>Type an email: <input type="email"></label>
 	<pre class="language-markup"><code>&lt;input type="email" /></code></pre>
 	<pre class="language-javascript"><code><script>new Awesomplete($('input[type="email"]'), {
-	list: ["@aol.com", "@att.net", "@comcast.net", "@facebook.com", "@gmail.com", "@gmx.com", "@googlemail.com", "@google.com", "@hotmail.com", "@hotmail.co.uk", "@mac.com", "@me.com", "@mail.com", "@msn.com", "@live.com", "@sbcglobal.net", "@verizon.net", "@yahoo.com", "@yahoo.co.uk"],
-	item: function(text, input) {
-		var newText = input.slice(0, input.indexOf("@")) + text;
-
-		return Awesomplete.$.create("li", {
-			innerHTML: newText.replace(RegExp(input.trim(), "gi"), "<mark>$&</mark>"),
-			"aria-selected": "false"
-		});
+	list: ["aol.com", "att.net", "comcast.net", "facebook.com", "gmail.com", "gmx.com", "googlemail.com", "google.com", "hotmail.com", "hotmail.co.uk", "mac.com", "me.com", "mail.com", "msn.com", "live.com", "sbcglobal.net"],
+	data: function (text, input) {
+		var newText = input.slice(0, input.indexOf("@")) + "@" + text;
+		return newText;
 	},
-	filter: function(text, input) {
-		return RegExp("^" + Awesomplete.$.regExpEscape(input.replace(/^.+?(?=@)/, ''), "i")).test(text);
-	}
+	filter: Awesomplete.FILTER_STARTSWITH
 });</script></code></pre>
 	</section>
 

@@ -24,6 +24,7 @@ var _ = function (input, o) {
 		autoFirst: false,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
+		data: _.DATA,
 		item: _.ITEM,
 		replace: _.REPLACE
 	}, o);
@@ -183,18 +184,22 @@ _.prototype = {
 		$.fire(this.input, "awesomplete-highlight");
 	},
 
-	select: function (selected, origin) {
-		selected = selected || this.ul.children[this.index];
+	select: function (selected, originalTarget) {
+		if (selected) {
+			this.index = $.siblingIndex(selected);
+		} else {
+			selected = this.ul.children[this.index];
+		}
 
 		if (selected) {
 			var allowed = $.fire(this.input, "awesomplete-select", {
-				text: selected.textContent,
-				data: this.suggestions[$.siblingIndex(selected)],
-				origin: origin || selected
+				text: this.suggestions[this.index],
+				data: this.suggestions[this.index],
+				originalTarget: originalTarget || selected
 			});
 
 			if (allowed) {
-				this.replace(selected.textContent);
+				this.replace(this.suggestions[this.index]);
 				this.close();
 				$.fire(this.input, "awesomplete-selectcomplete");
 			}
@@ -211,14 +216,17 @@ _.prototype = {
 			this.ul.innerHTML = "";
 
 			this.suggestions = this._list
-				.filter(function(item) {
-					return me.filter(item, value);
+				.map(function(item) {
+					return new Suggestion(me.data(item, value));
+				})
+				.filter(function(data) {
+					return me.filter(data, value);
 				})
 				.sort(this.sort)
 				.slice(0, this.maxItems);
 
-			this.suggestions.forEach(function(text) {
-					me.ul.appendChild(me.item(text, value));
+			this.suggestions.forEach(function(data) {
+					me.ul.appendChild(me.item(data, value));
 				});
 
 			if (this.ul.children.length === 0) {
@@ -237,12 +245,12 @@ _.prototype = {
 
 _.all = [];
 
-_.FILTER_CONTAINS = function (text, input) {
-	return RegExp($.regExpEscape(input.trim()), "i").test(text);
+_.FILTER_CONTAINS = function (data, input) {
+	return RegExp($.regExpEscape(input.trim()), "i").test(data);
 };
 
-_.FILTER_STARTSWITH = function (text, input) {
-	return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
+_.FILTER_STARTSWITH = function (data, input) {
+	return RegExp("^" + $.regExpEscape(input.trim()), "i").test(data);
 };
 
 _.SORT_BYLENGTH = function (a, b) {
@@ -253,19 +261,36 @@ _.SORT_BYLENGTH = function (a, b) {
 	return a < b? -1 : 1;
 };
 
-_.ITEM = function (text, input) {
-	var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
+_.ITEM = function (data, input) {
+	var html = input === '' ? data : data.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 	return $.create("li", {
 		innerHTML: html,
 		"aria-selected": "false"
 	});
 };
 
-_.REPLACE = function (text) {
-	this.input.value = text;
+_.REPLACE = function (data) {
+	this.input.value = data.value;
+};
+
+/* eslint-disable no-unused-vars */
+_.DATA = function (data, input) {
+	return data;
 };
 
 // Private functions
+
+// List item data shim for 1.x API backward compatibility
+function Suggestion(data) {
+	var o = Array.isArray(data) ? { label: data[0], value: data[1] } : typeof data === "object" ? data : { label: data, value: data };
+
+	this.label = o.label;
+	this.value = o.value;
+}
+Suggestion.prototype = new String;
+Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
+	return this.label;
+};
 
 function configure(instance, properties, o) {
 	for (var i in properties) {
