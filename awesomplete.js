@@ -203,7 +203,6 @@ _.prototype = {
 		if (selected) {
 			var allowed = $.fire(this.input, "awesomplete-select", {
 				text: this.suggestions[this.index],
-				data: this.suggestions[this.index],
 				origin: origin || selected
 			});
 
