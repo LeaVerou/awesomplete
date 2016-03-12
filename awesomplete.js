@@ -22,6 +22,7 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
+		data: _.DATA,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: _.ITEM,
@@ -117,9 +118,18 @@ _.prototype = {
 			list = $(list);
 
 			if (list && list.children) {
-				this._list = slice.apply(list.children).map(function (el) {
-					return el.textContent.trim();
+				var items = [];
+				slice.apply(list.children).forEach(function (el) {
+					if (!el.disabled) {
+						var text = el.textContent.trim();
+						var value = el.value || text;
+						var label = el.label || text;
+						if (value !== "") {
+							items.push({ label: label, value: value });
+						}
+					}
 				});
+				this._list = items;
 			}
 		}
 
@@ -184,17 +194,21 @@ _.prototype = {
 	},
 
 	select: function (selected, origin) {
-		selected = selected || this.ul.children[this.index];
+		if (selected) {
+			this.index = $.siblingIndex(selected);
+		} else {
+			selected = this.ul.children[this.index];
+		}
 
 		if (selected) {
 			var allowed = $.fire(this.input, "awesomplete-select", {
-				text: selected.textContent,
-				data: this.suggestions[$.siblingIndex(selected)],
+				text: this.suggestions[this.index],
+				data: this.suggestions[this.index],
 				origin: origin || selected
 			});
 
 			if (allowed) {
-				this.replace(selected.textContent);
+				this.replace(this.suggestions[this.index]);
 				this.close();
 				$.fire(this.input, "awesomplete-selectcomplete");
 			}
@@ -211,6 +225,9 @@ _.prototype = {
 			this.ul.innerHTML = "";
 
 			this.suggestions = this._list
+				.map(function(item) {
+					return new Suggestion(me.data(item, value));
+				})
 				.filter(function(item) {
 					return me.filter(item, value);
 				})
@@ -262,10 +279,27 @@ _.ITEM = function (text, input) {
 };
 
 _.REPLACE = function (text) {
-	this.input.value = text;
+	this.input.value = text.value;
 };
 
+_.DATA = function (item/*, input*/) { return item; };
+
 // Private functions
+
+function Suggestion(data) {
+	var o = Array.isArray(data)
+	  ? { label: data[0], value: data[1] }
+	  : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
+
+	this.label = o.label || o.value;
+	this.value = o.value;
+}
+Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
+	get: function() { return this.label.length; }
+});
+Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
+	return "" + this.label;
+};
 
 function configure(instance, properties, o) {
 	for (var i in properties) {
