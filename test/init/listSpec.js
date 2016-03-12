@@ -23,12 +23,20 @@ describe("Awesomplete list", function () {
 
 		it("assigns from element specified by selector", function () {
 			this.subject.list = "#data-list";
-			expect(this.subject._list).toEqual([ "With", "Data", "List" ]);
+			expect(this.subject._list).toEqual([
+				{ label: "With", value: "With" },
+				{ label: "Data", value: "Data" },
+				{ label: "List", value: "List" }
+			]);
 		});
 
 		it("assigns from element", function () {
 			this.subject.list = $("#data-list");
-			expect(this.subject._list).toEqual([ "With", "Data", "List" ]);
+			expect(this.subject._list).toEqual([
+				{ label: "With", value: "With" },
+				{ label: "Data", value: "Data" },
+				{ label: "List", value: "List" }
+			]);
 		});
 
 		it("does not assigns from not found list", function () {
@@ -68,12 +76,20 @@ describe("Awesomplete list", function () {
 
 		it("assigns from element specified by selector", function () {
 			this.options = { list: "#data-list" };
-			expect(this.subject._list).toEqual([ "With", "Data", "List" ]);
+			expect(this.subject._list).toEqual([
+				{ label: "With", value: "With" },
+				{ label: "Data", value: "Data" },
+				{ label: "List", value: "List" }
+			]);
 		});
 
 		it("assigns from list specified by element", function () {
 			this.options = { list: $("#data-list") };
-			expect(this.subject._list).toEqual([ "With", "Data", "List" ]);
+			expect(this.subject._list).toEqual([
+				{ label: "With", value: "With" },
+				{ label: "Data", value: "Data" },
+				{ label: "List", value: "List" }
+			]);
 		});
 	});
 
@@ -85,14 +101,21 @@ describe("Awesomplete list", function () {
 
 		it("assigns from element referenced by selector", function () {
 			this.element = "#with-data-list";
-			expect(this.subject._list).toEqual(["With", "Data", "List"]);
+			expect(this.subject._list).toEqual([
+				{ label: "With", value: "With" },
+				{ label: "Data", value: "Data" },
+				{ label: "List", value: "List" }
+			]);
 		});
 	});
 
 	describe("list html attribute", function () {
 		it("assigns from element referenced by id", function () {
 			this.element = "#with-list";
-			expect(this.subject._list).toEqual(["With", "List"]);
+			expect(this.subject._list).toEqual([
+				{ label: "With", value: "With" },
+				{ label: "List", value: "List" }
+			]);
 		});
 	});
 });

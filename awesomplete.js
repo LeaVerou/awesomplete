@@ -118,9 +118,18 @@ _.prototype = {
 			list = $(list);
 
 			if (list && list.children) {
-				this._list = slice.apply(list.children).map(function (el) {
-					return el.textContent.trim();
+				var items = [];
+				slice.apply(list.children).forEach(function (el) {
+					if (!el.disabled) {
+						var text = el.textContent.trim();
+						var value = el.value || text;
+						var label = el.label || text;
+						if (value !== "") {
+							items.push({ label: label, value: value });
+						}
+					}
 				});
+				this._list = items;
 			}
 		}
 
@@ -282,7 +291,7 @@ function Suggestion(data) {
 	  ? { label: data[0], value: data[1] }
 	  : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
 
-	this.label = o.label;
+	this.label = o.label || o.value;
 	this.value = o.value;
 }
 Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
