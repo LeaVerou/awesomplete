@@ -73,7 +73,11 @@ describe("awesomplete.select", function () {
 				var handler = $.spyOnEvent(this.subject.input, "awesomplete-selectcomplete");
 				this.subject.select(this.selectArgument);
 
-				expect(handler).toHaveBeenCalled();
+				expect(handler).toHaveBeenCalledWith(
+					jasmine.objectContaining({
+						text: jasmine.objectContaining({ label: expectedTxt, value: expectedTxt })
+					})
+				);
 			});
 		});
 

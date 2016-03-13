@@ -190,7 +190,9 @@ _.prototype = {
 			this.status.textContent = lis[i].textContent;
 		}
 
-		$.fire(this.input, "awesomplete-highlight");
+		$.fire(this.input, "awesomplete-highlight", {
+			text: this.suggestions[this.index]
+		});
 	},
 
 	select: function (selected, origin) {
@@ -201,15 +203,19 @@ _.prototype = {
 		}
 
 		if (selected) {
+			var suggestion = this.suggestions[this.index];
+
 			var allowed = $.fire(this.input, "awesomplete-select", {
-				text: this.suggestions[this.index],
+				text: suggestion,
 				origin: origin || selected
 			});
 
 			if (allowed) {
-				this.replace(this.suggestions[this.index]);
+				this.replace(suggestion);
 				this.close();
-				$.fire(this.input, "awesomplete-selectcomplete");
+				$.fire(this.input, "awesomplete-selectcomplete", {
+					text: suggestion
+				});
 			}
 		}
 	},
