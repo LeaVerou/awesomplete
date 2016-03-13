@@ -33,7 +33,11 @@ describe("awesomplete.goto", function () {
 		var handler = $.spyOnEvent(this.subject.input, "awesomplete-highlight");
 		this.subject.goto(1);
 
-		expect(handler).toHaveBeenCalled();
+		expect(handler).toHaveBeenCalledWith(
+			jasmine.objectContaining({
+				text: jasmine.objectContaining({ label: "item2", value: "item2" })
+			})
+		);
 	});
 
 	describe("with item index > -1", function () {
