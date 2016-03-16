@@ -188,11 +188,11 @@ _.prototype = {
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
 			this.status.textContent = lis[i].textContent;
-		}
 
-		$.fire(this.input, "awesomplete-highlight", {
-			text: this.suggestions[this.index]
-		});
+			$.fire(this.input, "awesomplete-highlight", {
+				text: this.suggestions[this.index]
+			});
+		}
 	},
 
 	select: function (selected, origin) {
