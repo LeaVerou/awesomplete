@@ -45,7 +45,7 @@ var _ = function (input, o) {
 		hidden: "hidden",
 		className: 'awesomplete-dropdown',
 		inside: this.container
-	})
+	});
 
 	this.status = document.createElement("span");
 	$.set(this.status, {
@@ -368,7 +368,7 @@ $.set = function(element, o) {
 	}
 
 	return element;
-}
+};
 
 $.bind = function(element, o) {
 	if (element) {
