@@ -1,4 +1,4 @@
-body {	
+body {
 	max-width: 50rem;
 	padding: 1rem;
 	margin: auto;
@@ -95,16 +95,16 @@ header {
 		font-style: italic;
 		font-weight: normal;
 	}
-	
+
 	header p {
 		margin: 0;
 	}
-	
+
 		header p a {
 			text-decoration: none;
 			color: inherit;
 		}
-	
+
 	.size {
 		position: absolute;
 		top: 1em;
@@ -122,11 +122,11 @@ header {
 		text-decoration: none;
 		border-radius: .15em;
 	}
-	
+
 	.size:hover {
 		background: #58a;
 	}
-	
+
 		.size strong {
 			display: block;
 			margin-bottom: .1em;
@@ -135,7 +135,7 @@ header {
 			font-weight: 900;
 			font-style: normal;
 		}
-		
+
 		.size .amp {
 			position: absolute;
 			left: 0; right: 0;
@@ -143,23 +143,23 @@ header {
 			color: hsla(35, 80%, 94%,.3);
 			font-size: 350%;
 		}
-	
+
 	nav {
 		margin-top: .5em;
 	}
-	
+
 	nav a {
 		position: relative;
 		display: inline-block;
 		padding: 0 .4em;
 		margin: 0 .1em;
-		
+
 		color: hsl(35, 80%, 94%);
 		text-shadow: none;
 		text-decoration: none;
 		font-size: 80%;
 	}
-	
+
 	nav a::before {
 		content: "";
 		position: absolute;
@@ -170,19 +170,19 @@ header {
 		-webkit-transform: skew(-16deg);
 		transform: skew(-16deg);
 	}
-	
+
 	nav a[href="#download"] {
 		font-weight: 600;
 	}
-	
+
 	nav a[href="#download"]::before {
 		background: hsl(65, 85%, 35%);
 	}
-	
+
 	nav a:hover::before {
 		background: #58a;
 	}
-	
+
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
@@ -258,12 +258,35 @@ td {
 	max-width: min-content;
 	font-size: 75%;
 }
-	
+
 	#carbonads a {
 		text-decoration: none;
 		color: inherit;
 	}
-	
+
 	#carbonads img {
 		display: block;
 	}
+
+#combobox .dropdown-input {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+#combobox .dropdown-btn {
+	vertical-align: top;
+	height: 36.5px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+#combobox .caret {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-left: 2px;
+	vertical-align: middle;
+	border-top: 4px dashed;
+	border-top: 4px solid;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+}

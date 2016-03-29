@@ -4,7 +4,7 @@
 
 <meta charset="utf-8" />
 <title>Awesomplete: Ultra lightweight, highly customizable, simple autocomplete, by Lea Verou</title>
-<link rel="stylesheet" href="https://leaverou.github.io/prism/themes/prism.css" />
+<link rel="stylesheet" href="prism/prism.css" />
 <link rel="stylesheet" href="awesomplete.css" />
 <link rel="stylesheet" href="style.css" />
 
@@ -125,6 +125,29 @@ var awesomplete = new Awesomplete(input);
 
 awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"];</code></pre>
 
+<p>Suggestions with different <strong>label</strong> and <strong>value</strong> are supported too. The label will be shown in autocompleter and the value will be inserted into the input.</p>
+
+<pre class="language-markup"><code>&lt;input id="myinput" /></code></pre>
+	<pre class="language-javascript"><code>var input = document.getElementById("myinput");
+
+// Show label but insert value into the input:
+new Awesomplete(input, {
+	list: [
+		{ label: "Belarus", value: "BY" },
+		{ label: "China", value: "CN" },
+		{ label: "United States", value: "US" }
+	]
+});
+
+// Same with arrays:
+new Awesomplete(input, {
+	list: [
+		[ "Belarus", "BY" ],
+		[ "China", "CN" ],
+		[ "United States", "US" ]
+	]
+});</code></pre>
+
 </section>
 
 <section id="customization">
@@ -240,6 +263,27 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	this.input.value = text;
 }</code></pre></td>
 			</tr>
+			<tr>
+				<td><code>data</code></td>
+				<td>Controls suggestions' <code>label</code> and <code>value</code>. This is useful if you have list items in custom format, or want to change list items based on user's input.</td>
+				<td>Function that takes two parameters, the first one being the original list item and the second a string with the user’s input and returns a list item in one of supported by default formats:
+<ul>
+	<li><code>"JavaScript"</code></li>
+	<li><code>{ label: "JavaScript", value: "JS" }</code></li>
+	<li><code>[ "JavaScript", "JS" ]</code></li>
+</ul>
+To <strong>use objects without <code>label</code> or <code>value</code> properties</strong>, e.g. <code>name</code> and <code>id</code> instead, you can do this:
+<pre class="language-javascript"><code>data: function (item, input) {
+	return { label: item.name, value: item.id };
+}</code></pre>
+You can <strong>use any object for <code>label</code> and <code>value</code></strong> and it will be converted to String where necessary:
+<pre class="language-javascript"><code>list: [ new Date("2015-01-01"), ... ] </code></pre>
+Original list items as Date objects will be accessible in <code>filter</code>, <code>sort</code>, <code>item</code> and <code>replace</code> functions, but by default we'll just see Date objects converted to strings in autocompleter and the same value will be inserted to the input.
+<br />
+We can also <strong>generate list items based on user's input</strong>. See E-mail autocomplete example in <a href="#advanced-examples">Advanced Examples</a> section.
+				</td>
+				<td><code class="language-javascript">Awesomplete.DATA</code>: Identity function which just returns the original list item.</td>
+			</tr>
 		</tbody>
 	</table>
 </section>
@@ -341,18 +385,11 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	<label>Type an email: <input type="email"></label>
 	<pre class="language-markup"><code>&lt;input type="email" /></code></pre>
 	<pre class="language-javascript"><code><script>new Awesomplete($('input[type="email"]'), {
-	list: ["@aol.com", "@att.net", "@comcast.net", "@facebook.com", "@gmail.com", "@gmx.com", "@googlemail.com", "@google.com", "@hotmail.com", "@hotmail.co.uk", "@mac.com", "@me.com", "@mail.com", "@msn.com", "@live.com", "@sbcglobal.net", "@verizon.net", "@yahoo.com", "@yahoo.co.uk"],
-	item: function(text, input){
-		var newText = input.slice(0, input.indexOf("@")) + text;
-
-		return Awesomplete.$.create("li", {
-		    innerHTML: newText.replace(RegExp(input.trim(), "gi"), "<mark>$&</mark>"),
-		    "aria-selected": "false"
-		});
-    },
-	filter: function(text, input){
-		return RegExp("^" + Awesomplete.$.regExpEscape(input.replace(/^.+?(?=@)/, ''), "i")).test(text);
-    }
+	list: ["aol.com", "att.net", "comcast.net", "facebook.com", "gmail.com", "gmx.com", "googlemail.com", "google.com", "hotmail.com", "hotmail.co.uk", "mac.com", "me.com", "mail.com", "msn.com", "live.com", "sbcglobal.net", "verizon.net", "yahoo.com", "yahoo.co.uk"],
+	data: function (text, input) {
+		return input.slice(0, input.indexOf("@")) + "@" + text;
+	},
+	filter: Awesomplete.FILTER_STARTSWITH
 });</script></code></pre>
 	</section>
 
@@ -375,23 +412,35 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 	<section id="ajax-example">
 	<h2>Ajax example <small>(restcountries.eu api)</small></h2>
 	<label class="">Select French speaking country <input type="text"></label>
+	<pre class="language-javascript"><code><script>var ajax = new XMLHttpRequest();
+ajax.open("GET", "https://restcountries.eu/rest/v1/lang/fr", true);
+ajax.onload = function() {
+	var list = JSON.parse(ajax.responseText).map(function(i) { return i.name; });
+	new Awesomplete(document.querySelector("#ajax-example input"),{ list: list });
+};
+ajax.send();</script></code></pre>
+	</section>
 
-	</div>
-	<pre class="language-javascript"><code>		<script>
-		var ajax
-		ajax = new XMLHttpRequest()
-		ajax.open("GET", "https://restcountries.eu/rest/v1/lang/fr", true)
-		ajax.onload = function() {
-			{
-					var list = JSON.parse(ajax.responseText).map(function(i) {
-					return i.name;
-					})
-					new Awesomplete(document.querySelector("#ajax-example input"),{list:list});
-		}
+	<section id="combobox">
+	<h2>Combobox dropdown</h2>
+	<label>Type or click dropdown: <input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" class="dropdown-input" /><button class="dropdown-btn" type="button"><span class="caret"></span></button></label>
+	<pre class="language-markup"><code>&lt;input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" class="dropdown-input" /></code></pre>
+	<pre class="language-javascript"><code><script>var comboplete = new Awesomplete(Awesomplete.$('input.dropdown-input'), {
+	minChars: 0,
+});
+Awesomplete.$('.dropdown-btn').addEventListener("click", function() {
+	if (comboplete.ul.childNodes.length === 0) {
+		comboplete.minChars = 0;
+		comboplete.evaluate();
 	}
-		ajax.send();
-	</script></code></pre>
-</section>
+	else if (comboplete.ul.hasAttribute('hidden')) {
+		comboplete.open();
+	}
+	else {
+		comboplete.close();
+	}
+});</script></code></pre>
+	</section>
 
 <section id="download">
 	<h1>Download!</h1>
@@ -410,7 +459,7 @@ awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.j
 <footer>Made with &hearts; by <a href="http://lea.verou.me">Lea Verou</a> &bull; <a href="http://lea.verou.me/2015/02/awesomplete-2kb-autocomplete-with-zero-dependencies">Read the blog post</a> &bull; <a href="http://shop.oreilly.com/product/0636920031123.do">Buy my book!</a> </footer>
 
 
-<script src="https://leaverou.github.io/prism/prism.js" defer></script>
+<script src="prism/prism.js" defer></script>
 
 <a href="https://twitter.com/share" class="twitter-share-button" data-via="LeaVerou" data-size="large">Tweet</a>
 <script async src="//cdn.carbonads.com/carbon.js?zoneid=1673&serve=C6AILKT&placement=leaveroume" id="_carbonads_js"></script>

@@ -4,7 +4,6 @@
     "./awesomplete.css",
     "./awesomplete.js"
   ],
-  "version": "0.0.0",
   "homepage": "https://github.com/LeaVerou/awesomplete",
   "authors": [
     "Lea Verou <>"
