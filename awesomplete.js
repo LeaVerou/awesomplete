@@ -362,6 +362,9 @@ $.set = function(element, o) {
 			}
 			element.appendChild(ref);
 		}
+		else if (i === "className") {
+			element.classList.add(val);
+		}
 		else if (i in element) {
 			element[i] = val;
 		}
