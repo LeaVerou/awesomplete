@@ -203,6 +203,7 @@ _.prototype = {
 		}
 
 		if (selected) {
+			selected.setAttribute("aria-selected", "true");
 			var suggestion = this.suggestions[this.index];
 
 			var allowed = $.fire(this.input, "awesomplete-select", {
