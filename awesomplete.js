@@ -22,6 +22,7 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
+		container: null,
 		ul: null,
 		data: _.DATA,
 		filter: _.FILTER_CONTAINS,
@@ -34,7 +35,7 @@ var _ = function (input, o) {
 
 	// Create necessary elements
 
-	this.container = document.createElement("div");
+	this.container = $(this.container) || document.createElement("div");
 	$.set(this.container, {
 		className: "awesomplete",
 		around: input
