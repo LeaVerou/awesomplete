@@ -357,7 +357,9 @@ $.set = function(element, o) {
 		}
 		else if (i === "around") {
 			var ref = $(val);
-			ref.parentNode.insertBefore(element, ref);
+			if (ref.parentNode && ref.parentNode !== element) {
+				ref.parentNode.insertBefore(element, ref);
+			}
 			element.appendChild(ref);
 		}
 		else if (i in element) {
