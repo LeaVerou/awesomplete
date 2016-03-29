@@ -1,29 +1,29 @@
-describe("Awesomplete.$.create", function () {
+describe("Awesomplete.$.set", function () {
 
 	$.fixture("options");
 
-	subject(function () { return Awesomplete.$.create(this.tag, this.options || {}) });
+	subject(function () { return Awesomplete.$.set(this.tag, this.options || {}) });
 
-	def("tag", "div");
+	def("tag", document.createElement("div"));
 
-	it("creates DOM element", function () {
+	it("sets DOM element", function () {
 		expect(this.subject instanceof HTMLElement).toBe(true);
 	});
 
 	describe("with various tag names", function () {
-		it("creates <ul> element", function () {
-			this.tag = "ul";
+		it("sets <ul> element", function () {
+			this.tag = document.createElement("ul");
 			expect(this.subject.tagName).toEqual("UL");
 		});
 
-		it("creates <li> element", function () {
-			this.tag = "li";
+		it("sets <li> element", function () {
+			this.tag = document.createElement("li");
 			expect(this.subject.tagName).toEqual("LI");
 		});
 	});
 
 	describe("without options", function () {
-		it("creates element without any attributes", function () {
+		it("sets element without any attributes", function () {
 			expect(this.subject.attributes.length).toEqual(0);
 		});
 	});
