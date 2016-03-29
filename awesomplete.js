@@ -203,9 +203,9 @@ _.prototype = {
 		}
 
 		if (selected) {
-			this.ul.children.forEach(function (unselected) {
-				unselected.setAttribute("aria-selected", "false");
-			});
+			for (var i = 0; i < this.ul.children.length; i++) {
+				this.ul.children[i].setAttribute("aria-selected", "false");
+			}
 			selected.setAttribute("aria-selected", "true");
 			var suggestion = this.suggestions[this.index];
 
