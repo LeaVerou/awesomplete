@@ -40,7 +40,8 @@ div.awesomplete > .awesomplete-dropdown:empty {
 }
 
 @supports (transform: scale(0)) {
-	div.awesomplete > ul {
+	div.awesomplete > ul,
+	div.awesomplete > .awesomplete-dropdown {
 		transition: .3s cubic-bezier(.4,.2,.5,1.4);
 		transform-origin: 1.43em -.43em;
 	}
