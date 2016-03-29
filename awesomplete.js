@@ -22,7 +22,12 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
+<<<<<<< Updated upstream
 		dropdown: null,
+=======
+		ul: null,
+		data: _.DATA,
+>>>>>>> Stashed changes
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: function (text, input) {
@@ -41,11 +46,13 @@ var _ = function (input, o) {
 
 	// Create necessary elements
 
-	this.container = $.create("div", {
+	this.container = document.createElement("div");
+	$.set(this.container, {
 		className: "awesomplete",
 		around: input
 	});
 
+<<<<<<< Updated upstream
 	this.ul = this.dropdown ?
 		$.set(this.dropdown, {
 			hidden: '',
@@ -57,8 +64,17 @@ var _ = function (input, o) {
 			className: 'awesomplete-dropdown',
 			inside: this.container
 		});
+=======
+	this.ul = $(this.ul) || document.createElement("ul");
+	$.set(this.ul, {
+		hidden: "hidden",
+		className: 'awesomplete-dropdown',
+		inside: this.container
+	})
+>>>>>>> Stashed changes
 
-	this.status = $.create("span", {
+	this.status = document.createElement("span");
+	$.set(this.status, {
 		className: "visually-hidden",
 		role: "status",
 		"aria-live": "assertive",
@@ -271,6 +287,23 @@ _.SORT_BYLENGTH = function (a, b) {
 	return a < b? -1 : 1;
 };
 
+<<<<<<< Updated upstream
+=======
+_.ITEM = function (text, input) {
+	var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
+	return $.set(document.createElement("li"), {
+		innerHTML: html,
+		"aria-selected": "false"
+	});
+};
+
+_.REPLACE = function (text) {
+	this.input.value = text.value;
+};
+
+_.DATA = function (item/*, input*/) { return item; };
+
+>>>>>>> Stashed changes
 // Private functions
 
 function configure(properties, o) {
