@@ -38,7 +38,7 @@ var _ = function (input, o) {
 	this.container = $(this.container) || document.createElement("div");
 	$.set(this.container, {
 		className: "awesomplete",
-		around: input
+		around: this.input
 	});
 
 	this.ul = $(this.ul) || document.createElement("ul");
