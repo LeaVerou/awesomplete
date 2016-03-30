@@ -79,21 +79,29 @@ var _ = function (input, o) {
 
 	$.bind(this.input.form, {"submit": this.close.bind(this)});
 
-	$.bind(this.ul, {"mousedown": function(evt) {
-		var li = evt.target;
+	$.bind(this.ul, {
+		"mousedown": function(evt) {
+			var li = evt.target;
 
-		if (li !== this) {
+			if (li !== this) {
 
-			while (li && !/li/i.test(li.nodeName)) {
-				li = li.parentNode;
+				while (li && !/li/i.test(li.nodeName)) {
+					li = li.parentNode;
+				}
+
+				if (li && evt.button === 0) {  // Only select on left click
+					evt.preventDefault();
+					me.select(li, evt.target);
+				}
 			}
-
-			if (li && evt.button === 0) {  // Only select on left click
-				evt.preventDefault();
-				me.select(li, evt.target);
+		},
+		"mouseover": function() {
+			var selectedLis = me.ul.querySelectorAll('[aria-selected="true"]')
+			for (var i = 0; i < selectedLis.length; i++) {
+				selectedLis[i].setAttribute("aria-selected", "false");
 			}
 		}
-	}});
+	});
 
 	if (this.input.hasAttribute("list")) {
 		this.list = "#" + this.input.getAttribute("list");
