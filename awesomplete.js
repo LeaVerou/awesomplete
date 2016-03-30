@@ -203,8 +203,9 @@ _.prototype = {
 		}
 
 		if (selected) {
-			for (var i = 0; i < this.ul.children.length; i++) {
-				this.ul.children[i].setAttribute("aria-selected", "false");
+			var selectedLis = this.ul.querySelectorAll('[aria-selected="true"]')
+			for (var i = 0; i < selectedLis.length; i++) {
+				selectedLis[i].setAttribute("aria-selected", "false");
 			}
 			selected.setAttribute("aria-selected", "true");
 			var suggestion = this.suggestions[this.index];
