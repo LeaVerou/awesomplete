@@ -276,6 +276,11 @@ _.SORT_BYLENGTH = function (a, b) {
 };
 
 _.ITEM = function (text, input) {
+	if (input.indexOf(",")>1){
+		var inputs=input.split(',');
+		input=inputs.slice(-1)[0];
+	}
+	
 	var html = input === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 	return $.create("li", {
 		innerHTML: html,
