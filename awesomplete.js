@@ -115,11 +115,11 @@ _.prototype = {
 				this._list = list.split(/\s*,\s*/);
 		}
 		else { // Element or CSS selector
-			list = $(list);
+			$list = $(list);
 
-			if (list && list.children) {
+			if ($list && $list.children) {
 				var items = [];
-				slice.apply(list.children).forEach(function (el) {
+				slice.apply($list.children).forEach(function (el) {
 					if (!el.disabled) {
 						var text = el.textContent.trim();
 						var value = el.value || text;
@@ -130,6 +130,9 @@ _.prototype = {
 					}
 				});
 				this._list = items;
+			}
+			else {
+				this._list = [list];
 			}
 		}
 
