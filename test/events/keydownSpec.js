@@ -23,7 +23,9 @@ describe("keydown event", function () {
 		spyOn(this.subject, "close");
 		$.keydown(this.subject.input, $.k.ESC);
 
-		expect(this.subject.close).toHaveBeenCalled();
+		expect(this.subject.close).toHaveBeenCalledWith({
+			reason: 'esc'
+		});
 	});
 
 	it("supports down arrow", function () {

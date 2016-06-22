@@ -312,7 +312,7 @@ We can also <strong>generate list items based on user's input</strong>. See E-ma
 			</tr>
 			<tr>
 				<td><code>awesomplete-close</code></td>
-				<td>The popup just closed.</td>
+				<td>The popup just closed. Callback will be passed an object with a <code>reason</code> property that indicates why the event was fired. Reasons include <code>"blur"</code>, <code>"esc"</code>, <code>"submit"</code>, <code>"select"</code>, and <code>"nomatches"</code>.</td>
 				<td>No</td>
 			</tr>
 			<tr>

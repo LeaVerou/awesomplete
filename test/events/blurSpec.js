@@ -7,6 +7,9 @@ describe("blur event", function () {
 	it("closes completer", function () {
 		spyOn(Awesomplete.prototype, "close");
 		$.fire(this.subject.input, "blur");
-		expect(Awesomplete.prototype.close).toHaveBeenCalled();
+		expect(Awesomplete.prototype.close).toHaveBeenCalledWith(
+			{ reason: 'blur' },
+			jasmine.any(document.createEvent('HTMLEvents').constructor)
+		);
 	});
 });

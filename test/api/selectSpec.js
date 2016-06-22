@@ -66,7 +66,9 @@ describe("awesomplete.select", function () {
 				spyOn(this.subject, "close");
 				this.subject.select(this.selectArgument);
 
-				expect(this.subject.close).toHaveBeenCalled();
+				expect(this.subject.close).toHaveBeenCalledWith({
+					reason: 'select'
+				});
 			});
 
 			it("fires awesomplete-selectcomplete event", function () {

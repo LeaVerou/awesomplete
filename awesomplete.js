@@ -55,7 +55,7 @@ var _ = function (input, o) {
 
 	$.bind(this.input, {
 		"input": this.evaluate.bind(this),
-		"blur": this.close.bind(this),
+		"blur": this.close.bind(this, { reason: 'blur' }),
 		"keydown": function(evt) {
 			var c = evt.keyCode;
 
@@ -67,7 +67,7 @@ var _ = function (input, o) {
 					me.select();
 				}
 				else if (c === 27) { // Esc
-					me.close();
+					me.close({ reason: 'esc' });
 				}
 				else if (c === 38 || c === 40) { // Down/Up arrow
 					evt.preventDefault();
@@ -77,7 +77,7 @@ var _ = function (input, o) {
 		}
 	});
 
-	$.bind(this.input.form, {"submit": this.close.bind(this)});
+	$.bind(this.input.form, {"submit": this.close.bind(this, { reason: 'submit' })});
 
 	$.bind(this.ul, {"mousedown": function(evt) {
 		var li = evt.target;
@@ -146,7 +146,7 @@ _.prototype = {
 		return !this.ul.hasAttribute("hidden");
 	},
 
-	close: function () {
+	close: function (o) {
 		if (!this.opened) {
 			return;
 		}
@@ -154,7 +154,7 @@ _.prototype = {
 		this.ul.setAttribute("hidden", "");
 		this.index = -1;
 
-		$.fire(this.input, "awesomplete-close");
+		$.fire(this.input, "awesomplete-close", o || {});
 	},
 
 	open: function () {
@@ -216,7 +216,7 @@ _.prototype = {
 
 			if (allowed) {
 				this.replace(suggestion);
-				this.close();
+				this.close({ reason: 'select' });
 				$.fire(this.input, "awesomplete-selectcomplete", {
 					text: suggestion
 				});
@@ -248,13 +248,13 @@ _.prototype = {
 				});
 
 			if (this.ul.children.length === 0) {
-				this.close();
+				this.close({ reason: 'nomatches' });
 			} else {
 				this.open();
 			}
 		}
 		else {
-			this.close();
+			this.close({ reason: 'nomatches' });
 		}
 	}
 };
