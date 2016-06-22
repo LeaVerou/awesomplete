@@ -26,4 +26,12 @@ describe("awesomplete.close", function () {
 
 		expect(handler).toHaveBeenCalled();
 	});
+
+	it("returns early if already closed", function () {
+		var handler = $.spyOnEvent(this.subject.input, "awesomplete-close");
+		this.subject.close();
+		this.subject.close();
+
+		expect(handler.calls.count()).toBe(1);
+	});
 });
