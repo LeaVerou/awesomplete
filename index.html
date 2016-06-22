@@ -297,12 +297,12 @@ We can also <strong>generate list items based on user's input</strong>. See E-ma
 		<tbody>
 			<tr>
 				<td><code>awesomplete-select</code></td>
-				<td>The user has made a selection (either via pressing enter or clicking on an item), but it has not been applied yet.</td>
+				<td>The user has made a selection (either via pressing enter or clicking on an item), but it has not been applied yet. Callback will be passed an object with <code>text</code> (selected suggestion) and <code>origin</code> (DOM element) properties.</td>
 				<td>Yes. The selection will not be applied and the popup will not close.</td>
 			</tr>
 			<tr>
 				<td><code>awesomplete-selectcomplete</code></td>
-				<td>The user has made a selection (either via pressing enter or clicking on an item), and it has been applied.</td>
+				<td>The user has made a selection (either via pressing enter or clicking on an item), and it has been applied. Callback will be passed an object with a <code>text</code> property containing the selected suggestion.</td>
 				<td>No</td>
 			</tr>
 			<tr>
@@ -317,7 +317,7 @@ We can also <strong>generate list items based on user's input</strong>. See E-ma
 			</tr>
 			<tr>
 				<td><code>awesomplete-highlight</code></td>
-				<td>The highlighted item just changed (in response to pressing an arrow key or via an API call).</td>
+				<td>The highlighted item just changed (in response to pressing an arrow key or via an API call). Callback will be passed an object with a <code>text</code> property containing the highlighted suggestion.</td>
 				<td>No</td>
 			</tr>
 		</tbody>
