@@ -24,7 +24,9 @@ describe("awesomplete.close", function () {
 		var handler = $.spyOnEvent(this.subject.input, "awesomplete-close");
 		this.subject.close();
 
-		expect(handler).toHaveBeenCalled();
+		expect(handler).toHaveBeenCalledWith(
+			jasmine.any(document.createEvent('HTMLEvents').constructor)
+		);
 	});
 
 	it("returns early if already closed", function () {
