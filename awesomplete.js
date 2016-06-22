@@ -147,6 +147,10 @@ _.prototype = {
 	},
 
 	close: function () {
+		if (!this.opened) {
+			return;
+		}
+
 		this.ul.setAttribute("hidden", "");
 		this.index = -1;
 
