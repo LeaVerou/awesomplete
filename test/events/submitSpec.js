@@ -10,8 +10,8 @@ describe("form submit event", function () {
 		$.on(this.subject.input.form, "submit", function (evt) { evt.preventDefault() });
 		$.fire(this.subject.input.form, "submit");
 		expect(Awesomplete.prototype.close).toHaveBeenCalledWith(
-			{ reason: 'submit' },
-			jasmine.any(document.createEvent('HTMLEvents').constructor)
+			{ reason: "submit" },
+			jasmine.any(document.createEvent("HTMLEvents").constructor)
 		);
 	});
 });

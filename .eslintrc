@@ -206,8 +206,9 @@ rules:
   prefer-reflect: 0
   quote-props: 0
   quotes:
-  - 0
+  - 2
   - double
+  - avoid-escape
   radix: 0
   require-yield: 0
   semi: 0

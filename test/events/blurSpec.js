@@ -8,8 +8,8 @@ describe("blur event", function () {
 		spyOn(Awesomplete.prototype, "close");
 		$.fire(this.subject.input, "blur");
 		expect(Awesomplete.prototype.close).toHaveBeenCalledWith(
-			{ reason: 'blur' },
-			jasmine.any(document.createEvent('HTMLEvents').constructor)
+			{ reason: "blur" },
+			jasmine.any(document.createEvent("HTMLEvents").constructor)
 		);
 	});
 });

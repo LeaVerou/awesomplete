@@ -67,7 +67,7 @@ describe("awesomplete.select", function () {
 				this.subject.select(this.selectArgument);
 
 				expect(this.subject.close).toHaveBeenCalledWith({
-					reason: 'select'
+					reason: "select"
 				});
 			});
 

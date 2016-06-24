@@ -25,7 +25,7 @@ describe("awesomplete.close", function () {
 		this.subject.close();
 
 		expect(handler).toHaveBeenCalledWith(
-			jasmine.any(document.createEvent('HTMLEvents').constructor)
+			jasmine.any(document.createEvent("HTMLEvents").constructor)
 		);
 	});
 

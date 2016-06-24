@@ -24,7 +24,7 @@ describe("keydown event", function () {
 		$.keydown(this.subject.input, $.k.ESC);
 
 		expect(this.subject.close).toHaveBeenCalledWith({
-			reason: 'esc'
+			reason: "esc"
 		});
 	});
 

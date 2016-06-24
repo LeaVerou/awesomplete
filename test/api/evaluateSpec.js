@@ -16,7 +16,7 @@ describe("awesomplete.evaluate", function () {
 			this.subject.evaluate();
 
 			expect(this.subject.close).toHaveBeenCalledWith({
-				reason: 'nomatches'
+				reason: "nomatches"
 			});
 		});
 	});
@@ -31,7 +31,7 @@ describe("awesomplete.evaluate", function () {
 			this.subject.evaluate();
 
 			expect(this.subject.close).toHaveBeenCalledWith({
-				reason: 'nomatches'
+				reason: "nomatches"
 			});
 		});
 	});
