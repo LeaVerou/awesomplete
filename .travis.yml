@@ -6,6 +6,7 @@ node_js:
 branches:
   only:
     - gh-pages
+    - /v\d+\.\d+/
 
 install:
   - npm install -g codeclimate-test-reporter
@@ -18,3 +19,10 @@ before_script:
 
 after_script:
   - codeclimate-test-reporter < ./coverage/lcov.info
+
+deploy:
+  provider: npm
+  email: $NPM_EMAIL
+  api_key: $NPM_TOKEN
+  on:
+    tags: true
