@@ -12,6 +12,8 @@ var _ = function (input, o) {
 
 	// Setup
 
+	this.isOpened = false;
+
 	this.input = $(input);
 	this.input.setAttribute("autocomplete", "off");
 	this.input.setAttribute("aria-autocomplete", "list");
@@ -143,7 +145,7 @@ _.prototype = {
 	},
 
 	get opened() {
-		return !this.ul.hasAttribute("hidden");
+		return this.isOpened;
 	},
 
 	close: function (o) {
@@ -152,6 +154,7 @@ _.prototype = {
 		}
 
 		this.ul.setAttribute("hidden", "");
+		this.isOpened = false;
 		this.index = -1;
 
 		$.fire(this.input, "awesomplete-close", o || {});
@@ -159,6 +162,7 @@ _.prototype = {
 
 	open: function () {
 		this.ul.removeAttribute("hidden");
+		this.isOpened = true;
 
 		if (this.autoFirst && this.index === -1) {
 			this.goto(0);
