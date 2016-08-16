@@ -46,10 +46,10 @@ describe("awesomplete.previous", function () {
 				expect(this.subject.index).toBe(0);
 			});
 
-			it("selects no item after reaching the start", function () {
+			it("selects the last item after reaching the start", function () {
 				this.subject.goto(0);
 				this.subject.previous();
-				expect(this.subject.index).toBe(-1);
+				expect(this.subject.index).toBe(this.lastIndex);
 			});
 		});
 	});
