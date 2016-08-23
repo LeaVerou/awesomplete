@@ -169,8 +169,7 @@ _.prototype = {
 
 	next: function () {
 		var count = this.ul.children.length;
-		var defaultPos = count ? 0 : -1;
-		this.goto(this.index < count - 1? this.index + 1 : defaultPos);
+		this.goto(this.index < count - 1 ? this.index + 1 : (count ? 0 : -1) );
 	},
 
 	previous: function () {
