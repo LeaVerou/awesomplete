@@ -169,14 +169,14 @@ _.prototype = {
 
 	next: function () {
 		var count = this.ul.children.length;
-
-		this.goto(this.index < count - 1? this.index + 1 : -1);
+		this.goto(this.index < count - 1 ? this.index + 1 : (count ? 0 : -1) );
 	},
 
 	previous: function () {
 		var count = this.ul.children.length;
+		var pos = this.index - 1;
 
-		this.goto(this.selected? this.index - 1 : count - 1);
+		this.goto(this.selected && pos !== -1 ? pos : count - 1);
 	},
 
 	// Should not be used, highlights specific item without any checks!
