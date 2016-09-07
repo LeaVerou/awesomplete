@@ -21,7 +21,7 @@ gulp.task('concat', function() {
 
 	return gulp.src(['awesomplete.base.css', 'awesomplete.theme.css'])
 		.pipe(concat('awesomplete.css'))
-		.pipe(gulp.dest('./'));
+		.pipe(gulp.dest('.'));
 
 
 });
