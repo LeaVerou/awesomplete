@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var closure = require('gulp-closure-compiler-service');
 var rename = require('gulp-rename');
 var header = require('gulp-header');
+var concat = require('gulp-concat');
 
 var banner = "// Awesomplete - Lea Verou - MIT license\n";
 
@@ -16,4 +17,13 @@ gulp.task('minify', function() {
 		.pipe(gulp.dest('.'));
 });
 
-gulp.task('default', ['minify']);
+gulp.task('concat', function() {
+
+	return gulp.src(['awesomplete.base.css', 'awesomplete.theme.css'])
+		.pipe(concat('awesomplete.css'))
+		.pipe(gulp.dest('./'));
+
+
+});
+
+gulp.task('default', ['minify', 'concat']);
