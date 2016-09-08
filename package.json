@@ -19,6 +19,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-header": "^1.7.1",
     "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.6.0",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.19",
     "karma-chrome-launcher": "^0.2.2",
