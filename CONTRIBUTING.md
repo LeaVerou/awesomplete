@@ -45,8 +45,15 @@ describe("A fact", function(){
 
 See existing tests in ```test``` directory as an example. More expectations and examples on how to use Jasmine can be found on the official [documentation](http://jasmine.github.io/2.2/introduction.html).
 
-**Build minified version**
+**Build**
+
+Run the build with the following command:
 
 ```
 gulp
 ```
+
+The build will:
+
+1. Minify `awesomplete.js` and generate `awesomplete.min.js`.
+2. Merge `awesomplete.base.css` and `awesomplete.theme.css` and generate `awesomplete.css`.

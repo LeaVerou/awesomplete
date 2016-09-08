@@ -16,6 +16,7 @@
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-closure-compiler-service": "^0.5.0",
+    "gulp-concat": "^2.6.0",
     "gulp-header": "^1.7.1",
     "gulp-rename": "^1.2.2",
     "jasmine-core": "^2.4.1",
