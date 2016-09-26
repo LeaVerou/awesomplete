@@ -47,4 +47,12 @@ describe("Awesomplete.ITEM", function () {
 			expect(this.element.innerHTML).toBe("JavaScript");
 		});
 	});
+
+	describe("with space input", function () {
+		def("input", " ");
+
+		it("does not mark anything", function () {
+			expect(this.element.innerHTML).toBe("JavaScript");
+		});
+	});
 });
