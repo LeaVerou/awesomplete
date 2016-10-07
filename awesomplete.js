@@ -28,7 +28,8 @@ var _ = function (input, o) {
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
 		item: _.ITEM,
-		replace: _.REPLACE
+		replace: _.REPLACE,
+		ul: undefined
 	}, o);
 
 	this.index = -1;
@@ -40,7 +41,8 @@ var _ = function (input, o) {
 		around: input
 	});
 
-	this.ul = $.create("ul", {
+	// Prevent unnecessary dom manipulation
+	this.ul = this.ul || $.create("ul", {
 		hidden: "hidden",
 		inside: this.container
 	});
@@ -301,8 +303,8 @@ _.DATA = function (item/*, input*/) { return item; };
 
 function Suggestion(data) {
 	var o = Array.isArray(data)
-	  ? { label: data[0], value: data[1] }
-	  : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
+		? { label: data[0], value: data[1] }
+		: typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
 
 	this.label = o.label || o.value;
 	this.value = o.value;
@@ -317,7 +319,7 @@ Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
 function configure(instance, properties, o) {
 	for (var i in properties) {
 		var initial = properties[i],
-		    attrValue = instance.input.getAttribute("data-" + i.toLowerCase());
+				attrValue = instance.input.getAttribute("data-" + i.toLowerCase());
 
 		if (typeof initial === "number") {
 			instance[i] = parseInt(attrValue);
