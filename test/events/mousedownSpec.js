@@ -16,9 +16,10 @@ describe("mousedown event", function () {
 	describe("with ul target", function () {
 		def("target", function () { return this.subject.ul });
 
-		it("does not select item", function () {
+		it("does not select item and keeps the input focussed", function () {
 			$.fire(this.target, "mousedown", { button: 0 });
 			expect(this.subject.select).not.toHaveBeenCalled();
+			expect(this.subject.input).toBe(document.activeElement);
 		});
 	});
 
@@ -26,17 +27,20 @@ describe("mousedown event", function () {
 		def("target", function () { return this.li });
 
 		describe("on left click", function () {
-			it("selects item", function () {
+			it("does not select item and keeps the input focussed", function () {
 				var event = $.fire(this.target, "mousedown", { button: 0 });
-				expect(this.subject.select).toHaveBeenCalledWith(this.li, this.target);
+				expect(this.subject.select).not.toHaveBeenCalled();
 				expect(event.defaultPrevented).toBe(true);
+				expect(this.subject.input).toBe(document.activeElement);
 			});
 		});
 
 		describe("on right click", function () {
-			it("does not select item", function () {
-				$.fire(this.target, "mousedown", { button: 2 });
+			it("does not select item and keeps the input focussed", function () {
+				var event = $.fire(this.target, "mousedown", { button: 2 });
 				expect(this.subject.select).not.toHaveBeenCalled();
+				expect(event.defaultPrevented).toBe(true);
+				expect(this.subject.input).toBe(document.activeElement);
 			});
 		});
 	});
@@ -45,17 +49,20 @@ describe("mousedown event", function () {
 		def("target", function () { return $("mark", this.li) });
 
 		describe("on left click", function () {
-			it("selects item", function () {
+			it("does not select item and keeps the input focussed", function () {
 				var event = $.fire(this.target, "mousedown", { button: 0 });
-				expect(this.subject.select).toHaveBeenCalledWith(this.li, this.target);
+				expect(this.subject.select).not.toHaveBeenCalled();
 				expect(event.defaultPrevented).toBe(true);
+				expect(this.subject.input).toBe(document.activeElement);
 			});
 		});
 
 		describe("on right click", function () {
-			it("does not select item", function () {
-				$.fire(this.target, "mousedown", { button: 2 });
+			it("does not select item and keeps the input focussed", function () {
+				var event = $.fire(this.target, "mousedown", { button: 2 });
 				expect(this.subject.select).not.toHaveBeenCalled();
+				expect(event.defaultPrevented).toBe(true);
+				expect(this.subject.input).toBe(document.activeElement);
 			});
 		});
 	});
