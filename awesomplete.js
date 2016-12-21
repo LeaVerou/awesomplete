@@ -61,9 +61,10 @@ var _ = function (input, o) {
 		"keydown": function(evt) {
 			var c = evt.keyCode;
 
-			// If the dropdown `ul` is in view, then act on keydown for the following keys:
-			// Enter / Esc / Up / Down
-			if(me.opened) {
+			// Act on keydown for the following keys:
+			// Enter / Tab / Esc (only if ul opened)
+			// Up / Down (also opens ul if closed)
+			if (me.opened) {
 				if (c === 13 && me.selected) { // Enter
 					evt.preventDefault();
 					me.select();
@@ -71,11 +72,20 @@ var _ = function (input, o) {
 				else if (c === 27) { // Esc
 					me.close({ reason: "esc" });
 				}
-				else if (c === 38 || c === 40) { // Down/Up arrow
-					evt.preventDefault();
-					me[c === 38? "previous" : "next"]();
+				else if (c === 9) { // Tab / Shift-Tab
+					me[(c === 9 && !evt.shiftKey) ? "next" : "previous"]();
 				}
 			}
+			if (c === 38 || c === 40) { // Down/Up arrow
+				evt.preventDefault();
+				if (!me.opened) {
+					me.open();
+				}
+				else {
+					me[c === 38 ? "previous" : "next"]();
+				}
+			}
+
 		}
 	});
 
@@ -197,7 +207,7 @@ _.prototype = {
 			lis[i].setAttribute("aria-selected", "true");
 			this.status.textContent = lis[i].textContent;
 
-			// scroll to highlighted element in case parent's height is fixed 
+			// scroll to highlighted element in case parent's height is fixed
 			this.ul.scrollTop = lis[i].offsetTop - this.ul.clientHeight + lis[i].clientHeight;
 
 			$.fire(this.input, "awesomplete-highlight", {
