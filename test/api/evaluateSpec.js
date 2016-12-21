@@ -3,7 +3,7 @@ describe("awesomplete.evaluate", function () {
 	$.fixture("plain");
 
 	subject(function () {
-		return new Awesomplete("#plain", { list: ["item1", "item2", "item3"] });
+		return new Awesomplete("#plain", { list: ["item1", "item2", "item3"], filterDelay: 0 });
 	});
 
 	describe("with too short input value", function () {

@@ -51,14 +51,15 @@ $.type = function (input, text) {
 };
 
 // simulates keydown events
-$.keydown = function (target, keyCode) {
-	return $.fire(target, "keydown", { keyCode: keyCode });
+$.keydown = function (target, keyCode, shiftKey = false) {
+	return $.fire(target, "keydown", { keyCode: keyCode, shiftKey: shiftKey});
 };
 $.k = {
 	ENTER: 13,
 	ESC:   27,
 	DOWN:  40,
-	UP:    38
+	UP:    38,
+	TAB:    9
 };
 
 // $.noop returns a new empty function each time it's being called

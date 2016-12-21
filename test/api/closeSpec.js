@@ -15,11 +15,6 @@ describe("awesomplete.close", function () {
 		expect(this.subject.ul.hasAttribute("hidden")).toBe(true);
 	});
 
-	it("makes no item selected", function () {
-		this.subject.close();
-		expect(this.subject.index).toBe(-1);
-	});
-
 	it("fires awesomplete-close event", function () {
 		var handler = $.spyOnEvent(this.subject.input, "awesomplete-close");
 		this.subject.close();

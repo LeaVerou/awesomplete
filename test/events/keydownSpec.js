@@ -42,6 +42,20 @@ describe("keydown event", function () {
 		expect(this.subject.previous).toHaveBeenCalled();
 	});
 
+	it("supports tab", function () {
+		spyOn(this.subject, "next");
+		$.keydown(this.subject.input, $.k.TAB);
+
+		expect(this.subject.next).toHaveBeenCalled();
+	});
+
+	it("supports shift-tab", function () {
+		spyOn(this.subject, "previous");
+		$.keydown(this.subject.input, $.k.TAB, shiftKey = true);
+
+		expect(this.subject.previous).toHaveBeenCalled();
+	});
+
 	it("ignores other keys", function() {
 		spyOn(this.subject, "select");
 		spyOn(this.subject, "close");
