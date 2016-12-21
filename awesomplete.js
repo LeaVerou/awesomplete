@@ -13,6 +13,7 @@ var _ = function (input, o) {
 	// Setup
 
 	this.isOpened = false;
+	this.filterDelayed = false;
 
 	this.input = $(input);
 	this.input.setAttribute("autocomplete", "off");
@@ -24,6 +25,7 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
+		filterDelay: 500,
 		data: _.DATA,
 		filter: _.FILTER_CONTAINS,
 		sort: _.SORT_BYLENGTH,
@@ -74,7 +76,7 @@ var _ = function (input, o) {
 				}
 				else if (c === 9) { // Tab / Shift-Tab
 					evt.preventDefault();
-					me[(c === 9 && !evt.shiftKey) ? "next" : "previous"]();
+					me[evt.shiftKey ? "previous" : "next"]();
 				}
 			}
 			if (c === 38 || c === 40) { // Down/Up arrow
@@ -246,6 +248,25 @@ _.prototype = {
 		var value = this.input.value;
 
 		if (value.length >= this.minChars && this._list.length > 0) {
+			/* Check if we still have to delay the evaluate function. If we do, delay it by filterDelay (but we will still
+			use the latest select and origin). We treat this function the same as an input triggered select. So if another
+			select triggers before the delay is over we might delay it again.*/
+			var time = new Date().getTime();
+
+			if (time - this.lastFilterTime < this.filterDelay) {
+				if (!this.filterDelayed) {
+					setTimeout(function () {
+							return this.evaluate();
+						}.bind(this),
+						this.filterDelay);
+					this.filterDelayed = true;
+				}
+				return;
+			}
+			this.lastFilterTime = time;
+			this.filterDelayed = false;
+
+
 			this.index = -1;
 			// Populate list with options that match
 			this.ul.innerHTML = "";
