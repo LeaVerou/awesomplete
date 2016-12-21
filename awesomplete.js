@@ -73,6 +73,7 @@ var _ = function (input, o) {
 					me.close({ reason: "esc" });
 				}
 				else if (c === 9) { // Tab / Shift-Tab
+					evt.preventDefault();
 					me[(c === 9 && !evt.shiftKey) ? "next" : "previous"]();
 				}
 			}
