@@ -249,7 +249,7 @@ _.prototype = {
 
 		if (value.length >= this.minChars && this._list.length > 0) {
 			/* Check if we still have to delay the evaluate function. If we do, delay it by filterDelay (but we will still
-			use the latest select and origin). We treat this function the same as an input triggered select. So if another
+			use the latest value). We treat this function the same as an input triggered select. So if another
 			select triggers before the delay is over we might delay it again.*/
 			var time = new Date().getTime();
 
