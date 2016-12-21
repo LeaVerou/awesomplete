@@ -51,7 +51,7 @@ $.type = function (input, text) {
 };
 
 // simulates keydown events
-$.keydown = function (target, keyCode, shiftKey = false) {
+$.keydown = function (target, keyCode, shiftKey) {
 	return $.fire(target, "keydown", { keyCode: keyCode, shiftKey: shiftKey});
 };
 $.k = {
