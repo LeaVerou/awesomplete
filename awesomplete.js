@@ -165,7 +165,6 @@ _.prototype = {
 
 		this.ul.setAttribute("hidden", "");
 		this.isOpened = false;
-		this.index = -1;
 
 		$.fire(this.input, "awesomplete-close", o || {});
 	},
