@@ -26,7 +26,7 @@ var _ = function (input, o) {
 		autoFirst: false,
 		data: _.DATA,
 		filter: _.FILTER_CONTAINS,
-		sort: _.SORT_BYLENGTH,
+		sort: o.sort === false ? false : _.SORT_BYLENGTH,
 		item: _.ITEM,
 		replace: _.REPLACE
 	}, o);
@@ -197,7 +197,7 @@ _.prototype = {
 			lis[i].setAttribute("aria-selected", "true");
 			this.status.textContent = lis[i].textContent;
 
-			// scroll to highlighted element in case parent's height is fixed 
+			// scroll to highlighted element in case parent's height is fixed
 			this.ul.scrollTop = lis[i].offsetTop - this.ul.clientHeight + lis[i].clientHeight;
 
 			$.fire(this.input, "awesomplete-highlight", {
@@ -246,9 +246,13 @@ _.prototype = {
 				})
 				.filter(function(item) {
 					return me.filter(item, value);
-				})
-				.sort(this.sort)
-				.slice(0, this.maxItems);
+				});
+
+			if (this.sort !== false) {
+				this.suggestions = this.suggestions.sort(this.sort);
+			}
+
+			this.suggestions = this.suggestions.slice(0, this.maxItems);
 
 			this.suggestions.forEach(function(text) {
 					me.ul.appendChild(me.item(text, value));
