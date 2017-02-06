@@ -62,9 +62,9 @@ var _ = function (input, o) {
 			var c = evt.keyCode;
 
 			// If the dropdown `ul` is in view, then act on keydown for the following keys:
-			// Enter / Esc / Up / Down
+			// Enter / Tab/ Esc / Up / Down
 			if(me.opened) {
-				if (c === 13 && me.selected) { // Enter
+				if ((c === 13 || c === 9) && me.selected) { // Enter or Tab
 					evt.preventDefault();
 					me.select();
 				}
