@@ -10,6 +10,12 @@
 var _ = function (input, o) {
 	var me = this;
 
+  var BACKSPACE = 8;
+  var COMMA = 188;
+  var TAB = 9;
+  var ENTER = 13;
+  var ESCAPE = 27;
+
 	// Setup
 
 	this.isOpened = false;
@@ -24,6 +30,7 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
+		submitKeys: [COMMA, TAB, ENTER],
 		data: _.DATA,
 		filter: _.FILTER_CONTAINS,
 		sort: o.sort === false ? false : _.SORT_BYLENGTH,
@@ -64,11 +71,11 @@ var _ = function (input, o) {
 			// If the dropdown `ul` is in view, then act on keydown for the following keys:
 			// Enter / Esc / Up / Down
 			if(me.opened) {
-				if (c === 13 && me.selected) { // Enter
+				if (me.submitKeys.indexOf(c) > -1 && me.selected) { // Enter
 					evt.preventDefault();
 					me.select();
 				}
-				else if (c === 27) { // Esc
+				else if (c === ESCAPE) { // Esc
 					me.close({ reason: "esc" });
 				}
 				else if (c === 38 || c === 40) { // Down/Up arrow
