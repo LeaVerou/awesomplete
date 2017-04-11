@@ -10,7 +10,7 @@
 var _ = function (input, o) {
 	var me = this;
 
-  var BACKSPACE = 8;
+  //var BACKSPACE = 8;
   var COMMA = 188;
   var TAB = 9;
   var ENTER = 13;
