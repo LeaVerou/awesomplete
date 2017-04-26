@@ -10,12 +10,6 @@
 var _ = function (input, o) {
 	var me = this;
 
-  //var BACKSPACE = 8;
-  var COMMA = 188;
-  var TAB = 9;
-  var ENTER = 13;
-  var ESCAPE = 27;
-
 	// Setup
 
 	this.isOpened = false;
@@ -30,7 +24,7 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
-		submitKeys: [COMMA, TAB, ENTER],
+		submitKeys: [ _.KEY_ENTER ],
 		data: _.DATA,
 		filter: _.FILTER_CONTAINS,
 		sort: o.sort === false ? false : _.SORT_BYLENGTH,
@@ -75,12 +69,12 @@ var _ = function (input, o) {
 					evt.preventDefault();
 					me.select();
 				}
-				else if (c === ESCAPE) { // Esc
+				else if (c === _.KEY_ESCAPE) { // Esc
 					me.close({ reason: "esc" });
 				}
-				else if (c === 38 || c === 40) { // Down/Up arrow
+				else if (c === _.KEY_UP || c === _.KEY_DOWN) { // Down/Up arrow
 					evt.preventDefault();
-					me[c === 38? "previous" : "next"]();
+					me[c === _.KEY_UP ? "previous" : "next"]();
 				}
 			}
 		}
@@ -274,12 +268,50 @@ _.prototype = {
 		else {
 			this.close({ reason: "nomatches" });
 		}
+	},
+
+	// set keyCodes for tag submitting (can be a single keyCode or an array of keyCodes)
+	setSubmitKeys: function( keys ) {
+	  var newSubmitKeys = [];
+	  if (!keys.length) keys = [ keys ];
+	  for (var i=0; i < keys.length; i++) {
+	    var tok = typeof keys[i];
+	    switch (tok) {
+	      case "object":
+	      case "boolean":
+	      case "function":
+	        continue;
+	      case "string":
+	        var s = keys[i].toUpperCase();
+	        for (var j=0; j < s.length; j++) {
+	          newSubmitKeys.push( s.charCodeAt(j) );
+	        }
+	        continue;
+	    }
+      newSubmitKeys.push( keys[i] );
+	  }
+
+	  if (!newSubmitKeys.length) return false;
+
+	  this.submitKeys = newSubmitKeys;
+
+	  return true;
 	}
 };
 
 // Static methods/properties
 
 _.all = [];
+
+// Keycodes
+_.KEY_BACKSPACE = 8;
+_.KEY_COMMA = 188;
+_.KEY_TAB = 9;
+_.KEY_ENTER = 13;
+_.KEY_ESCAPE = 27;
+_.KEY_UP = 38;
+_.KEY_DOWN = 40;
+
 
 _.FILTER_CONTAINS = function (text, input) {
 	return RegExp($.regExpEscape(input.trim()), "i").test(text);
