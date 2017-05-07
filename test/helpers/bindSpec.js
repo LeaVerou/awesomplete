@@ -6,7 +6,7 @@ describe("Awesomplete.$.bind", function () {
 		return function () { Awesomplete.$.bind(this.element, this.events) };
 	});
 
-	describe("whith invalid element", function () {
+	describe("with invalid element", function () {
 		it("does nothing if element is undefined", function () {
 			this.element = undefined;
 			expect(this.subject).not.toThrow();
