@@ -55,47 +55,55 @@ var _ = function (input, o) {
 
 	// Bind events
 
-	$.bind(this.input, {
-		"input": this.evaluate.bind(this),
-		"blur": this.close.bind(this, { reason: "blur" }),
-		"keydown": function(evt) {
-			var c = evt.keyCode;
+	this._events = {
+		input: {
+			"input": this.evaluate.bind(this),
+			"blur": this.close.bind(this, { reason: "blur" }),
+			"keydown": function(evt) {
+				var c = evt.keyCode;
 
-			// If the dropdown `ul` is in view, then act on keydown for the following keys:
-			// Enter / Esc / Up / Down
-			if(me.opened) {
-				if (c === 13 && me.selected) { // Enter
-					evt.preventDefault();
-					me.select();
+				// If the dropdown `ul` is in view, then act on keydown for the following keys:
+				// Enter / Esc / Up / Down
+				if(me.opened) {
+					if (c === 13 && me.selected) { // Enter
+						evt.preventDefault();
+						me.select();
+					}
+					else if (c === 27) { // Esc
+						me.close({ reason: "esc" });
+					}
+					else if (c === 38 || c === 40) { // Down/Up arrow
+						evt.preventDefault();
+						me[c === 38? "previous" : "next"]();
+					}
 				}
-				else if (c === 27) { // Esc
-					me.close({ reason: "esc" });
-				}
-				else if (c === 38 || c === 40) { // Down/Up arrow
-					evt.preventDefault();
-					me[c === 38? "previous" : "next"]();
+			}
+		},
+		form: {
+			"submit": this.close.bind(this, { reason: "submit" })
+		},
+		ul: {
+			"mousedown": function(evt) {
+				var li = evt.target;
+
+				if (li !== this) {
+
+					while (li && !/li/i.test(li.nodeName)) {
+						li = li.parentNode;
+					}
+
+					if (li && evt.button === 0) {  // Only select on left click
+						evt.preventDefault();
+						me.select(li, evt.target);
+					}
 				}
 			}
 		}
-	});
+	};
 
-	$.bind(this.input.form, {"submit": this.close.bind(this, { reason: "submit" })});
-
-	$.bind(this.ul, {"mousedown": function(evt) {
-		var li = evt.target;
-
-		if (li !== this) {
-
-			while (li && !/li/i.test(li.nodeName)) {
-				li = li.parentNode;
-			}
-
-			if (li && evt.button === 0) {  // Only select on left click
-				evt.preventDefault();
-				me.select(li, evt.target);
-			}
-		}
-	}});
+	$.bind(this.input, this._events.input);
+	$.bind(this.input.form, this._events.form);
+	$.bind(this.ul, this._events.ul);
 
 	if (this.input.hasAttribute("list")) {
 		this.list = "#" + this.input.getAttribute("list");
@@ -169,6 +177,29 @@ _.prototype = {
 		}
 
 		$.fire(this.input, "awesomplete-open");
+	},
+
+	destroy: function() {
+		//remove events from the input and its form
+		$.unbind(this.input, this._events.input);
+		$.unbind(this.input.form, this._events.form);
+
+		//move the input out of the awesomplete container and remove the container and its children
+		var parentNode = this.container.parentNode;
+
+		parentNode.insertBefore(this.input, this.container);
+		parentNode.removeChild(this.container);
+
+		//remove autocomplete and aria-autocomplete attributes
+		this.input.removeAttribute("autocomplete");
+		this.input.removeAttribute("aria-autocomplete");
+
+		//remove this awesomeplete instance from the global array of instances
+		var indexOfAwesomplete = _.all.indexOf(this);
+
+		if (indexOfAwesomplete !== -1) {
+			_.all.splice(indexOfAwesomplete, 1);
+		}
 	},
 
 	next: function () {
@@ -291,7 +322,7 @@ _.SORT_BYLENGTH = function (a, b) {
 };
 
 _.ITEM = function (text, input) {
-	var html = input.trim() === '' ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
+	var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 	return $.create("li", {
 		innerHTML: html,
 		"aria-selected": "false"
@@ -389,6 +420,18 @@ $.bind = function(element, o) {
 
 			event.split(/\s+/).forEach(function (event) {
 				element.addEventListener(event, callback);
+			});
+		}
+	}
+};
+
+$.unbind = function(element, o) {
+	if (element) {
+		for (var event in o) {
+			var callback = o[event];
+
+			event.split(/\s+/).forEach(function(event) {
+				element.removeEventListener(event, callback);
 			});
 		}
 	}

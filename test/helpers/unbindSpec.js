@@ -1,9 +1,9 @@
-describe("Awesomplete.$.bind", function () {
+describe("Awesomplete.$.unbind", function () {
 
 	$.fixture("plain");
 
 	subject(function () {
-		return function () { Awesomplete.$.bind(this.element, this.events) };
+		return function () { Awesomplete.$.unbind(this.element, this.events) };
 	});
 
 	describe("with invalid element", function () {
@@ -37,23 +37,23 @@ describe("Awesomplete.$.bind", function () {
 		def("element", function () { return $("#plain") });
 
 		beforeEach(function () {
-			spyOn(this.element, "addEventListener");
+			spyOn(this.element, "removeEventListener");
 		});
 
-		it("adds event listeners for all events", function () {
+		it("removes event listeners for all events", function () {
 			this.events = { click: $.noop, input: $.noop };
 			this.subject();
 
-			expect(this.element.addEventListener).toHaveBeenCalledWith("click", this.events.click);
-			expect(this.element.addEventListener).toHaveBeenCalledWith("input", this.events.input);
+			expect(this.element.removeEventListener).toHaveBeenCalledWith("click", this.events.click);
+			expect(this.element.removeEventListener).toHaveBeenCalledWith("input", this.events.input);
 		});
 
-		it("adds single event listener for multiple events", function () {
+		it("removes single event listener for multiple events", function () {
 			this.events = { "click input": $.noop };
 			this.subject();
 
-			expect(this.element.addEventListener).toHaveBeenCalledWith("click", this.events["click input"]);
-			expect(this.element.addEventListener).toHaveBeenCalledWith("input", this.events["click input"]);
+			expect(this.element.removeEventListener).toHaveBeenCalledWith("click", this.events["click input"]);
+			expect(this.element.removeEventListener).toHaveBeenCalledWith("input", this.events["click input"]);
 		});
 	});
 });
