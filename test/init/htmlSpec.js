@@ -39,14 +39,14 @@ describe("Html modifications", function () {
 
 	describe("ARIA support", function () {
 		it("makes input accessible", function () {
-			expect(this.subject.input.getAttribute("aria-autocomplete")).toBe("list");
+			expect(this.subject.input.getAttribute("role")).toBe("combobox");
+			expect(this.subject.input.getAttribute("aria-owns")).toBe("awescomplete_list");
 		});
 
 		it("creates status", function () {
 			expect(this.subject.status instanceof HTMLElement).toBe(true);
 			expect(this.subject.status.getAttribute("role")).toBe("status");
 			expect(this.subject.status.getAttribute("aria-live")).toBe("assertive");
-			expect(this.subject.status.getAttribute("aria-relevant")).toBe("additions");
 		});
 
 		it("puts status inside container", function () {
