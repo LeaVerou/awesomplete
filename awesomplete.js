@@ -112,6 +112,8 @@ var _ = function (input, o) {
 	else {
 		this.list = this.input.getAttribute("data-list") || o.list || [];
 	}
+	
+	this.evaluate();
 
 	_.all.push(this);
 };
