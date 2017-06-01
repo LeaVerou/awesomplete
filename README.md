@@ -61,6 +61,14 @@ Or the following, if you don’t want to use a `<datalist>`, or if you don’t w
 
 There are multiple customizations and properties able to be instantiated within the JS. Libraries and definitions of the properties are available in the Links below.
 
+## Installation
+#### Install with Bower
+1. In terminal locate to the root of your project.
+2. Run this in the command line:
+```
+bower install url https://github.com/LeaVerou/awesomplete.git
+```
+
 ## License
 
 Awesomplete is released under the MIT License. See [LICENSE][1] file for
