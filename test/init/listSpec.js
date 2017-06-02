@@ -21,6 +21,11 @@ describe("Awesomplete list", function () {
 			expect(this.subject._list).toEqual([ "From", "Inline", "List" ]);
 		});
 
+		it("assigns from a single string", function () {
+			this.subject.list = "One Item";
+			expect(this.subject._list).toEqual([ "One Item" ]);
+		});
+
 		it("assigns from element specified by selector", function () {
 			this.subject.list = "#data-list";
 			expect(this.subject._list).toEqual([
