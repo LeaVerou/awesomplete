@@ -29,13 +29,13 @@
 <h1>Demo (no JS, minimal options)</h1>
 <label>
 	Pick a programming language:<br />
-	<input autofocus class="awesomplete" data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" />
+	<input autofocus class="awesomplete" data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, PHP, Ruby" />
 </label>
 
 <p>Note that by default you need to type <strong>at least 2 characters</strong> for the popup to show up, though that’s <a href="#customization">super easy to customize</a>. With Awesomplete, making something like this can be as simple as:</p>
 
 <pre class="language-markup"><code>&lt;input class="awesomplete"
-       data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" /></code></pre>
+       data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, PHP, Ruby" /></code></pre>
 
 <pre class="language-javascript"><code>// No extra JS needed for basic usage!</code></pre>
 
@@ -56,8 +56,8 @@
 	&lt;option>JavaScript&lt;/option>
 	&lt;option>Brainfuck&lt;/option>
 	&lt;option>LOLCODE&lt;/option>
-	&lt;option>Node.js&lt;/option>
-	&lt;option>Ruby on Rails&lt;/option>
+	&lt;option>PHP&lt;/option>
+	&lt;option>Ruby&lt;/option>
 &lt;/datalist></code></pre>
 
 <pre class="language-javascript"><code>// None!</code></pre>
@@ -71,8 +71,8 @@
 	&lt;li>JavaScript&lt;/li>
 	&lt;li>Brainfuck&lt;/li>
 	&lt;li>LOLCODE&lt;/li>
-	&lt;li>Node.js&lt;/li>
-	&lt;li>Ruby on Rails&lt;/li>
+	&lt;li>PHP&lt;/li>
+	&lt;li>Ruby&lt;/li>
 &lt;/ul></code></pre>
 
 <pre class="language-javascript"><code>// None!</code></pre>
@@ -86,8 +86,8 @@
 	&lt;li>JavaScript&lt;/li>
 	&lt;li>Brainfuck&lt;/li>
 	&lt;li>LOLCODE&lt;/li>
-	&lt;li>Node.js&lt;/li>
-	&lt;li>Ruby on Rails&lt;/li>
+	&lt;li>PHP&lt;/li>
+	&lt;li>Ruby&lt;/li>
 &lt;/ul></code></pre>
 <pre class="language-javascript"><code>var input = document.getElementById("myinput");
 new Awesomplete(input, {list: "#mylist"});</code></pre>
@@ -101,8 +101,8 @@ new Awesomplete(input, {list: "#mylist"});</code></pre>
 	&lt;li>JavaScript&lt;/li>
 	&lt;li>Brainfuck&lt;/li>
 	&lt;li>LOLCODE&lt;/li>
-	&lt;li>Node.js&lt;/li>
-	&lt;li>Ruby on Rails&lt;/li>
+	&lt;li>PHP&lt;/li>
+	&lt;li>Ruby&lt;/li>
 &lt;/ul></code></pre>
 <pre class="language-javascript"><code>var input = document.getElementById("myinput");
 new Awesomplete(input, {list: document.querySelector("#mylist")});</code></pre>
@@ -112,7 +112,7 @@ new Awesomplete(input, {list: document.querySelector("#mylist")});</code></pre>
 <pre class="language-markup"><code>&lt;input id="myinput" /></code></pre>
 	<pre class="language-javascript"><code>var input = document.getElementById("myinput");
 new Awesomplete(input, {
-	list: ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"]
+	list: ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "PHP", "Ruby"]
 });</code></pre>
 
 <p>We can even set it (or override it) later and it will just work:</p>
@@ -123,7 +123,7 @@ var awesomplete = new Awesomplete(input);
 
 /* ...more code... */
 
-awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"];</code></pre>
+awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "PHP", "Ruby"];</code></pre>
 
 <p>Suggestions with different <strong>label</strong> and <strong>value</strong> are supported too. The label will be shown in autocompleter and the value will be inserted into the input.</p>
 
@@ -202,7 +202,7 @@ new Awesomplete(input, {
 			<tr>
 				<td><code>autoFirst</code></td>
 				<td><code>data-autofirst</code></td>
-				<td>Should the first element be automatically selected? Demo: <input class="awesomplete" data-autofirst data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" xautofocus /></td>
+				<td>Should the first element be automatically selected? Demo: <input class="awesomplete" data-autofirst data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, PHP, Ruby" xautofocus /></td>
 				<td>Boolean</td>
 				<td>false</td>
 			</tr>
