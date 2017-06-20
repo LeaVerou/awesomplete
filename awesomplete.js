@@ -9,6 +9,9 @@
 
 var _ = function (input, o) {
 	var me = this;
+    
+    // Keep track of number of instances for unique IDs
+    Awesomplete.numInstances = (Awesomplete.numInstances || 0) + 1;
 
 	// Setup
 
@@ -16,7 +19,7 @@ var _ = function (input, o) {
 
 	this.input = $(input);
 	this.input.setAttribute("autocomplete", "off");
-	this.input.setAttribute("aria-owns", "awescomplete_list");
+	this.input.setAttribute("aria-owns", "awesomplete_list_" + Awesomplete.numInstances);
 	this.input.setAttribute("role", "combobox");
 
 	o = o || {};
@@ -44,7 +47,7 @@ var _ = function (input, o) {
 	this.ul = $.create("ul", {
 		hidden: "hidden",
         role: "listbox",
-        id: "awescomplete_list",
+        id: "awesomplete_list_" + Awesomplete.numInstances,
 		inside: this.container
 	});
 
@@ -233,7 +236,7 @@ _.prototype = {
             
 			this.status.textContent = lis[i].textContent + ", list item " + (i + 1) + " of " + lis.length;
             
-            this.input.setAttribute("aria-activedescendant", "awescomplete_list_item_" + this.index);
+            this.input.setAttribute("aria-activedescendant", this.ul.id + "_item_" + this.index);
 
 			// scroll to highlighted element in case parent's height is fixed
 			this.ul.scrollTop = lis[i].offsetTop - this.ul.clientHeight + lis[i].clientHeight;
@@ -341,7 +344,7 @@ _.ITEM = function (text, input, item_id) {
 	return $.create("li", {
 		innerHTML: html,
 		"aria-selected": "false",
-        "id": "awescomplete_list_item_" + item_id
+        "id": Awesomplete.numInstances + "_item_" + item_id
 	});
 };
 

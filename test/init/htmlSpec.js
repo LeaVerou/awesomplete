@@ -40,7 +40,7 @@ describe("Html modifications", function () {
 	describe("ARIA support", function () {
 		it("makes input accessible", function () {
 			expect(this.subject.input.getAttribute("role")).toBe("combobox");
-			expect(this.subject.input.getAttribute("aria-owns")).toBe("awescomplete_list");
+			expect(this.subject.input.getAttribute("aria-owns")).toMatch(/awesomplete_list_[0-9]+/);
 		});
 
 		it("creates status", function () {
