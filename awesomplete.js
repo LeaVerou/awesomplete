@@ -12,6 +12,7 @@ var _ = function (input, o) {
     
     // Keep track of number of instances for unique IDs
     Awesomplete.numInstances = (Awesomplete.numInstances || 0) + 1;
+    this.numInstances = Awesomplete.numInstances;
 
 	// Setup
 
@@ -19,7 +20,7 @@ var _ = function (input, o) {
 
 	this.input = $(input);
 	this.input.setAttribute("autocomplete", "off");
-	this.input.setAttribute("aria-owns", "awesomplete_list_" + Awesomplete.numInstances);
+	this.input.setAttribute("aria-owns", "awesomplete_list_" + this.numInstances);
 	this.input.setAttribute("role", "combobox");
 
 	o = o || {};
@@ -47,7 +48,7 @@ var _ = function (input, o) {
 	this.ul = $.create("ul", {
 		hidden: "hidden",
         role: "listbox",
-        id: "awesomplete_list_" + Awesomplete.numInstances,
+        id: "awesomplete_list_" + this.numInstances,
 		inside: this.container
 	});
 
@@ -344,7 +345,7 @@ _.ITEM = function (text, input, item_id) {
 	return $.create("li", {
 		innerHTML: html,
 		"aria-selected": "false",
-        "id": Awesomplete.numInstances + "_item_" + item_id
+        "id": "awesomplete_list_" + this.numInstances + "_item_" + item_id
 	});
 };
 
