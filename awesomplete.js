@@ -322,11 +322,22 @@ _.SORT_BYLENGTH = function (a, b) {
 };
 
 _.ITEM = function (text, input) {
-	var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
-	return $.create("li", {
-		innerHTML: html,
-		"aria-selected": "false"
-	});
+    input = input.trim();
+    var element = document.createElement("li");
+    element.setAttribute("aria-selected", "false");
+
+    var regex = new RegExp("("+input+")", "ig");
+    var parts = input ? text.split(regex) : [text];
+    parts.forEach(function (txt) {
+        if (input && txt.match(regex)) {
+            var match = document.createElement("mark");
+            match.textContent = txt;
+            element.appendChild(match);
+        } else {
+            element.appendChild(document.createTextNode(txt));
+        }
+    });
+    return element;
 };
 
 _.REPLACE = function (text) {
