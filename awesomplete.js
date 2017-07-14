@@ -292,7 +292,9 @@ _.prototype = {
 			if (this.ul.children.length === 0) {
 				this.close({ reason: "nomatches" });
 			} else {
-				this.open();
+				// If the dropdown is already open, don't open again.
+				if (!this.isOpened)
+					this.open();
 			}
 		}
 		else {
