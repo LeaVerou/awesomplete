@@ -122,7 +122,7 @@ _.prototype = {
 			this._list = list;
 		}
 		else if (typeof list === "string" && list.indexOf(",") > -1) {
-				this._list = list.split(/\s*,\s*/);
+			this._list = list.split(/\s*,\s*/);
 		}
 		else { // Element or CSS selector
 			list = $(list);
@@ -292,7 +292,9 @@ _.prototype = {
 			if (this.ul.children.length === 0) {
 				this.close({ reason: "nomatches" });
 			} else {
-				this.open();
+				// If the dropdown is already open, don't open again.
+				if (!this.isOpened)
+					this.open();
 			}
 		}
 		else {
