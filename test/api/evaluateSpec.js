@@ -45,7 +45,8 @@ describe("awesomplete.evaluate", function () {
 			spyOn(this.subject, "open");
 			this.subject.evaluate();
 
-			expect(this.subject.open).toHaveBeenCalled();
+			if (!this.subject.isOpened)
+			    expect(this.subject.open).toHaveBeenCalled();
 		});
 
 		it("fills completer with found items", function () {
