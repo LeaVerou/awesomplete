@@ -28,7 +28,8 @@ var _ = function (input, o) {
 		filter: _.FILTER_CONTAINS,
 		sort: o.sort === false ? false : _.SORT_BYLENGTH,
 		item: _.ITEM,
-		replace: _.REPLACE
+		replace: _.REPLACE,
+		listContainer: _.CONTAINER
 	}, o);
 
 	this.index = -1;
@@ -42,7 +43,8 @@ var _ = function (input, o) {
 
 	this.ul = $.create("ul", {
 		hidden: "hidden",
-		inside: this.container
+		className: "awesomplete-suggestion-list",
+		inside: me.listContainer === _.CONTAINER ? me.container : me.listContainer
 	});
 
 	this.status = $.create("span", {
@@ -169,7 +171,16 @@ _.prototype = {
 	},
 
 	open: function () {
+		if (this.listContainer !== _.CONTAINER) {
+			// In case the suggestion list is out of the container, 
+			// get the bounding information of the container to set the position of the suggestion list below
+			var boundingRect = this.container.getBoundingClientRect()
+			this.ul.style.top = (boundingRect.top + boundingRect.height) + "px";
+			this.ul.style.left = boundingRect.left + "px";
+			this.ul.style["min-width"] = boundingRect.width + "px";
+		}
 		this.ul.removeAttribute("hidden");
+
 		this.isOpened = true;
 
 		if (this.autoFirst && this.index === -1) {
@@ -332,6 +343,8 @@ _.ITEM = function (text, input) {
 _.REPLACE = function (text) {
 	this.input.value = text.value;
 };
+
+_.CONTAINER = "container";
 
 _.DATA = function (item/*, input*/) { return item; };
 
