@@ -1,4 +1,4 @@
-/**
+	/**
  * Simple, lightweight, usable local autocomplete library for modern browsers
  * Because there weren’t enough autocomplete scripts in the world? Because I’m completely insane and have NIH syndrome? Probably both. :P
  * @author Lea Verou http://leaverou.github.io/awesomplete
@@ -7,55 +7,57 @@
 
 (function () {
 
-var _ = function (input, o) {
-	var me = this;
+    var _ = function (input, o) {
+        var me = this;
 
-	// Setup
+        // Setup
 
-	this.isOpened = false;
+        this.isOpened = false;
 
-	this.input = $(input);
-	this.input.setAttribute("autocomplete", "off");
-	this.input.setAttribute("aria-autocomplete", "list");
+        this.input = $(input);
+        this.input.setAttribute("autocomplete", "off");
+        this.input.setAttribute("aria-autocomplete", "list");
 
-	o = o || {};
+        o = o || {};
 
-	configure(this, {
-		minChars: 2,
-		maxItems: 10,
-		autoFirst: false,
-		data: _.DATA,
-		filter: _.FILTER_CONTAINS,
-		sort: o.sort === false ? false : _.SORT_BYLENGTH,
-		item: _.ITEM,
-		replace: _.REPLACE
-	}, o);
+        configure(this, {
+            minChars: 2,
+            maxItems: 10,
+            autoFirst: false,
+            data: _.DATA,
+            filter: _.FILTER_CONTAINS,
+            sort: o.sort === false ? false : _.SORT_BYLENGTH,
+            item: _.ITEM,
+            replace: _.REPLACE,
+            listContainer: 'container'
+        }, o);
 
-	this.index = -1;
+        this.index = -1;
 
-	// Create necessary elements
+        // Create necessary elements
 
-	this.container = $.create("div", {
-		className: "awesomplete",
-		around: input
-	});
+        this.container = $.create("div", {
+            className: "awesomplete",
+            around: input
+        });
 
-	this.ul = $.create("ul", {
-		hidden: "hidden",
-		inside: this.container
-	});
+        this.ul = $.create("ul", {
+            hidden: "hidden",
+            className: "awesomplete-suggestion-list",
+            inside: this.listContainer === 'container' ? this.container : document.body
+        });
 
-	this.status = $.create("span", {
-		className: "visually-hidden",
-		role: "status",
-		"aria-live": "assertive",
-		"aria-relevant": "additions",
-		inside: this.container
-	});
+        this.status = $.create("span", {
+            className: "visually-hidden",
+            role: "status",
+            "aria-live": "assertive",
+            "aria-relevant": "additions",
+            inside: this.container
+        });
 
-	// Bind events
+        // Bind events
 
-	this._events = {
+        this._events = {
 		input: {
 			"input": this.evaluate.bind(this),
 			"blur": this.close.bind(this, { reason: "blur" }),
@@ -169,17 +171,30 @@ _.prototype = {
 	},
 
 	open: function () {
-		this.ul.removeAttribute("hidden");
-		this.isOpened = true;
+            if (this.listContainer !== 'container') {
+                this.setListPosition();
+            }
+            this.ul.removeAttribute("hidden");
 
-		if (this.autoFirst && this.index === -1) {
-			this.goto(0);
-		}
+            this.isOpened = true;
 
-		$.fire(this.input, "awesomplete-open");
-	},
+            if (this.autoFirst && this.index === -1) {
+                this.goto(0);
+            }
 
-	destroy: function() {
+            $.fire(this.input, "awesomplete-open");
+        },
+
+        setListPosition: function () {
+
+            var rect = this.container.getBoundingClientRect()
+            this.ul.style.top = (rect.y + rect.height + 8) + 'px';
+            this.ul.style.left = rect.x + 'px';
+            this.ul.style['min-width'] = rect.width + 'px';
+
+        },
+
+        destroy: function() {
 		//remove events from the input and its form
 		$.unbind(this.input, this._events.input);
 		$.unbind(this.input.form, this._events.form);
