@@ -50,7 +50,7 @@ describe("awesomplete.goto", function () {
 		});
 
 		it("updates status", function () {
-			expect(this.subject.status.textContent).toBe("item1");
+			expect(this.subject.status.textContent).toBe("item1, list item 1 of 3");
 		});
 	});
 
@@ -61,7 +61,7 @@ describe("awesomplete.goto", function () {
 		});
 
 		it("does not update status", function () {
-			expect(this.subject.status.textContent).toBe("item1");
+			expect(this.subject.status.textContent).toBe("item1, list item 1 of 3");
 		});
 	});
 });

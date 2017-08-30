@@ -9,6 +9,10 @@
 
 var _ = function (input, o) {
 	var me = this;
+    
+    // Keep track of number of instances for unique IDs
+    Awesomplete.count = (Awesomplete.count || 0) + 1;
+    this.count = Awesomplete.count;
 
 	// Setup
 
@@ -16,7 +20,8 @@ var _ = function (input, o) {
 
 	this.input = $(input);
 	this.input.setAttribute("autocomplete", "off");
-	this.input.setAttribute("aria-autocomplete", "list");
+	this.input.setAttribute("aria-owns", "awesomplete_list_" + this.count);
+	this.input.setAttribute("role", "combobox");
 
 	o = o || {};
 
@@ -42,6 +47,8 @@ var _ = function (input, o) {
 
 	this.ul = $.create("ul", {
 		hidden: "hidden",
+        role: "listbox",
+        id: "awesomplete_list_" + this.count,
 		inside: this.container
 	});
 
@@ -49,8 +56,9 @@ var _ = function (input, o) {
 		className: "visually-hidden",
 		role: "status",
 		"aria-live": "assertive",
-		"aria-relevant": "additions",
-		inside: this.container
+        "aria-atomic": true,
+        inside: this.container,
+        textContent: this.minChars != 0 ? ("Type " + this.minChars + " or more characters for results.") : "Begin typing for results."
 	});
 
 	// Bind events
@@ -226,7 +234,10 @@ _.prototype = {
 
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
-			this.status.textContent = lis[i].textContent;
+            
+			this.status.textContent = lis[i].textContent + ", list item " + (i + 1) + " of " + lis.length;
+            
+            this.input.setAttribute("aria-activedescendant", this.ul.id + "_item_" + this.index);
 
 			// scroll to highlighted element in case parent's height is fixed
 			this.ul.scrollTop = lis[i].offsetTop - this.ul.clientHeight + lis[i].clientHeight;
@@ -285,18 +296,26 @@ _.prototype = {
 
 			this.suggestions = this.suggestions.slice(0, this.maxItems);
 
-			this.suggestions.forEach(function(text) {
-					me.ul.appendChild(me.item(text, value));
+			this.suggestions.forEach(function(text, index) {
+					me.ul.appendChild(me.item(text, value, index));
 				});
 
 			if (this.ul.children.length === 0) {
+                
+                this.status.textContent = "No results found";
+                
 				this.close({ reason: "nomatches" });
+        
 			} else {
 				this.open();
+        
+                this.status.textContent = this.ul.children.length + " results found";
 			}
 		}
 		else {
 			this.close({ reason: "nomatches" });
+            
+                this.status.textContent = "No results found";
 		}
 	}
 };
@@ -321,11 +340,12 @@ _.SORT_BYLENGTH = function (a, b) {
 	return a < b? -1 : 1;
 };
 
-_.ITEM = function (text, input) {
+_.ITEM = function (text, input, item_id) {
 	var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 	return $.create("li", {
 		innerHTML: html,
-		"aria-selected": "false"
+		"aria-selected": "false",
+        "id": "awesomplete_list_" + this.count + "_item_" + item_id
 	});
 };
 
