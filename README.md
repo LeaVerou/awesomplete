@@ -22,7 +22,7 @@ Then you can add an Awesomplete widget by adding the following input tag:
 
 ```html
 <input class="awesomplete"
-       data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" />
+       data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, PHP, Ruby" />
 ```
 
 Add `class="awesomplete"` for it to be automatically processed (you can still specify many options via HTML attributes)
@@ -39,8 +39,8 @@ The simple example above could have also been made with the following markup, wh
 	<option>JavaScript</option>
 	<option>Brainfuck</option>
 	<option>LOLCODE</option>
-	<option>Node.js</option>
-	<option>Ruby on Rails</option>
+	<option>PHP</option>
+	<option>Ruby</option>
 </datalist>
 ```
 
@@ -54,8 +54,8 @@ Or the following, if you don’t want to use a `<datalist>`, or if you don’t w
 	<li>JavaScript</li>
 	<li>Brainfuck</li>
 	<li>LOLCODE</li>
-	<li>Node.js</li>
-	<li>Ruby on Rails</li>
+	<li>PHP</li>
+	<li>Ruby</li>
 </ul>
 ```
 
