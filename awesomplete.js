@@ -29,6 +29,7 @@ var _ = function (input, o) {
 		minChars: 2,
 		maxItems: 10,
 		autoFirst: false,
+		hideMark: false,
 		data: _.DATA,
 		filter: _.FILTER_CONTAINS,
 		sort: o.sort === false ? false : _.SORT_BYLENGTH,
@@ -341,7 +342,8 @@ _.SORT_BYLENGTH = function (a, b) {
 };
 
 _.ITEM = function (text, input, item_id) {
-	var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
+	var mark = this.hideMark ? "$&" : "<mark>$&</mark>";
+	var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), mark);
 	return $.create("li", {
 		innerHTML: html,
 		"aria-selected": "false",
