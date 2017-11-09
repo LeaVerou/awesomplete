@@ -405,7 +405,7 @@ We can also <strong>generate list items based on user's input</strong>. See E-ma
 
 	replace: function(text) {
 		var before = this.input.value.match(/^.+,\s*|/)[0];
-		this.input.value = before + text + ", ";
+		this.input.value = before + text.value + ", ";
 	}
 });</script></code></pre>
 	</section>
