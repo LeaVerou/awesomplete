@@ -172,6 +172,8 @@ _.prototype = {
 		this.ul.setAttribute("hidden", "");
 		this.isOpened = false;
 		this.index = -1;
+    
+		this.status.setAttribute("hidden", "");
 
 		$.fire(this.input, "awesomplete-close", o || {});
 	},
@@ -179,6 +181,8 @@ _.prototype = {
 	open: function () {
 		this.ul.removeAttribute("hidden");
 		this.isOpened = true;
+        
+		this.status.removeAttribute("hidden");
 
 		if (this.autoFirst && this.index === -1) {
 			this.goto(0);
