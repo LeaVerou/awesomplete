@@ -103,7 +103,7 @@ var _ = function (input, o) {
 
 				if (li !== this) {
 
-					while (li && !/li/i.test(li.nodeName)) {
+					while (li && li.tagName !== "LI") {
 						li = li.parentNode;
 					}
 
