@@ -288,7 +288,7 @@ _.prototype = {
 		var me = this;
 		var value = this.input.value;
 
-		if (value.length >= this.minChars && this._list != undefined && this._list.length > 0) {
+		if (value.length >= this.minChars && this._list && this._list.length > 0) {
 			this.index = -1;
 			// Populate list with options that match
 			this.ul.innerHTML = "";
