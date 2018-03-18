@@ -8,6 +8,18 @@ http://leaverou.github.io/awesomplete/
 
 Awesomplete is an ultra lightweight, customizable, simple autocomplete widget with zero dependencies, built with modern standards for modern browsers.
 
+## Installation
+The easiest way to get up and running is by using `yarn` or `npm`.
+
+You can also install this project through [npm](https://www.npmjs.com/):
+
+```sh
+yarn add awesomplete
+```
+
+```sh
+npm install cookieconsent --save
+```
 
 ## Basic Usage
 
