@@ -498,6 +498,11 @@ function init() {
 	});
 }
 
+// Make sure to export Awesomplete on self when in a browser
+if (typeof self !== "undefined") {
+	self.Awesomplete = _;
+}
+
 // Are we in a browser? Check for Document constructor
 if (typeof Document !== "undefined") {
 	// DOM already loaded?
@@ -512,11 +517,6 @@ if (typeof Document !== "undefined") {
 
 _.$ = $;
 _.$$ = $$;
-
-// Make sure to export Awesomplete on self when in a browser
-if (typeof self !== "undefined") {
-	self.Awesomplete = _;
-}
 
 // Expose Awesomplete as a CJS module
 if (typeof module === "object" && module.exports) {
