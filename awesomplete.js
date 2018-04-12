@@ -9,7 +9,7 @@
 
 var _ = function (input, o) {
 	var me = this;
-    
+
     // Keep track of number of instances for unique IDs
     Awesomplete.count = (Awesomplete.count || 0) + 1;
     this.count = Awesomplete.count;
@@ -33,7 +33,8 @@ var _ = function (input, o) {
 		filter: _.FILTER_CONTAINS,
 		sort: o.sort === false ? false : _.SORT_BYLENGTH,
 		item: _.ITEM,
-		replace: _.REPLACE
+		replace: _.REPLACE,
+		fetchFromServer: null
 	}, o);
 
 	this.index = -1;
@@ -179,7 +180,7 @@ _.prototype = {
 		this.ul.setAttribute("hidden", "");
 		this.isOpened = false;
 		this.index = -1;
-    
+
 		this.status.setAttribute("hidden", "");
 
 		$.fire(this.input, "awesomplete-close", o || {});
@@ -188,7 +189,7 @@ _.prototype = {
 	open: function () {
 		this.ul.removeAttribute("hidden");
 		this.isOpened = true;
-        
+
 		this.status.removeAttribute("hidden");
 
 		if (this.autoFirst && this.index === -1) {
@@ -245,9 +246,9 @@ _.prototype = {
 
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
-            
+
 			this.status.textContent = lis[i].textContent + ", list item " + (i + 1) + " of " + lis.length;
-            
+
             this.input.setAttribute("aria-activedescendant", this.ul.id + "_item_" + this.index);
 
 			// scroll to highlighted element in case parent's height is fixed
@@ -277,56 +278,98 @@ _.prototype = {
 			if (allowed) {
 				this.replace(suggestion);
 				this.close({ reason: "select" });
+
+				var selectedObj = null;
+				if (this._objList) {
+					selectedObj = this._objList.find(function(o) {
+						return o.name === suggestion.value;
+					});
+				}
+
 				$.fire(this.input, "awesomplete-selectcomplete", {
-					text: suggestion
+					text: suggestion,
+					selectedObj: selectedObj
 				});
 			}
 		}
 	},
 
-	evaluate: function() {
+	// data can be string array, ['a', 'b']
+	// or array of object that has a 'name' key: like [ { name: 'Adam' }, { name: 'Eve' }]
+	chooseAndShow: function(data) {
+		if (data && data.length > 0) {
+			if ((typeof data[0]) === 'string') {
+				this._list = data;
+			} else {
+				var name = data[0].name;
+				if (name && (typeof name) === 'string') {
+					this._list = data.map(function(item) {
+						return item.name;
+					});
+
+					// save the origional data
+					this._objList = data;
+				} else {
+					return;
+				}
+			}
+		}
+
+		if (!this._list || this._list.length <= 0) {
+			return;
+		}
+
 		var me = this;
 		var value = this.input.value;
+		this.suggestions = this._list
+			.map(function(item) {
+				return new Suggestion(me.data(item, value));
+			})
+			.filter(function(item) {
+				return me.filter(item, value);
+			});
 
-		if (value.length >= this.minChars && this._list && this._list.length > 0) {
+		if (this.sort !== false) {
+			this.suggestions = this.suggestions.sort(this.sort);
+		}
+
+		this.suggestions = this.suggestions.slice(0, this.maxItems);
+
+		this.suggestions.forEach(function(text, index) {
+				me.ul.appendChild(me.item(text, value, index));
+			});
+
+		if (this.ul.children.length === 0) {
+
+			this.status.textContent = "No results found";
+
+			this.close({ reason: "nomatches" });
+
+		} else {
+			this.open();
+
+			this.status.textContent = this.ul.children.length + " results found";
+		}
+	},
+
+	evaluate: function() {
+		var value = this.input.value;
+
+		if (value.length >= this.minChars
+			&& (this._list && this._list.length > 0 || this.fetchFromServer)) {
 			this.index = -1;
 			// Populate list with options that match
 			this.ul.innerHTML = "";
 
-			this.suggestions = this._list
-				.map(function(item) {
-					return new Suggestion(me.data(item, value));
-				})
-				.filter(function(item) {
-					return me.filter(item, value);
-				});
-
-			if (this.sort !== false) {
-				this.suggestions = this.suggestions.sort(this.sort);
-			}
-
-			this.suggestions = this.suggestions.slice(0, this.maxItems);
-
-			this.suggestions.forEach(function(text, index) {
-					me.ul.appendChild(me.item(text, value, index));
-				});
-
-			if (this.ul.children.length === 0) {
-                
-                this.status.textContent = "No results found";
-                
-				this.close({ reason: "nomatches" });
-        
+			if (this.fetchFromServer) {
+				this.fetchFromServer(this.chooseAndShow.bind(this));
 			} else {
-				this.open();
-        
-                this.status.textContent = this.ul.children.length + " results found";
+				this.chooseAndShow();
 			}
 		}
 		else {
 			this.close({ reason: "nomatches" });
-            
-                this.status.textContent = "No results found";
+			this.status.textContent = "No results found";
 		}
 	}
 };
