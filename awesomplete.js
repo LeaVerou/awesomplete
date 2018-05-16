@@ -431,13 +431,10 @@ $.create = function(tag, o) {
 		else if (i === "around") {
 			var ref = $(val);
 			ref.parentNode.insertBefore(element, ref);
+			element.appendChild(ref);
 			
-			//preserve the autofocus attribute
 			if (ref.getAttribute("autofocus") != null) {
-				element.appendChild(ref).focus();
-			}
-			else {
-				element.appendChild(ref);
+				ref.focus();
 			}
 		}
 		else if (i in element) {
