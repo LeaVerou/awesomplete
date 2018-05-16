@@ -432,6 +432,10 @@ $.create = function(tag, o) {
 			var ref = $(val);
 			ref.parentNode.insertBefore(element, ref);
 			element.appendChild(ref);
+			
+			if (ref.getAttribute("autofocus") != null) {
+				ref.focus();
+			}
 		}
 		else if (i in element) {
 			element[i] = val;
