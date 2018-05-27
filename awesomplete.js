@@ -32,6 +32,7 @@ var _ = function (input, o) {
 		data: _.DATA,
 		filter: _.FILTER_CONTAINS,
 		sort: o.sort === false ? false : _.SORT_BYLENGTH,
+		container: _.CONTAINER,
 		item: _.ITEM,
 		replace: _.REPLACE
 	}, o);
@@ -40,10 +41,7 @@ var _ = function (input, o) {
 
 	// Create necessary elements
 
-	this.container = $.create("div", {
-		className: "awesomplete",
-		around: input
-	});
+	this.container = this.container(input);
 
 	this.ul = $.create("ul", {
 		hidden: "hidden",
@@ -350,6 +348,13 @@ _.SORT_BYLENGTH = function (a, b) {
 
 	return a < b? -1 : 1;
 };
+
+_.CONTAINER = function (input) {
+	return $.create("div", {
+		className: "awesomplete",
+		around: input
+	});
+}
 
 _.ITEM = function (text, input, item_id) {
 	var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
