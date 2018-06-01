@@ -11,8 +11,8 @@ var _ = function (input, o) {
 	var me = this;
     
     // Keep track of number of instances for unique IDs
-    Awesomplete.count = (Awesomplete.count || 0) + 1;
-    this.count = Awesomplete.count;
+    _.count = (_.count || 0) + 1;
+    this.count = _.count;
 
 	// Setup
 
