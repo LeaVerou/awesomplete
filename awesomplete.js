@@ -37,7 +37,7 @@ var _ = function (input, o) {
 		container: _.CONTAINER,
 		item: _.ITEM,
 		replace: _.REPLACE,
-		tabSelect: false,
+		tabSelect: false
 	}, o);
 
 	this.index = -1;
