@@ -64,4 +64,33 @@ describe("keydown event", function () {
 
 		expect(this.subject.next).not.toHaveBeenCalled();
 	});
+	it("does not select on tab", function () {
+		this.subject.next();
+
+		spyOn(this.subject, "select");
+		$.keydown(this.subject.input, $.k.TAB);
+
+		expect(this.subject.select).not.toHaveBeenCalled();
+	});
 });
+
+describe("tabSelect option true ", function () {
+	$.fixture("plain");
+
+	subject(function () {
+		return new Awesomplete("#plain", { list: ["item1", "item2", "item3"], tabSelect: true });
+	});
+
+	beforeEach(function () {
+		$.type(this.subject.input, "ite");
+	});
+
+	it("selects on tab", function () {
+		this.subject.next();
+
+		spyOn(this.subject, "select");
+		$.keydown(this.subject.input, $.k.TAB);
+
+		expect(this.subject.select).toHaveBeenCalled();
+	});
+})
