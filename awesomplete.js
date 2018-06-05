@@ -9,7 +9,7 @@
 
 var _ = function (input, o) {
 	var me = this;
-    
+
     // Keep track of number of instances for unique IDs
     _.count = (_.count || 0) + 1;
     this.count = _.count;
@@ -36,7 +36,8 @@ var _ = function (input, o) {
 		sort: o.sort === false ? false : _.SORT_BYLENGTH,
 		container: _.CONTAINER,
 		item: _.ITEM,
-		replace: _.REPLACE
+		replace: _.REPLACE,
+		tabSelect: false,
 	}, o);
 
 	this.index = -1;
@@ -75,6 +76,9 @@ var _ = function (input, o) {
 				if(me.opened) {
 					if (c === 13 && me.selected) { // Enter
 						evt.preventDefault();
+						me.select();
+					}
+					else if (c === 9 && me.selected && me.tabSelect) {
 						me.select();
 					}
 					else if (c === 27) { // Esc
@@ -179,7 +183,7 @@ _.prototype = {
 		this.ul.setAttribute("hidden", "");
 		this.isOpened = false;
 		this.index = -1;
-    
+
 		this.status.setAttribute("hidden", "");
 
 		$.fire(this.input, "awesomplete-close", o || {});
@@ -188,7 +192,7 @@ _.prototype = {
 	open: function () {
 		this.ul.removeAttribute("hidden");
 		this.isOpened = true;
-        
+
 		this.status.removeAttribute("hidden");
 
 		if (this.autoFirst && this.index === -1) {
@@ -248,9 +252,9 @@ _.prototype = {
 
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
-            
+
 			this.status.textContent = lis[i].textContent + ", list item " + (i + 1) + " of " + lis.length;
-            
+
             this.input.setAttribute("aria-activedescendant", this.ul.id + "_item_" + this.index);
 
 			// scroll to highlighted element in case parent's height is fixed
@@ -315,20 +319,20 @@ _.prototype = {
 				});
 
 			if (this.ul.children.length === 0) {
-                
+
                 this.status.textContent = "No results found";
-                
+
 				this.close({ reason: "nomatches" });
-        
+
 			} else {
 				this.open();
-        
+
                 this.status.textContent = this.ul.children.length + " results found";
 			}
 		}
 		else {
 			this.close({ reason: "nomatches" });
-            
+
                 this.status.textContent = "No results found";
 		}
 	}
@@ -442,7 +446,7 @@ $.create = function(tag, o) {
 			var ref = $(val);
 			ref.parentNode.insertBefore(element, ref);
 			element.appendChild(ref);
-			
+
 			if (ref.getAttribute("autofocus") != null) {
 				ref.focus();
 			}

@@ -55,6 +55,7 @@ $.keydown = function (target, keyCode) {
 	return $.fire(target, "keydown", { keyCode: keyCode });
 };
 $.k = {
+	TAB:   9,
 	ENTER: 13,
 	ESC:   27,
 	DOWN:  40,
