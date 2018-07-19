@@ -137,7 +137,7 @@ var _ = function (input, o) {
 
 _.prototype = {
 	set list(list) {
-		if (Array.isArray(list)) {
+		if (Array.isArray(list) || typeof list === "function") {
 			this._list = list;
 		}
 		else if (typeof list === "string" && list.indexOf(",") > -1) {
@@ -295,45 +295,45 @@ _.prototype = {
 		var me = this;
 		var value = this.input.value;
 
-		if (value.length >= this.minChars && this._list && this._list.length > 0) {
+		var suggestions = [];
+
+		if (value.length >= this.minChars) {
+			var list = this._list;
+			if (typeof this._list === "function") {
+				list = this._list(value);
+			}
+
+			if (list && list.length > 0) {
+
+				suggestions = list
+					.map(function (item) {
+						return new Suggestion(me.data(item, value));
+					})
+					.filter(function (item) {
+						return me.filter(item, value);
+					});
+
+				if (this.sort !== false) {
+					suggestions.sort(this.sort);
+				}	
+			}
+		}
+
+		this.suggestions = suggestions.slice(0, this.maxItems);
+		if (this.suggestions.length > 0) {
 			this.index = -1;
 			// Populate list with options that match
 			this.ul.innerHTML = "";
 
-			this.suggestions = this._list
-				.map(function(item) {
-					return new Suggestion(me.data(item, value));
-				})
-				.filter(function(item) {
-					return me.filter(item, value);
-				});
+			this.suggestions.forEach(function (text, index) {
+				me.ul.appendChild(me.item(text, value, index));
+			});
 
-			if (this.sort !== false) {
-				this.suggestions = this.suggestions.sort(this.sort);
-			}
-
-			this.suggestions = this.suggestions.slice(0, this.maxItems);
-
-			this.suggestions.forEach(function(text, index) {
-					me.ul.appendChild(me.item(text, value, index));
-				});
-
-			if (this.ul.children.length === 0) {
-
-                this.status.textContent = "No results found";
-
-				this.close({ reason: "nomatches" });
-
-			} else {
-				this.open();
-
-                this.status.textContent = this.ul.children.length + " results found";
-			}
-		}
-		else {
+			this.open();
+			this.status.textContent = this.ul.children.length + " results found";
+		} else {
+			this.status.textContent = "No results found";
 			this.close({ reason: "nomatches" });
-
-                this.status.textContent = "No results found";
 		}
 	}
 };
