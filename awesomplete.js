@@ -19,7 +19,7 @@ var _ = function (input, o) {
 	this.isOpened = false;
 
 	this.input = $(input);
-	this.input.setAttribute("autocomplete", "off");
+	this.input.setAttribute("autocomplete", "awesomplete");
 	this.input.setAttribute("aria-owns", "awesomplete_list_" + this.count);
 	this.input.setAttribute("role", "combobox");
 
