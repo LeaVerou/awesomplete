@@ -10,7 +10,7 @@ describe("Html modifications", function () {
 	});
 
 	it("turns native autocompleter off", function () {
-		expect(this.subject.input.getAttribute("autocomplete")).toBe("awesomplete");
+		expect(this.subject.input.getAttribute("autocomplete")).toBe("off");
 	});
 
 	describe("HTML tweaks", function () {
