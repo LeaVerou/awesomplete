@@ -16,7 +16,8 @@
     display: block;
 }
 
-.awesomplete > ul {
+.awesomplete > ul,
+ul.awesomplete-suggestion-list {
     position: absolute;
     left: 0;
     z-index: 1;
@@ -28,6 +29,7 @@
     background: #fff;
 }
 
-.awesomplete > ul:empty {
+.awesomplete > ul:empty,
+ul.awesomplete-suggestion-list:empty {
     display: none;
 }
