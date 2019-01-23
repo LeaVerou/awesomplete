@@ -20,6 +20,7 @@ var _ = function (input, o) {
 
 	this.input = $(input);
 	this.input.setAttribute("autocomplete", "off");
+	this.input.setAttribute("aria-expanded", "false");
 	this.input.setAttribute("aria-owns", "awesomplete_list_" + this.count);
 	this.input.setAttribute("role", "combobox");
 
@@ -180,6 +181,7 @@ _.prototype = {
 			return;
 		}
 
+		this.input.setAttribute("aria-expanded", "false");
 		this.ul.setAttribute("hidden", "");
 		this.isOpened = false;
 		this.index = -1;
@@ -190,6 +192,7 @@ _.prototype = {
 	},
 
 	open: function () {
+		this.input.setAttribute("aria-expanded", "true");
 		this.ul.removeAttribute("hidden");
 		this.isOpened = true;
 
@@ -369,8 +372,9 @@ _.ITEM = function (text, input, item_id) {
 	var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 	return $.create("li", {
 		innerHTML: html,
+		"role": "option",
 		"aria-selected": "false",
-        "id": "awesomplete_list_" + this.count + "_item_" + item_id
+		"id": "awesomplete_list_" + this.count + "_item_" + item_id
 	});
 };
 
