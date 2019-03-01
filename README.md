@@ -4,7 +4,7 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/LeaVerou/awesomplete.svg)](https://codeclimate.com/github/LeaVerou/awesomplete)
 [![Test Coverage](https://img.shields.io/codeclimate/coverage/github/LeaVerou/awesomplete.svg)](https://codeclimate.com/github/LeaVerou/awesomplete/coverage)
 
-http://leaverou.github.io/awesomplete/
+https://leaverou.github.io/awesomplete/
 
 Awesomplete is an ultra lightweight, customizable, simple autocomplete widget with zero dependencies, built with modern standards for modern browsers.
 
@@ -88,10 +88,10 @@ details.
 
 ## Links
 
-The official site for the library is at <http://leaverou.github.io/awesomplete/>.
+The official site for the library is at <https://leaverou.github.io/awesomplete/>.
 
 Documentation for the API and other topics is at
-<http://leaverou.github.io/awesomplete/#api>.
+<https://leaverou.github.io/awesomplete/#api>.
 
 Created by Lea Verou and other fantastic contributors.
 
