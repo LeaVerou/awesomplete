@@ -38,6 +38,7 @@ var _ = function (input, o) {
 		container: _.CONTAINER,
 		item: _.ITEM,
 		replace: _.REPLACE,
+		suggestion: Suggestion,
 		tabSelect: false
 	}, o);
 
@@ -305,7 +306,7 @@ _.prototype = {
 
 			this.suggestions = this._list
 				.map(function(item) {
-					return new Suggestion(me.data(item, value));
+					return new me.suggestion(me.data(item, value));
 				})
 				.filter(function(item) {
 					return me.filter(item, value);
