@@ -28,7 +28,7 @@ describe("click event", function () {
 		describe("on left click", function () {
 			it("selects item", function () {
 				var event = $.fire(this.target, "click", { button: 0 });
-				expect(this.subject.select).toHaveBeenCalledWith(this.li, this.target);
+				expect(this.subject.select).toHaveBeenCalledWith(this.li, this.target, event);
 			});
 		});
 
@@ -46,7 +46,7 @@ describe("click event", function () {
 		describe("on left click", function () {
 			it("selects item", function () {
 				var event = $.fire(this.target, "click", { button: 0 });
-				expect(this.subject.select).toHaveBeenCalledWith(this.li, this.target);
+				expect(this.subject.select).toHaveBeenCalledWith(this.li, this.target, event);
 				expect(event.defaultPrevented).toBe(true);
 			});
 		});
