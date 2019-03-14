@@ -77,10 +77,10 @@ var _ = function (input, o) {
 				if(me.opened) {
 					if (c === 13 && me.selected) { // Enter
 						evt.preventDefault();
-						me.select();
+						me.select(undefined, undefined, evt);
 					}
 					else if (c === 9 && me.selected && me.tabSelect) {
-						me.select();
+						me.select(undefined, undefined, evt);
 					}
 					else if (c === 27) { // Esc
 						me.close({ reason: "esc" });
@@ -114,7 +114,7 @@ var _ = function (input, o) {
 
 					if (li && evt.button === 0) {  // Only select on left click
 						evt.preventDefault();
-						me.select(li, evt.target);
+						me.select(li, evt.target, evt);
 					}
 				}
 			}
@@ -269,7 +269,7 @@ _.prototype = {
 		}
 	},
 
-	select: function (selected, origin) {
+	select: function (selected, origin, originalEvent) {
 		if (selected) {
 			this.index = $.siblingIndex(selected);
 		} else {
@@ -281,14 +281,16 @@ _.prototype = {
 
 			var allowed = $.fire(this.input, "awesomplete-select", {
 				text: suggestion,
-				origin: origin || selected
+				origin: origin || selected,
+				originalEvent: originalEvent
 			});
 
 			if (allowed) {
 				this.replace(suggestion);
 				this.close({ reason: "select" });
 				$.fire(this.input, "awesomplete-selectcomplete", {
-					text: suggestion
+					text: suggestion,
+					originalEvent: originalEvent
 				});
 			}
 		}
