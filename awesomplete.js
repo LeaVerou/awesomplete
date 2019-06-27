@@ -371,21 +371,23 @@ _.CONTAINER = function (input) {
 }
 
 _.ITEM = function (text, input, item_id) {
-        var span = document.createElement("span");
-        if (input.trim() === "") {
-          span.textContent = text;
-        } else {
-          var matcher = RegExp($.regExpEscape(input.trim()), "gi");
-          var m, cur = 0;
-          while((m = matcher.exec(text)) !== null) {
-            span.appendChild(document.createTextNode(text.slice(cur, m.index)));
-            var mark = document.createElement("mark");
-            mark.textContent = m[0];
-            span.appendChild(mark);
-            cur = m.index + m[0].length;
-          }
-          span.appendChild(document.createTextNode(text.slice(cur)));
-        }
+	var span = $.create("span");
+	if (input.trim() === "") {
+		span.textContent = text;
+	}
+	else {
+		var matcher = RegExp($.regExpEscape(input.trim()), "gi");
+		var m, cur = 0;
+		while((m = matcher.exec(text)) !== null) {
+			span.appendChild(document.createTextNode(text.slice(cur, m.index)));
+			var mark = $.create("mark", {
+				textContent: m[0]
+			});
+			span.appendChild(mark);
+			cur = m.index + m[0].length;
+		}
+		span.appendChild(document.createTextNode(text.slice(cur)));
+	}
 	return $.create("li", {
 		innerHTML: span.innerHTML,
 		"role": "option",
