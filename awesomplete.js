@@ -38,7 +38,8 @@ var _ = function (input, o) {
 		container: _.CONTAINER,
 		item: _.ITEM,
 		replace: _.REPLACE,
-		tabSelect: false
+		tabSelect: false,
+		listLabel: "Results List"
 	}, o);
 
 	this.index = -1;
@@ -51,7 +52,8 @@ var _ = function (input, o) {
 		hidden: "hidden",
         role: "listbox",
         id: "awesomplete_list_" + this.count,
-		inside: this.container
+		inside: this.container,
+		"aria-label": this.listLabel
 	});
 
 	this.status = $.create("span", {
