@@ -220,6 +220,13 @@ new Awesomplete(input, {
 				<td>Boolean</td>
 				<td>false</td>
 			</tr>
+			<tr>
+				<td><code>tabSelect</code></td>
+				<td><code>data-tabSelect</code></td>
+				<td>Should the first element be selected when the user hits the TAB key when the field has focus?></td>
+				<td>Boolean</td>
+				<td>false</td>
+			</tr>
 		</tbody>
 	</table>
 
@@ -387,7 +394,7 @@ We can also <strong>generate list items based on user's input</strong>. See E-ma
 			</tr>
 			<tr>
 				<td><code>destroy()</code></td>
-				<td>Clean up and remove the instance from the input.</td>
+				<td>Clean up and remove the instance from the input. The container is only removed if it wasn't manually set but created by Awesomplete.</td>
 			</tr>
 		</tbody>
 	</table>
