@@ -299,6 +299,7 @@ _.prototype = {
 	evaluate: function() {
 		var me = this;
 		var value = this.input.value;
+		if (typeof this.input.hasAttribute != 'undefined' && this.input.hasAttribute('contenteditable')) value = this.input.innerText;
 
 		if (value.length >= this.minChars && this._list && this._list.length > 0) {
 			this.index = -1;
@@ -381,7 +382,11 @@ _.ITEM = function (text, input, item_id) {
 };
 
 _.REPLACE = function (text) {
-	this.input.value = text.value;
+	if (typeof this.input.hasAttribute != 'undefined' && this.input.hasAttribute('contenteditable')) {
+		this.input.innerText = text.value;
+	} else {
+		this.input.value = text.value;
+	}
 };
 
 _.DATA = function (item/*, input*/) { return item; };
