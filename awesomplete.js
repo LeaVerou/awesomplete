@@ -351,11 +351,11 @@ _.prototype = {
 _.all = [];
 
 _.FILTER_CONTAINS = function (text, input) {
-	return RegExp($.regExpEscape(input.trim()), "i").test(text);
+	return RegExp($.regExpEscape(input.trim()), "i").test(this.html ? text.replace(/(<([^>]+)>)/ig,"") : text);
 };
 
 _.FILTER_STARTSWITH = function (text, input) {
-	return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
+	return RegExp("^" + $.regExpEscape(input.trim()), "i").test(this.html ? text.replace(/(<([^>]+)>)/ig,"") : text);
 };
 
 _.SORT_BYLENGTH = function (a, b) {
