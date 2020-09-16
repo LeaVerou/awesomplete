@@ -96,7 +96,7 @@ var _ = function (input, o) {
 			"submit": this.close.bind(this, { reason: "submit" })
 		},
 		ul: {
-			// Prevent the default mousedowm, which ensures the input is not blurred.
+			// Prevent the default mousedown, which ensures the input is not blurred.
 			// The actual selection will happen on click. This also ensures dragging the
 			// cursor away from the list item will cancel the selection
 			"mousedown": function(evt) {
