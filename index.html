@@ -449,6 +449,30 @@ ajax.onload = function() {
 ajax.send();</script></code></pre>
 	</section>
 
+	<section id="ajax-example">
+	<h2>Custom list example <small>(based on user input)</small></h2>
+	<pre class="language-markup"><code>&lt;input id="query" class="awesomplete"  /&gt;</code></pre>
+	<pre class="language-javascript"><code><script>
+const queryInput = document.querySelector("#query");
+
+const awesomplete = new Awesomplete(queryInput, {
+  filter: () => { // We will provide a list that is already filtered ...
+    return true;
+  },
+  sort: false,    // ... and sorted.
+  list: []
+});
+
+queryInput.addEventListener("input", (event) => {
+  const inputText = event.target.value;
+  // Process inputText as you want, e.g. make an API request.
+  awesomplete.list = ["my"+inputText, "custom"+inputText, "list"+inputText];
+  awesomplete.evaluate();
+});
+
+</script></code></pre>
+	</section>
+
 	<section id="combobox">
 	<h2>Combobox dropdown</h2>
 	<label>Type or click dropdown: <input data-list="CSS, JavaScript, HTML, SVG, ARIA, MathML" class="dropdown-input" /><button class="dropdown-btn" type="button"><span class="caret"></span></button></label>
