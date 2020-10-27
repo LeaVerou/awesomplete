@@ -38,7 +38,8 @@ var _ = function (input, o) {
 		container: _.CONTAINER,
 		item: _.ITEM,
 		replace: _.REPLACE,
-		tabSelect: false
+		tabSelect: false,
+		html: false
 	}, o);
 
 	this.index = -1;
@@ -146,12 +147,13 @@ _.prototype = {
 		}
 		else { // Element or CSS selector
 			list = $(list);
+			var ref = this;
 
 			if (list && list.children) {
 				var items = [];
 				slice.apply(list.children).forEach(function (el) {
 					if (!el.disabled) {
-						var text = el.textContent.trim();
+						var text = ref.html ? el.innerHTML.trim() : el.textContent.trim();
 						var value = el.value || text;
 						var label = el.label || text;
 						if (value !== "") {
@@ -299,6 +301,7 @@ _.prototype = {
 	evaluate: function() {
 		var me = this;
 		var value = this.input.value;
+		if (typeof this.input.hasAttribute != 'undefined' && this.input.hasAttribute('contenteditable')) value = this.html ? this.input.innerHTML : this.input.innerText;
 
 		if (value.length >= this.minChars && this._list && this._list.length > 0) {
 			this.index = -1;
@@ -348,11 +351,11 @@ _.prototype = {
 _.all = [];
 
 _.FILTER_CONTAINS = function (text, input) {
-	return RegExp($.regExpEscape(input.trim()), "i").test(text);
+	return RegExp($.regExpEscape(input.trim()), "i").test(this.html ? text.replace(/(<([^>]+)>)/ig,"") : text);
 };
 
 _.FILTER_STARTSWITH = function (text, input) {
-	return RegExp("^" + $.regExpEscape(input.trim()), "i").test(text);
+	return RegExp("^" + $.regExpEscape(input.trim()), "i").test(this.html ? text.replace(/(<([^>]+)>)/ig,"") : text);
 };
 
 _.SORT_BYLENGTH = function (a, b) {
@@ -381,7 +384,15 @@ _.ITEM = function (text, input, item_id) {
 };
 
 _.REPLACE = function (text) {
-	this.input.value = text.value;
+	if (typeof this.input.hasAttribute != 'undefined' && this.input.hasAttribute('contenteditable')) {
+		if (this.html) {
+			this.input.innerHTML = text.value;
+		} else {
+			this.input.innerText = text.value;
+		}
+	} else {
+		this.input.value = text.value;
+	}
 };
 
 _.DATA = function (item/*, input*/) { return item; };

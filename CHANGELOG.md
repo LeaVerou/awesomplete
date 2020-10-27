@@ -1,3 +1,10 @@
+# 1.1.2 (2020-06-02)
+
+## Fixes
+
+* Gulp upgrade to 4.0.2
+* Adding support for `contenteditable`
+
 # 1.1.1 (2016-06-25)
 
 ## Fixes

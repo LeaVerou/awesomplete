@@ -14,7 +14,7 @@
   },
   "homepage": "https://leaverou.github.io/awesomplete/",
   "devDependencies": {
-    "gulp": "^3.9.0",
+    "gulp": "^4.0.2",
     "gulp-concat": "^2.6.0",
     "gulp-header": "^1.7.1",
     "gulp-rename": "^1.2.2",
