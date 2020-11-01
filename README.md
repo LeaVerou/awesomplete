@@ -81,6 +81,30 @@ Or the following, if you don’t want to use a `<datalist>`, or if you don’t w
 
 There are multiple customizations and properties able to be instantiated within the JS. Libraries and definitions of the properties are available in the Links below.
 
+## Events
+
+For use events, just add event listener like this :
+
+In regular Javascript
+
+```javascript
+var input = document.getElementById("inputlist");
+new Awesomplete(input, {list: yourlist});
+document.getElementById('inputlist').addEventListener('awesomplete-selectcomplete',function(){
+alert(this.value);
+});
+```
+
+In Jquery
+
+```javascript
+var input=$("#inputlist")[0];
+new Awesomplete(input, {list: yourlist});
+$("#inputlist").on('awesomplete-selectcomplete',function(){
+alert(this.value);
+});
+```
+
 ## License
 
 Awesomplete is released under the MIT License. See [LICENSE][1] file for
