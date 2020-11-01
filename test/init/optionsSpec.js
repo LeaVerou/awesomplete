@@ -38,6 +38,10 @@ describe("Constructor options", function () {
 		it("replaces input value with REPLACE", function () {
 			expect(this.subject.replace).toEqual(Awesomplete.REPLACE);
 		});
+
+		it("creates a default Suggestion", function () {
+			expect(this.subject.suggestion.toString()).toMatch(/function Suggestion\(/);
+		});
 	});
 
 	describe("with custom options in constructor", function () {
@@ -75,6 +79,109 @@ describe("Constructor options", function () {
 			expect(this.subject.minChars).toBe(4);
 			expect(this.subject.maxItems).toBe(8);
 			expect(this.subject.autoFirst).toBe(true);
+		});
+	});
+
+	describe("with a custom suggestion option", function () {
+		def("element", "#with-data-list");
+
+		function CustomSuggestion1(data) {
+			var o = Array.isArray(data)
+			? { label: data[0], value: data[1] }
+			: typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
+
+			this.label = o.label || o.value;
+			this.value = o.value;
+			this.custom = o.label.toUpperCase();
+		}
+
+		Object.defineProperty(CustomSuggestion1.prototype = Object.create(String.prototype), "length", {
+			get: function() { return this.label.length; }
+		});
+
+		CustomSuggestion1.prototype.toString = CustomSuggestion1.prototype.valueOf = function () {
+			return "" + this.label;
+		};
+
+		function CustomSuggestion2(data) {
+			var o = Array.isArray(data)
+			? { label: data[0], value: data[1] }
+			: typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
+
+			this.label = o.label || o.value;
+			this.value = o.value;
+			this.custom = o.label.toLowerCase();
+		}
+
+		Object.defineProperty(CustomSuggestion2.prototype = Object.create(String.prototype), "length", {
+			get: function() { return this.label.length; }
+		});
+
+		CustomSuggestion2.prototype.toString = CustomSuggestion2.prototype.valueOf = function () {
+			return "" + this.label;
+		};
+
+		describe("using a class", function () {
+			def("options", function () {
+				return {
+					minChars: 0,
+					filter: function (item) { return item; },
+					sort: $.noop,
+					item: function (suggestion) {
+						var element = document.createElement("li");
+						element.textContent = suggestion.custom;
+
+						return element;
+					},
+					replace: $.noop,
+					suggestion: CustomSuggestion1
+				};
+			});
+
+			it("overrides simple default options", function () {
+				this.subject.evaluate();
+
+				this.subject._list.forEach(function (item, index) {
+					expect(this.subject.ul.children[index].textContent).toEqual(item.label.toUpperCase());
+				}, this);
+			});
+		});
+
+		describe("using a function to return different classes", function () {
+			def("options", function () {
+				return {
+					minChars: 0,
+					filter: function (item) { return item; },
+					sort: $.noop,
+					item: function (suggestion) {
+						var element = document.createElement("li");
+						element.textContent = suggestion.custom;
+
+						return element;
+					},
+					replace: $.noop,
+					suggestion: function (datum) {
+						if (datum.label === "Data") {
+							return new CustomSuggestion1(datum);
+						} else {
+							return new CustomSuggestion2(datum);
+						}
+					}
+				};
+			});
+
+			it("overrides simple default options", function () {
+				this.subject.suggestion = this.subject.suggestion.bind(this.subject);
+				this.subject.evaluate();
+
+				this.subject._list.forEach(function (item, index) {
+					if (item.label === "Data") {
+						expect(this.subject.ul.children[index].textContent).toEqual(item.label.toUpperCase());
+					} else {
+						expect(this.subject.ul.children[index].textContent).toEqual(item.label.toLowerCase());
+					}
+				}, this);
+			});
 		});
 	});
 });
