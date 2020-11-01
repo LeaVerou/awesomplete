@@ -36,6 +36,8 @@ var _ = function (input, o) {
 		filter: _.FILTER_CONTAINS,
 		sort: o.sort === false ? false : _.SORT_BYLENGTH,
 		container: _.CONTAINER,
+		ul: _.UL,
+		status: _.STATUS,
 		item: _.ITEM,
 		replace: _.REPLACE,
 		tabSelect: false
@@ -47,21 +49,9 @@ var _ = function (input, o) {
 
 	this.container = this.container(input);
 
-	this.ul = $.create("ul", {
-		hidden: "hidden",
-        role: "listbox",
-        id: "awesomplete_list_" + this.count,
-		inside: this.container
-	});
+	this.ul = this.ul(this.container);
 
-	this.status = $.create("span", {
-		className: "visually-hidden",
-		role: "status",
-		"aria-live": "assertive",
-        "aria-atomic": true,
-        inside: this.container,
-        textContent: this.minChars != 0 ? ("Type " + this.minChars + " or more characters for results.") : "Begin typing for results."
-	});
+	this.status = this.status(this.container, this.minChars);
 
 	// Bind events
 
@@ -367,6 +357,26 @@ _.CONTAINER = function (input) {
 	return $.create("div", {
 		className: "awesomplete",
 		around: input
+	});
+}
+
+_.UL = function (container) {
+	return $.create("ul", {
+		hidden: "hidden",
+		role: "listbox",
+		id: "awesomplete_list_" + this.count,
+		inside: container
+	})
+}
+
+_.STATUS = function(container, minChars) {
+	return $.create("span", {
+		className: "visually-hidden",
+		role: "status",
+		"aria-live": "assertive",
+		"aria-atomic": true,
+		inside: container,
+		textContent: minChars !== 0 ? ("Type " + minChars + " or more characters for results.") : "Begin typing for results."
 	});
 }
 
