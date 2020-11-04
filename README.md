@@ -89,15 +89,7 @@ There are multiple customizations and properties able to be instantiated within 
 | minChars    | data-minchars  | Minimum characters the user has to type before the autocomplete popup shows up. | Number  | 2            |
 | maxItems    | data-maxitems  | Maximum number of suggestions to display.                                       | Number  | 10           |
 | autoFirst   | data-autofirst | Should the first element be automatically                                       | Boolean | false        |
-<<<<<<< HEAD
-<<<<<<< HEAD
 | listLabel   | data-listlabel | Denotes a label to be used as aria-label on the generated autocomplete list.    | String  | Results List |
-=======
-| listLabel   | data-listLabel | Denotes a label to be used as aria-label on the generated autocomplete list.    | String  | Results List |
->>>>>>> 5f1f9c7... Add ability to add custom aria-label to the autocomplete listbox and default verbiage to fix issue #17200, add documentation to readme regarding options
-=======
-| listLabel   | data-listlabel | Denotes a label to be used as aria-label on the generated autocomplete list.    | String  | Results List |
->>>>>>> a7de3d1... Add listLabel documentation to the website, fix casing of data-listlabel in documentation
 
 ## License
 
