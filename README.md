@@ -81,6 +81,24 @@ Or the following, if you don’t want to use a `<datalist>`, or if you don’t w
 
 There are multiple customizations and properties able to be instantiated within the JS. Libraries and definitions of the properties are available in the Links below.
 
+## Options
+
+| JS Property | HTML Attribute | Description                                                                     | Value   | Default      |
+| ----------- | -------------- | ------------------------------------------------------------------------------- | ------- | ------------ |
+| list        | data-list      | Where to find the list of suggestions.                                          | Array of strings, HTML element, CSS selector (no groups, i.e. no commas), String containing a comma-separated list of items | N/A |
+| minChars    | data-minchars  | Minimum characters the user has to type before the autocomplete popup shows up. | Number  | 2            |
+| maxItems    | data-maxitems  | Maximum number of suggestions to display.                                       | Number  | 10           |
+| autoFirst   | data-autofirst | Should the first element be automatically                                       | Boolean | false        |
+<<<<<<< HEAD
+<<<<<<< HEAD
+| listLabel   | data-listlabel | Denotes a label to be used as aria-label on the generated autocomplete list.    | String  | Results List |
+=======
+| listLabel   | data-listLabel | Denotes a label to be used as aria-label on the generated autocomplete list.    | String  | Results List |
+>>>>>>> 5f1f9c7... Add ability to add custom aria-label to the autocomplete listbox and default verbiage to fix issue #17200, add documentation to readme regarding options
+=======
+| listLabel   | data-listlabel | Denotes a label to be used as aria-label on the generated autocomplete list.    | String  | Results List |
+>>>>>>> a7de3d1... Add listLabel documentation to the website, fix casing of data-listlabel in documentation
+
 ## License
 
 Awesomplete is released under the MIT License. See [LICENSE][1] file for
