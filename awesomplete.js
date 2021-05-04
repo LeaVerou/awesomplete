@@ -376,13 +376,14 @@ _.CONTAINER = function (input) {
 }
 
 _.ITEM = function (text, input, item_id) {
-	inupt = this.ignoreDiacritics ? removeDiacritics(input) : input;
+	input = this.ignoreDiacritics ? removeDiacritics(input) : input;
 	var text_comp = this.ignoreDiacritics ? removeDiacritics(text) : text;
 
 	// shadow = text without diacritics (for comparison)
 	var shadow = input.trim() === "" ? text : text_comp.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&<mark>");
 	
 	// Display diacritics in suggestions (html = with diacritics)
+	let html = "";
 	if (shadow.indexOf("<mark>") !== -1) {
 		shadow = shadow.split("<mark>")
 		html = text.slice(0, shadow[0].length)
