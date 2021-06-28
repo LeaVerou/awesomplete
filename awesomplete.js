@@ -72,22 +72,24 @@ var _ = function (input, o) {
 			"input": this.evaluate.bind(this),
 			"blur": this.close.bind(this, { reason: "blur" }),
 			"keydown": function(evt) {
-				evt.preventDefault();
 				var c = evt.keyCode;
 
 				// If the dropdown `ul` is in view, then act on keydown for the following keys:
 				// Enter / Esc / Up / Down
 				if(me.opened) {
 					if (c === 13 && me.selected) { // Enter
+						evt.preventDefault();
 						me.select(undefined, undefined, evt);
 					}
 					else if (c === 9 && me.selected && me.tabSelect) {
+						evt.preventDefault();
 						me.select(undefined, undefined, evt);
 					}
 					else if (c === 27) { // Esc
 						me.close({ reason: "esc" });
 					}
 					else if (c === 38 || c === 40) { // Down/Up arrow
+						evt.preventDefault();
 						me[c === 38? "previous" : "next"]();
 					}
 				}
