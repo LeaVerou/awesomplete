@@ -82,6 +82,7 @@ var _ = function (input, o) {
 						me.select(undefined, undefined, evt);
 					}
 					else if (c === 9 && me.selected && me.tabSelect) {
+						evt.preventDefault();
 						me.select(undefined, undefined, evt);
 					}
 					else if (c === 27) { // Esc
