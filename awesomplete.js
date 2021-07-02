@@ -374,9 +374,25 @@ _.CONTAINER = function (input) {
 }
 
 _.ITEM = function (text, input, item_id) {
-	var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
+	var span = $.create("span");
+	if (input.trim() === "") {
+		span.textContent = text;
+	}
+	else {
+		var matcher = RegExp($.regExpEscape(input.trim()), "gi");
+		var m, cur = 0;
+		while((m = matcher.exec(text)) !== null) {
+			span.appendChild(document.createTextNode(text.slice(cur, m.index)));
+			var mark = $.create("mark", {
+				textContent: m[0]
+			});
+			span.appendChild(mark);
+			cur = m.index + m[0].length;
+		}
+		span.appendChild(document.createTextNode(text.slice(cur)));
+	}
 	return $.create("li", {
-		innerHTML: html,
+		innerHTML: span.innerHTML,
 		"role": "option",
 		"aria-selected": "false",
 		"id": "awesomplete_list_" + this.count + "_item_" + item_id
