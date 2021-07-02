@@ -39,7 +39,8 @@ var _ = function (input, o) {
 		item: _.ITEM,
 		replace: _.REPLACE,
 		tabSelect: false,
-		listLabel: "Results List"
+		listLabel: "Results List",
+		ignoreDiacritics: true
 	}, o);
 
 	this.index = -1;
@@ -313,6 +314,8 @@ _.prototype = {
 					return new Suggestion(me.data(item, value));
 				})
 				.filter(function(item) {
+					item = me.ignoreDiacritics ? removeDiacritics(item) : item;
+					value = me.ignoreDiacritics ? removeDiacritics(value) : value;
 					return me.filter(item, value);
 				});
 
@@ -323,8 +326,8 @@ _.prototype = {
 			this.suggestions = this.suggestions.slice(0, this.maxItems);
 
 			this.suggestions.forEach(function(text, index) {
-					me.ul.appendChild(me.item(text, value, index));
-				});
+				me.ul.appendChild(me.item(text, value, index));
+			});
 
 			if (this.ul.children.length === 0) {
 
@@ -374,7 +377,23 @@ _.CONTAINER = function (input) {
 }
 
 _.ITEM = function (text, input, item_id) {
-	var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
+	input = this.ignoreDiacritics ? removeDiacritics(input) : input;
+	var text_comp = this.ignoreDiacritics ? removeDiacritics(text) : text;
+
+	// shadow = text without diacritics (for comparison)
+	var shadow = input.trim() === "" ? text : text_comp.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&<mark>");
+	
+	// Display diacritics in suggestions (html = with diacritics)
+	let html = "";
+	if (shadow.indexOf("<mark>") !== -1) {
+		shadow = shadow.split("<mark>")
+		html = text.slice(0, shadow[0].length)
+				 + "<mark>" + text.slice(shadow[0].length, shadow[0].length + shadow[1].length)
+				 + "</mark>" + text.slice(shadow[0].length + shadow[1].length)
+	} else {
+		html = shadow;
+	}
+
 	return $.create("li", {
 		innerHTML: html,
 		"role": "option",
@@ -428,6 +447,10 @@ function configure(instance, properties, o) {
 			instance[i] = (i in o)? o[i] : initial;
 		}
 	}
+}
+
+function removeDiacritics(string) {
+  return string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 // Helpers
