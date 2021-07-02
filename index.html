@@ -284,13 +284,13 @@ new Awesomplete(input, {
 			<tr>
 				<td><code>replace</code></td>
 				<td>Controls how the user’s selection replaces the user’s input. For example, this is useful if you want the selection to only partially replace the user’s input.</td>
-				<td>Function that takes one parameter, the text of the selected option, and is responsible for replacing the current input value with it.
+				<td>This function takes one parameter, an object with <code>label</code> and <code>value</code> attributes (see <a href="#js-prop-data"><code>data</code></a> for more details), and is responsible for setting the current input value.
 				</td>
-				<td><pre class="language-javascript"><code>function (text) {
-	this.input.value = text;
+				<td><pre class="language-javascript"><code>function (suggestion) {
+	this.input.value = suggestion.value;
 }</code></pre></td>
 			</tr>
-			<tr>
+			<tr id="js-prop-data">
 				<td><code>data</code></td>
 				<td>Controls suggestions' <code>label</code> and <code>value</code>. This is useful if you have list items in custom format, or want to change list items based on user's input.</td>
 				<td>Function that takes two parameters, the first one being the original list item and the second a string with the user’s input and returns a list item in one of supported by default formats:
