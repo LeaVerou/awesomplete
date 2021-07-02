@@ -396,6 +396,8 @@ function Suggestion(data) {
 	  ? { label: data[0], value: data[1] }
 	  : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
 
+	for (var attr in data) { this[attr] = data[attr]; }
+	
 	this.label = o.label || o.value;
 	this.value = o.value;
 }
