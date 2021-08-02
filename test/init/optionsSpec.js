@@ -38,6 +38,14 @@ describe("Constructor options", function () {
 		it("replaces input value with REPLACE", function () {
 			expect(this.subject.replace).toEqual(Awesomplete.REPLACE);
 		});
+
+		it("uses 'Results List' as list label", function () {
+			expect(this.subject.listLabel).toEqual("Results List");
+		});
+		
+		it("uses 'No results found' as tNoResults", function () {
+			expect(this.subject.tNoResults).toEqual("No results found");
+		});
 	});
 
 	describe("with custom options in constructor", function () {
@@ -50,7 +58,8 @@ describe("Constructor options", function () {
 				filter: $.noop,
 				sort: $.noop,
 				item: $.noop,
-				replace: $.noop
+				replace: $.noop,
+				listLabel: 'new list label'
 			};
 		});
 
@@ -58,6 +67,7 @@ describe("Constructor options", function () {
 			expect(this.subject.minChars).toBe(3);
 			expect(this.subject.maxItems).toBe(9);
 			expect(this.subject.autoFirst).toBe(true);
+			expect(this.subject.listLabel).toBe("new list label");
 		});
 
 		it("overrides default functions", function () {

@@ -39,7 +39,8 @@ var _ = function (input, o) {
 		item: _.ITEM,
 		replace: _.REPLACE,
 		tabSelect: false,
-		listLabel: "Results List"
+		listLabel: "Results List",
+		tNoResults: "No results found"
 	}, o);
 
 	this.index = -1;
@@ -328,7 +329,7 @@ _.prototype = {
 
 			if (this.ul.children.length === 0) {
 
-                this.status.textContent = "No results found";
+                this.status.textContent = this.tNoResults; // "No results found";
 
 				this.close({ reason: "nomatches" });
 
@@ -341,7 +342,7 @@ _.prototype = {
 		else {
 			this.close({ reason: "nomatches" });
 
-                this.status.textContent = "No results found";
+                this.status.textContent = this.tNoResults; // "No results found";
 		}
 	}
 };
