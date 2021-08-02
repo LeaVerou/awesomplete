@@ -40,7 +40,11 @@ var _ = function (input, o) {
 		replace: _.REPLACE,
 		tabSelect: false,
 		listLabel: "Results List",
-		tNoResults: "No results found"
+		tStatusResult: "${length} results found",
+		tNoResults: "No results found",
+		tStatusQueryTooShort: "Type ${minChars} or more characters for results.",
+		tStatusStartTyping: "Begin typing for results.",
+		tListItemText: "list item ${index} of ${length}"
 	}, o);
 
 	this.index = -1;
@@ -63,7 +67,7 @@ var _ = function (input, o) {
 		"aria-live": "assertive",
         "aria-atomic": true,
         inside: this.container,
-        textContent: this.minChars != 0 ? ("Type " + this.minChars + " or more characters for results.") : "Begin typing for results."
+        textContent: this.minChars != 0 ? this.tStatusQueryTooShort.replace("${minChars}", this.minChars) : this.tStatusStartTyping
 	});
 
 	// Bind events
@@ -260,7 +264,7 @@ _.prototype = {
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
 
-			this.status.textContent = lis[i].textContent + ", list item " + (i + 1) + " of " + lis.length;
+			this.status.textContent = lis[i].textContent + ", "+ this.tListItemText.replace("${index}", (i + 1)).replace("${length}", lis.length);
 
             this.input.setAttribute("aria-activedescendant", this.ul.id + "_item_" + this.index);
 
@@ -329,20 +333,20 @@ _.prototype = {
 
 			if (this.ul.children.length === 0) {
 
-                this.status.textContent = this.tNoResults; // "No results found";
+                this.status.textContent = this.tNoResults;
 
 				this.close({ reason: "nomatches" });
 
 			} else {
 				this.open();
 
-                this.status.textContent = this.ul.children.length + " results found";
+                this.status.textContent = this.tStatusResult.replace("${length}", this.ul.children.length);
 			}
 		}
 		else {
 			this.close({ reason: "nomatches" });
 
-                this.status.textContent = this.tNoResults; // "No results found";
+            this.status.textContent = this.tNoResults;
 		}
 	}
 };
