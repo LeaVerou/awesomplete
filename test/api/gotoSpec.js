@@ -57,7 +57,7 @@ describe("awesomplete.goto", function () {
 
 	describe("with German text and item index > -1", function () {
 		beforeEach(function () {
-			this.subject.tListItemText = "Listenelement ${index} von ${length}";
+			this.subject.language = "de"
 			this.subject.goto(0);
 		});
 

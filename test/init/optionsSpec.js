@@ -39,12 +39,8 @@ describe("Constructor options", function () {
 			expect(this.subject.replace).toEqual(Awesomplete.REPLACE);
 		});
 
-		it("uses 'Results List' as list label", function () {
-			expect(this.subject.listLabel).toEqual("Results List");
-		});
-		
-		it("uses 'No results found' as tNoResults", function () {
-			expect(this.subject.tNoResults).toEqual("No results found");
+		it("uses en as default language", function () {
+			expect(this.subject.language).toEqual("en");
 		});
 	});
 
@@ -59,7 +55,7 @@ describe("Constructor options", function () {
 				sort: $.noop,
 				item: $.noop,
 				replace: $.noop,
-				listLabel: 'new list label'
+			 	language: 'de'
 			};
 		});
 
@@ -67,7 +63,7 @@ describe("Constructor options", function () {
 			expect(this.subject.minChars).toBe(3);
 			expect(this.subject.maxItems).toBe(9);
 			expect(this.subject.autoFirst).toBe(true);
-			expect(this.subject.listLabel).toBe("new list label");
+			expect(this.subject.language).toBe("de");
 		});
 
 		it("overrides default functions", function () {

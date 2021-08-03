@@ -97,7 +97,7 @@ describe("awesomplete.evaluate", function () {
 
 	describe("with no results and German text", function () {
 		beforeEach(function () {
-			this.subject.tNoResults = "Keine Resultate gefunden";
+			this.subject.language = "de"
 			$.type(this.subject.input, "nosuchitem");
 		});
 

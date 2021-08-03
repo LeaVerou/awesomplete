@@ -39,13 +39,12 @@ var _ = function (input, o) {
 		item: _.ITEM,
 		replace: _.REPLACE,
 		tabSelect: false,
-		listLabel: "Results List",
-		tStatusResult: "${length} results found",
-		tNoResults: "No results found",
-		tStatusQueryTooShort: "Type ${minChars} or more characters for results.",
-		tStatusStartTyping: "Begin typing for results.",
+		language: "en",
+	 
+
 		tListItemText: "list item ${index} of ${length}"
 	}, o);
+
 
 	this.index = -1;
 
@@ -58,7 +57,7 @@ var _ = function (input, o) {
         role: "listbox",
         id: "awesomplete_list_" + this.count,
 		inside: this.container,
-		"aria-label": this.listLabel
+		"aria-label":phrase(this, 'list-label')
 	});
 
 	this.status = $.create("span", {
@@ -67,7 +66,7 @@ var _ = function (input, o) {
 		"aria-live": "assertive",
         "aria-atomic": true,
         inside: this.container,
-        textContent: this.minChars != 0 ? this.tStatusQueryTooShort.replace("${minChars}", this.minChars) : this.tStatusStartTyping
+        textContent: this.minChars != 0 ? phrase(this, 'status-query-too-short', {"${minChars}": this.minChars}) : phrase(this, 'status-start-typing')
 	});
 
 	// Bind events
@@ -264,7 +263,7 @@ _.prototype = {
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
 
-			this.status.textContent = lis[i].textContent + ", "+ this.tListItemText.replace("${index}", (i + 1)).replace("${length}", lis.length);
+			this.status.textContent = lis[i].textContent + ", "+ phrase(this, "list-item-text", {"${index}" :  (i + 1), "${length}":  lis.length});
 
             this.input.setAttribute("aria-activedescendant", this.ul.id + "_item_" + this.index);
 
@@ -333,20 +332,20 @@ _.prototype = {
 
 			if (this.ul.children.length === 0) {
 
-                this.status.textContent = this.tNoResults;
+                this.status.textContent = phrase(this, 'no-results');
 
 				this.close({ reason: "nomatches" });
 
 			} else {
 				this.open();
 
-                this.status.textContent = this.tStatusResult.replace("${length}", this.ul.children.length);
+                this.status.textContent = phrase(this, 'status-result', {"${length}": this.ul.children.length});
 			}
 		}
 		else {
 			this.close({ reason: "nomatches" });
 
-            this.status.textContent = this.tNoResults;
+            this.status.textContent = phrase(this, 'no-results');
 		}
 	}
 };
@@ -354,6 +353,25 @@ _.prototype = {
 // Static methods/properties
 
 _.all = [];
+
+_.languages = {
+	"en": {
+		"list-label": "Results List",
+		"status-result": "${length} results found",
+		"no-results": "No results found",
+		"status-query-too-short": "Type ${minChars} or more characters for results.",
+		"status-start-typing": "Begin typing for results.",
+		"list-item-text": "list item ${index} of ${length}"
+	},
+	"de": {
+		"list-label": "Suchresultate",
+		"status-result": "${length} Resultate gefunden",
+		"no-results": "Keine Resultate gefunden",
+		"status-query-too-short": "Geben Sie ${minChars} oder mehr Zeichen für die Suche ein",
+		"status-start-typing": "Beginnen Sie mit der Eingabe",
+		"list-item-text": "Listenelement ${index} von ${length}"
+	}
+};
 
 _.FILTER_CONTAINS = function (text, input) {
 	return RegExp($.regExpEscape(input.trim()), "i").test(text);
@@ -433,6 +451,19 @@ function configure(instance, properties, o) {
 			instance[i] = (i in o)? o[i] : initial;
 		}
 	}
+}
+function phrase(instance, key, replacements) {
+	const translations = _.languages[instance.language];
+	var result = translations[key];
+	if(result === undefined) {
+		console.log(instance.language + "no result found " +  key)
+		
+	}
+	for (var i in replacements) {
+		//console.log(i + ":::"+ replacements[i])
+		result = result.replace(i, replacements[i])
+	}
+	return result;
 }
 
 // Helpers
