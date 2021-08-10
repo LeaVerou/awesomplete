@@ -83,13 +83,19 @@ There are multiple customizations and properties able to be instantiated within 
 
 ## Options
 
-| JS Property | HTML Attribute | Description                                                                     | Value   | Default      |
-| ----------- | -------------- | ------------------------------------------------------------------------------- | ------- | ------------ |
-| list        | data-list      | Where to find the list of suggestions.                                          | Array of strings, HTML element, CSS selector (no groups, i.e. no commas), String containing a comma-separated list of items | N/A |
-| minChars    | data-minchars  | Minimum characters the user has to type before the autocomplete popup shows up. | Number  | 2            |
-| maxItems    | data-maxitems  | Maximum number of suggestions to display.                                       | Number  | 10           |
-| autoFirst   | data-autofirst | Should the first element be automatically                                       | Boolean | false        |
-| listLabel   | data-listlabel | Denotes a label to be used as aria-label on the generated autocomplete list.    | String  | Results List |
+| JS Property          | HTML Attribute            | Description                                                                     | Value                                                                                                                       | Default                                          |
+|----------------------|---------------------------|---------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------|
+| list                 | data-list                 | Where to find the list of suggestions.                                          | Array of strings, HTML element, CSS selector (no groups, i.e. no commas), String containing a comma-separated list of items | N/A                                              |
+| minChars             | data-minchars             | Minimum characters the user has to type before the autocomplete popup shows up. | Number                                                                                                                      | 2                                                |
+| maxItems             | data-maxitems             | Maximum number of suggestions to display.                                       | Number                                                                                                                      | 10                                               |
+| autoFirst            | data-autofirst            | Should the first element be automatically                                       | Boolean                                                                                                                     | false                                            |
+| listLabel            | data-listlabel            | Denotes a label to be used as aria-label on the generated autocomplete list.    | String                                                                                                                      | Results List                                     |
+| tStatusResult        | data-tstatusresult        | Allows for translations of the result list status.                              | String                                                                                                                      | ${length} results found                          |
+| tNoResults           | data-tnoresults           | Allows for translations of the notification that no result has been found.      | String                                                                                                                      | No results found                                 |
+| tStatusQueryTooShort | data-tstatusquerytooshort | Text output when not enough chars have been entered                             | String                                                                                                                      | Type ${minChars} or more characters for results. |
+| tStatusStartTyping   | data-tstatusstarttyping   | Text output when no chars have been entered                                     | String                                                                                                                      | Begin typing for results.                        |
+| tListItemText        | data-tstatusquerytooshort | Text output for found list items                                                | String                                                                                                                      | list item ${index} of ${length}                  |
+
 
 ## License
 

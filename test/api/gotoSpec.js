@@ -54,6 +54,19 @@ describe("awesomplete.goto", function () {
 		});
 	});
 
+
+	describe("with German text and item index > -1", function () {
+		beforeEach(function () {
+			this.subject.language = "de"
+			this.subject.goto(0);
+		});
+
+		it("updates status", function () {
+			expect(this.subject.status.textContent).toBe("item1, Listenelement 1 von 3");
+		});
+	});
+
+
 	describe("with item index = -1", function () {
 		beforeEach(function () {
 			this.subject.goto(0);

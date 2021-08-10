@@ -18,6 +18,7 @@ describe("awesomplete.evaluate", function () {
 			expect(this.subject.close).toHaveBeenCalledWith({
 				reason: "nomatches"
 			});
+			expect(this.subject.status.textContent).toBe("No results found")
 		});
 	});
 
@@ -92,5 +93,22 @@ describe("awesomplete.evaluate", function () {
 			this.subject.evaluate();
 			expect(this.subject.index).toBe(-1);
 		});
+	});
+
+	describe("with no results and German text", function () {
+		beforeEach(function () {
+			this.subject.language = "de"
+			$.type(this.subject.input, "nosuchitem");
+		});
+
+		it("closes completer", function () {
+			spyOn(this.subject, "close");
+			this.subject.evaluate();
+
+			expect(this.subject.close).toHaveBeenCalledWith({
+				reason: "nomatches"
+			});
+			expect(this.subject.status.textContent).toBe("Keine Ergebnisse gefunden")
+		});	
 	});
 });

@@ -39,8 +39,12 @@ var _ = function (input, o) {
 		item: _.ITEM,
 		replace: _.REPLACE,
 		tabSelect: false,
-		listLabel: "Results List"
+		language: "en",
+	 
+
+		tListItemText: "list item ${index} of ${length}"
 	}, o);
+
 
 	this.index = -1;
 
@@ -53,7 +57,7 @@ var _ = function (input, o) {
         role: "listbox",
         id: "awesomplete_list_" + this.count,
 		inside: this.container,
-		"aria-label": this.listLabel
+		"aria-label":phrase(this, 'list-label')
 	});
 
 	this.status = $.create("span", {
@@ -62,7 +66,7 @@ var _ = function (input, o) {
 		"aria-live": "assertive",
         "aria-atomic": true,
         inside: this.container,
-        textContent: this.minChars != 0 ? ("Type " + this.minChars + " or more characters for results.") : "Begin typing for results."
+        textContent: this.minChars != 0 ? phrase(this, 'status-query-too-short', {"${minChars}": this.minChars}) : phrase(this, 'status-start-typing')
 	});
 
 	// Bind events
@@ -259,7 +263,7 @@ _.prototype = {
 		if (i > -1 && lis.length > 0) {
 			lis[i].setAttribute("aria-selected", "true");
 
-			this.status.textContent = lis[i].textContent + ", list item " + (i + 1) + " of " + lis.length;
+			this.status.textContent = lis[i].textContent + ", "+ phrase(this, "list-item-text", {"${index}" :  (i + 1), "${length}":  lis.length});
 
             this.input.setAttribute("aria-activedescendant", this.ul.id + "_item_" + this.index);
 
@@ -328,20 +332,20 @@ _.prototype = {
 
 			if (this.ul.children.length === 0) {
 
-                this.status.textContent = "No results found";
+                this.status.textContent = phrase(this, 'no-results');
 
 				this.close({ reason: "nomatches" });
 
 			} else {
 				this.open();
 
-                this.status.textContent = this.ul.children.length + " results found";
+                this.status.textContent = phrase(this, 'status-result', {"${length}": this.ul.children.length});
 			}
 		}
 		else {
 			this.close({ reason: "nomatches" });
 
-                this.status.textContent = "No results found";
+            this.status.textContent = phrase(this, 'no-results');
 		}
 	}
 };
@@ -349,6 +353,41 @@ _.prototype = {
 // Static methods/properties
 
 _.all = [];
+
+_.languages = {
+	"en": {
+		"list-label": "Results List",
+		"status-result": "${length} results found",
+		"no-results": "No results found",
+		"status-query-too-short": "Type ${minChars} or more characters for results.",
+		"status-start-typing": "Begin typing for results.",
+		"list-item-text": "list item ${index} of ${length}"
+	},
+	"de": {
+		"list-label": "Ergebnisliste",
+		"status-result": "${length} Ergebnisse gefunden",
+		"no-results": "Keine Ergebnisse gefunden",
+		"status-query-too-short": "Geben Sie ${minChars} oder mehr Zeichen für die Suche ein",
+		"status-start-typing": "Beginnen Sie mit der Eingabe",
+		"list-item-text": "Listenelement ${index} von ${length}"
+	},
+	"fr": {
+		"list-label": "Liste des résultats",
+		"status-result": "${length} résultats trouvés",
+		"no-results": "Aucun résultat trouvé",
+		"status-query-too-short": "Tapez ${minChars} ou plusieurs caractères pour les résultats.",
+		"status-start-typing": "Commencer à écrire",
+		"list-item-text": "élément de liste ${index} de ${length}"
+	},
+	"it": {
+		"list-label": "Elenco dei risultati",
+		"status-result": "${length} risultati trovati",
+		"no-results": "Nessun risultato trovato",
+		"status-query-too-short": "Digita ${minChars} o più caratteri per i risultati.",
+		"status-start-typing": "Inizia a digitare per i risultati.",
+		"list-item-text": "elemento dell'elenco ${index} di ${length}"
+	},
+};
 
 _.FILTER_CONTAINS = function (text, input) {
 	return RegExp($.regExpEscape(input.trim()), "i").test(text);
@@ -428,6 +467,19 @@ function configure(instance, properties, o) {
 			instance[i] = (i in o)? o[i] : initial;
 		}
 	}
+}
+function phrase(instance, key, replacements) {
+	const translations = _.languages[instance.language];
+	var result = translations[key];
+	if(result === undefined) {
+		console.warn(instance.language + "no result found " +  key)
+	}
+	for (var i in replacements) {
+		while(result.indexOf(i) >= 0) {
+			result = result.replace(i, replacements[i])
+		}
+	}
+	return result;
 }
 
 // Helpers
