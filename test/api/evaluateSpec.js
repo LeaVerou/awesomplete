@@ -108,7 +108,7 @@ describe("awesomplete.evaluate", function () {
 			expect(this.subject.close).toHaveBeenCalledWith({
 				reason: "nomatches"
 			});
-			expect(this.subject.status.textContent).toBe("Keine Resultate gefunden")
+			expect(this.subject.status.textContent).toBe("Keine Ergebnisse gefunden")
 		});	
 	});
 });

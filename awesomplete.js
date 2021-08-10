@@ -364,13 +364,29 @@ _.languages = {
 		"list-item-text": "list item ${index} of ${length}"
 	},
 	"de": {
-		"list-label": "Suchresultate",
-		"status-result": "${length} Resultate gefunden",
-		"no-results": "Keine Resultate gefunden",
+		"list-label": "Ergebnisliste",
+		"status-result": "${length} Ergebnisse gefunden",
+		"no-results": "Keine Ergebnisse gefunden",
 		"status-query-too-short": "Geben Sie ${minChars} oder mehr Zeichen für die Suche ein",
 		"status-start-typing": "Beginnen Sie mit der Eingabe",
 		"list-item-text": "Listenelement ${index} von ${length}"
-	}
+	},
+	"fr": {
+		"list-label": "Liste des résultats",
+		"status-result": "${length} résultats trouvés",
+		"no-results": "Aucun résultat trouvé",
+		"status-query-too-short": "Tapez ${minChars} ou plusieurs caractères pour les résultats.",
+		"status-start-typing": "Commencer à écrire",
+		"list-item-text": "élément de liste ${index} de ${length}"
+	},
+	"it": {
+		"list-label": "Elenco dei risultati",
+		"status-result": "${length} risultati trovati",
+		"no-results": "Nessun risultato trovato",
+		"status-query-too-short": "Digita ${minChars} o più caratteri per i risultati.",
+		"status-start-typing": "Inizia a digitare per i risultati.",
+		"list-item-text": "elemento dell'elenco ${index} di ${length}"
+	},
 };
 
 _.FILTER_CONTAINS = function (text, input) {
@@ -456,12 +472,12 @@ function phrase(instance, key, replacements) {
 	const translations = _.languages[instance.language];
 	var result = translations[key];
 	if(result === undefined) {
-		console.log(instance.language + "no result found " +  key)
-		
+		console.warn(instance.language + "no result found " +  key)
 	}
 	for (var i in replacements) {
-		//console.log(i + ":::"+ replacements[i])
-		result = result.replace(i, replacements[i])
+		while(result.indexOf(i) >= 0) {
+			result = result.replace(i, replacements[i])
+		}
 	}
 	return result;
 }
