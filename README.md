@@ -85,11 +85,11 @@ There are multiple customizations and properties able to be instantiated within 
 
 | JS Property | HTML Attribute | Description                                                                     | Value   | Default      |
 | ----------- | -------------- | ------------------------------------------------------------------------------- | ------- | ------------ |
-| list        | data-list      | Where to find the list of suggestions.                                          | Array of strings, HTML element, CSS selector (no groups, i.e. no commas), String containing a comma-separated list of items | N/A |
-| minChars    | data-minchars  | Minimum characters the user has to type before the autocomplete popup shows up. | Number  | 2            |
-| maxItems    | data-maxitems  | Maximum number of suggestions to display.                                       | Number  | 10           |
-| autoFirst   | data-autofirst | Should the first element be automatically                                       | Boolean | false        |
-| listLabel   | data-listlabel | Denotes a label to be used as aria-label on the generated autocomplete list.    | String  | Results List |
+| `list`      | `data-list`      | Where to find the list of suggestions.                                          | Array of strings, HTML element, CSS selector (no groups, i.e. no commas), String containing a comma-separated list of items | N/A |
+| `minChars`  | `data-minchars`  | Minimum characters the user has to type before the autocomplete popup shows up. | Number  | `2`           |
+| `maxItems`  | `data-maxitems`  | Maximum number of suggestions to display.                                       | Number  | `10`          |
+| `autoFirst` | `data-autofirst` | Should the first element be automatically                                       | Boolean | `false`       |
+| `listLabel` | `data-listlabel` | Denotes a label to be used as aria-label on the generated autocomplete list.    | String  | Results List |
 
 ## License
 
