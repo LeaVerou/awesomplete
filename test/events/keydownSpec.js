@@ -90,7 +90,7 @@ describe("tabSelect option true ", function () {
 
 		spyOn(this.subject, "select");
 		$.keydown(this.subject.input, $.k.TAB);
-
 		expect(this.subject.select).toHaveBeenCalled();
+		expect(this.subject.select.calls.mostRecent().args[2].defaultPrevented).toBe(true);
 	});
 })

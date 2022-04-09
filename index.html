@@ -125,7 +125,7 @@ var awesomplete = new Awesomplete(input);
 
 awesomplete.list = ["Ada", "Java", "JavaScript", "Brainfuck", "LOLCODE", "Node.js", "Ruby on Rails"];</code></pre>
 
-<p>Suggestions with different <strong>label</strong> and <strong>value</strong> are supported too. The label will be shown in autocompleter and the value will be inserted into the input.</p>
+<p>Suggestions with different <strong>label</strong> and <strong>value</strong> are supported too. The label will be shown in autocompleter and the <strong>value</strong> will be inserted into the input. If you want to insert the label into the input you can provide your own <strong>replace</strong> function</p>
 
 <pre class="language-markup"><code>&lt;input id="myinput" /></code></pre>
 	<pre class="language-javascript"><code>var input = document.getElementById("myinput");
@@ -146,7 +146,21 @@ new Awesomplete(input, {
 		[ "China", "CN" ],
 		[ "United States", "US" ]
 	]
-});</code></pre>
+});
+
+// Show label and insert label into the input:
+new Awesomplete(input, {
+	list: [
+		{ label: "Belarus", value: "BY" },
+		{ label: "China", value: "CN" },
+		{ label: "United States", value: "US" }
+	],
+	// insert label instead of value into the input.
+	replace: function(suggestion) {
+		this.input.value = suggestion.label;
+	}
+});
+</code></pre>
 
 </section>
 
@@ -205,6 +219,20 @@ new Awesomplete(input, {
 				<td>Should the first element be automatically selected? Demo: <input class="awesomplete" data-autofirst data-list="Ada, Java, JavaScript, Brainfuck, LOLCODE, Node.js, Ruby on Rails" xautofocus /></td>
 				<td>Boolean</td>
 				<td>false</td>
+			</tr>
+			<tr>
+				<td><code>tabSelect</code></td>
+				<td><code>data-tabSelect</code></td>
+				<td>Should the first element be selected when the user hits the TAB key when the field has focus?></td>
+				<td>Boolean</td>
+				<td>false</td>
+			</tr>
+			<tr>
+				<td><code>listLabel</code></td>
+				<td><code>data-listlabel</code></td>
+				<td>Denotes a label to be used as aria-label on the generated autocomplete list.</td>
+				<td>String</td>
+				<td>Results List</td>
 			</tr>
 		</tbody>
 	</table>
@@ -303,12 +331,12 @@ We can also <strong>generate list items based on user's input</strong>. See E-ma
 		<tbody>
 			<tr>
 				<td><code>awesomplete-select</code></td>
-				<td>The user has made a selection (either via pressing enter or clicking on an item), but it has not been applied yet. Callback will be passed an object with <code>text</code> (selected suggestion) and <code>origin</code> (DOM element) properties.</td>
+				<td>The user has made a selection (either via pressing enter or clicking on an item), but it has not been applied yet. Callback will be passed an object with <code>text</code> (selected suggestion), <code>origin</code> (DOM element) properties and <code>originalEvent</code> the original triggering DOM event.</td>
 				<td>Yes. The selection will not be applied and the popup will not close.</td>
 			</tr>
 			<tr>
 				<td><code>awesomplete-selectcomplete</code></td>
-				<td>The user has made a selection (either via pressing enter or clicking on an item), and it has been applied. Callback will be passed an object with a <code>text</code> property containing the selected suggestion.</td>
+				<td>The user has made a selection (either via pressing enter or clicking on an item), and it has been applied. Callback will be passed an object with a <code>text</code> property containing the selected suggestion and <code>originalEvent</code> the original triggering DOM event.</td>
 				<td>No</td>
 			</tr>
 			<tr>
@@ -373,7 +401,7 @@ We can also <strong>generate list items based on user's input</strong>. See E-ma
 			</tr>
 			<tr>
 				<td><code>destroy()</code></td>
-				<td>Clean up and remove the instance from the input.</td>
+				<td>Clean up and remove the instance from the input. The container is only removed if it wasn't manually set but created by Awesomplete.</td>
 			</tr>
 		</tbody>
 	</table>
@@ -426,6 +454,30 @@ ajax.onload = function() {
 	new Awesomplete(document.querySelector("#ajax-example input"),{ list: list });
 };
 ajax.send();</script></code></pre>
+	</section>
+
+	<section id="ajax-example">
+	<h2>Custom list example <small>(based on user input)</small></h2>
+	<pre class="language-markup"><code>&lt;input id="query" class="awesomplete"  /&gt;</code></pre>
+	<pre class="language-javascript"><code><script>
+const queryInput = document.querySelector("#query");
+
+const awesomplete = new Awesomplete(queryInput, {
+  filter: () => { // We will provide a list that is already filtered ...
+    return true;
+  },
+  sort: false,    // ... and sorted.
+  list: []
+});
+
+queryInput.addEventListener("input", (event) => {
+  const inputText = event.target.value;
+  // Process inputText as you want, e.g. make an API request.
+  awesomplete.list = ["my"+inputText, "custom"+inputText, "list"+inputText];
+  awesomplete.evaluate();
+});
+
+</script></code></pre>
 	</section>
 
 	<section id="combobox">

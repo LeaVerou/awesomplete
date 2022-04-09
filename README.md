@@ -4,7 +4,7 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/LeaVerou/awesomplete.svg)](https://codeclimate.com/github/LeaVerou/awesomplete)
 [![Test Coverage](https://img.shields.io/codeclimate/coverage/github/LeaVerou/awesomplete.svg)](https://codeclimate.com/github/LeaVerou/awesomplete/coverage)
 
-http://leaverou.github.io/awesomplete/
+https://leaverou.github.io/awesomplete/
 
 Awesomplete is an ultra lightweight, customizable, simple autocomplete widget with zero dependencies, built with modern standards for modern browsers.
 
@@ -81,6 +81,16 @@ Or the following, if you don’t want to use a `<datalist>`, or if you don’t w
 
 There are multiple customizations and properties able to be instantiated within the JS. Libraries and definitions of the properties are available in the Links below.
 
+## Options
+
+| JS Property | HTML Attribute | Description                                                                     | Value   | Default      |
+| ----------- | -------------- | ------------------------------------------------------------------------------- | ------- | ------------ |
+| `list`      | `data-list`      | Where to find the list of suggestions.                                          | Array of strings, HTML element, CSS selector (no groups, i.e. no commas), String containing a comma-separated list of items | N/A |
+| `minChars`  | `data-minchars`  | Minimum characters the user has to type before the autocomplete popup shows up. | Number  | `2`           |
+| `maxItems`  | `data-maxitems`  | Maximum number of suggestions to display.                                       | Number  | `10`          |
+| `autoFirst` | `data-autofirst` | Should the first element be automatically                                       | Boolean | `false`       |
+| `listLabel` | `data-listlabel` | Denotes a label to be used as aria-label on the generated autocomplete list.    | String  | Results List |
+
 ## License
 
 Awesomplete is released under the MIT License. See [LICENSE][1] file for
@@ -88,10 +98,10 @@ details.
 
 ## Links
 
-The official site for the library is at <http://leaverou.github.io/awesomplete/>.
+The official site for the library is at <https://leaverou.github.io/awesomplete/>.
 
 Documentation for the API and other topics is at
-<http://leaverou.github.io/awesomplete/#api>.
+<https://leaverou.github.io/awesomplete/#api>.
 
 Created by Lea Verou and other fantastic contributors.
 
