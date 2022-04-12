@@ -136,7 +136,7 @@ var _ = function (input, o) {
 		this.list = this.input.getAttribute("data-list") || o.list || [];
 	}
 
-	_.all.push(this);
+	_.all.push(this.input.awesomplete = this);
 };
 
 _.prototype = {
