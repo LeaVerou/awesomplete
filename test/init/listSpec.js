@@ -39,6 +39,12 @@ describe("Awesomplete list", function () {
 			]);
 		});
 
+		it("assigns from function", function () {
+			var someFunction = function() { return ["List", "from", "a", "function"]; }
+			this.subject.list = someFunction;
+			expect(this.subject._list).toEqual(someFunction);
+		});
+
 		it("does not assigns from not found list", function () {
 			this.subject.list = "#nosuchlist";
 			expect(this.subject._list).toEqual([]);
