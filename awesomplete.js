@@ -6,6 +6,7 @@
  */
 
 (function () {
+
 var _ = function (input, o) {
 	var me = this;
 
@@ -39,8 +40,8 @@ var _ = function (input, o) {
 		replace: _.REPLACE,
 		listContainer: _.CONTAINER,
 		tabSelect: false,
-		listLabel: "Results List",
-	},o);
+		listLabel: "Results List"
+	}, o);
 
 	this.index = -1;
 
@@ -50,10 +51,10 @@ var _ = function (input, o) {
 
 	this.ul = $.create("ul", {
 		hidden: "hidden",
+        role: "listbox",
+        id: "awesomplete_list_" + this.count,
 		inside:
 			me.listContainer === _.CONTAINER ? me.container : me.listContainer,
-		role: "listbox",
-		id: "awesomplete_list_" + this.count,
 		"aria-label": this.listLabel,
 	});
 
@@ -61,12 +62,9 @@ var _ = function (input, o) {
 		className: "visually-hidden",
 		role: "status",
 		"aria-live": "assertive",
-		"aria-atomic": true,
-		inside: this.container,
-		textContent:
-			this.minChars != 0
-				? "Type " + this.minChars + " or more characters for results."
-				: "Begin typing for results.",
+        "aria-atomic": true,
+        inside: this.container,
+        textContent: this.minChars != 0 ? ("Type " + this.minChars + " or more characters for results.") : "Begin typing for results."
 	});
 
 	// Bind events
@@ -81,8 +79,7 @@ var _ = function (input, o) {
 				// If the dropdown `ul` is in view, then act on keydown for the following keys:
 				// Enter / Esc / Up / Down
 				if (me.opened) {
-					if (c === 13 && me.selected) {
-						// Enter
+					if (c === 13 && me.selected) { // Enter
 						evt.preventDefault();
 						me.select(undefined, undefined, evt);
 					} else if (c === 9 && me.selected && me.tabSelect) {
