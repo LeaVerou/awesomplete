@@ -9,9 +9,9 @@
 var _ = function (input, o) {
 	var me = this;
 
-	// Keep track of number of instances for unique IDs
-	_.count = (_.count || 0) + 1;
-	this.count = _.count;
+    // Keep track of number of instances for unique IDs
+    _.count = (_.count || 0) + 1;
+    this.count = _.count;
 
 	// Setup
 
@@ -27,24 +27,20 @@ var _ = function (input, o) {
 	// between default and customized behavior later on
 	this.options = o = o || {};
 
-	configure(
-		this,
-		{
-			minChars: 2,
-			maxItems: 10,
-			autoFirst: false,
-			data: _.DATA,
-			filter: _.FILTER_CONTAINS,
-			sort: o.sort === false ? false : _.SORT_BYLENGTH,
-			container: _.CONTAINER,
-			item: _.ITEM,
-			replace: _.REPLACE,
-			listContainer: _.CONTAINER,
-			tabSelect: false,
-			listLabel: "Results List",
-		},
-		o
-	);
+	configure(this, {
+		minChars: 2,
+		maxItems: 10,
+		autoFirst: false,
+		data: _.DATA,
+		filter: _.FILTER_CONTAINS,
+		sort: o.sort === false ? false : _.SORT_BYLENGTH,
+		container: _.CONTAINER,
+		item: _.ITEM,
+		replace: _.REPLACE,
+		listContainer: _.CONTAINER,
+		tabSelect: false,
+		listLabel: "Results List",
+	},o);
 
 	this.index = -1;
 
