@@ -54,9 +54,8 @@
 
     this.ul = $.create("ul", {
       hidden: "hidden",
-      className: "awesomplete-suggestion-list",
       inside:
-        me.listContainer === _.CONTAINER ? this.container : this.listContainer,
+        me.listContainer === _.CONTAINER ? me.container : me.listContainer,
       role: "listbox",
       id: "awesomplete_list_" + this.count,
       "aria-label": this.listLabel,
@@ -131,11 +130,22 @@
           }
         },
       },
+      window: {
+        scroll: function () {
+          var boundingRect = me.container.getBoundingClientRect();
+          me.ul.style.top = boundingRect.top + boundingRect.height + "px";
+          me.ul.style.left = boundingRect.left + "px";
+          me.ul.style.minWidth = boundingRect.width + "px";
+        },
+      },
     };
 
     $.bind(this.input, this._events.input);
     $.bind(this.input.form, this._events.form);
     $.bind(this.ul, this._events.ul);
+    if (this.listContainer !== _.CONTAINER) {
+      $.bind(window, this._events.window);
+    }
 
     if (this.input.hasAttribute("list")) {
       this.list = "#" + this.input.getAttribute("list");
@@ -208,11 +218,13 @@
         var boundingRect = this.container.getBoundingClientRect();
         this.ul.style.top = boundingRect.top + boundingRect.height + "px";
         this.ul.style.left = boundingRect.left + "px";
-        this.ul.style["min-width"] = boundingRect.width + "px";
+        this.ul.style.position = "fixed";
+        this.ul.style.transitionProperty = "height, width, transform";
+        this.ul.style.minWidth = boundingRect.width + "px";
+        this.ul.className = "awesomplete-suggestion-list";
       }
       this.input.setAttribute("aria-expanded", "true");
       this.ul.removeAttribute("hidden");
-
       this.isOpened = true;
 
       this.status.removeAttribute("hidden");
@@ -228,14 +240,21 @@
       //remove events from the input and its form
       $.unbind(this.input, this._events.input);
       $.unbind(this.input.form, this._events.form);
+      if (this.listContainer !== _.CONTAINER) {
+        $.unbind(window, this._events.window);
+      }
 
       // cleanup container if it was created by Awesomplete but leave it alone otherwise
       if (!this.options.container) {
         //move the input out of the awesomplete container and remove the container and its children
         var parentNode = this.container.parentNode;
-
-        parentNode.insertBefore(this.input, this.container);
-        parentNode.removeChild(this.container);
+        if (this.listContainer !== _.CONTAINER) {
+          var ulParentNode = this.ul.parentNode;
+          ulParentNode.removeChild(this.ul);
+        } else {
+          parentNode.insertBefore(this.input, this.container);
+          parentNode.removeChild(this.container);
+        }
       }
 
       //remove autocomplete and aria-autocomplete attributes
@@ -414,8 +433,6 @@
   _.REPLACE = function (text) {
     this.input.value = text.value;
   };
-
-  _.CONTAINER = "container";
 
   _.DATA = function (item /*, input*/) {
     return item;

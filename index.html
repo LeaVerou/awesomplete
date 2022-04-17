@@ -420,6 +420,7 @@ We can also <strong>generate list items based on user's input</strong>. See E-ma
 	data: function (text, input) {
 		return input.slice(0, input.indexOf("@")) + "@" + text;
 	},
+	listContainer: document.body,
 	filter: Awesomplete.FILTER_STARTSWITH
 });</script></code></pre>
 	</section>
@@ -445,19 +446,20 @@ We can also <strong>generate list items based on user's input</strong>. See E-ma
 	</section>
 
 	<section id="ajax-example">
-	<h2>Ajax example <small>(restcountries.eu api)</small></h2>
+	<h2>Ajax example <small>(restcountries.com api)</small></h2>
 	<label class="">Select French speaking country <input type="text"></label>
 	<pre class="language-javascript"><code><script>var ajax = new XMLHttpRequest();
-ajax.open("GET", "https://restcountries.eu/rest/v1/lang/fr", true);
+ajax.open("GET", "https://restcountries.com/v3.1/lang/french", true);
 ajax.onload = function() {
-	var list = JSON.parse(ajax.responseText).map(function(i) { return i.name; });
-	new Awesomplete(document.querySelector("#ajax-example input"),{ list: list });
+	var list = JSON.parse(ajax.responseText).map(function(i) { return i.name.common; });
+	new Awesomplete(document.querySelector("#ajax-example input"),{ list });
 };
 ajax.send();</script></code></pre>
 	</section>
 
 	<section id="ajax-example">
 	<h2>Custom list example <small>(based on user input)</small></h2>
+	<label class="">Custom list example <input id="query" class="awesomplete"/></label>
 	<pre class="language-markup"><code>&lt;input id="query" class="awesomplete"  /&gt;</code></pre>
 	<pre class="language-javascript"><code><script>
 const queryInput = document.querySelector("#query");
