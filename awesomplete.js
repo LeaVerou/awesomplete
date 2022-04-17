@@ -82,22 +82,23 @@ var _ = function (input, o) {
 					if (c === 13 && me.selected) { // Enter
 						evt.preventDefault();
 						me.select(undefined, undefined, evt);
-					} else if (c === 9 && me.selected && me.tabSelect) {
+					} 
+					else if (c === 9 && me.selected && me.tabSelect) {
 						evt.preventDefault();
 						me.select(undefined, undefined, evt);
-					} else if (c === 27) {
-						// Esc
+					} 
+					else if (c === 27) { // Esc
 						me.close({ reason: "esc" });
-					} else if (c === 38 || c === 40) {
-						// Down/Up arrow
+					} 
+					else if (c === 38 || c === 40) { // Down/Up arrow
 						evt.preventDefault();
 						me[c === 38 ? "previous" : "next"]();
 					}
 				}
-			},
+			}
 		},
 		form: {
-			submit: this.close.bind(this, { reason: "submit" }),
+			submit: this.close.bind(this, { reason: "submit" })
 		},
 		ul: {
 			// Prevent the default mousedowm, which ensures the input is not blurred.
@@ -111,17 +112,17 @@ var _ = function (input, o) {
 				var li = evt.target;
 
 				if (li !== this) {
+					
 					while (li && !/li/i.test(li.nodeName)) {
 						li = li.parentNode;
 					}
 
-					if (li && evt.button === 0) {
-						// Only select on left click
+					if (li && evt.button === 0) { // Only select on left click
 						evt.preventDefault();
 						me.select(li, evt.target, evt);
 					}
 				}
-			},
+			}
 		},
 		window: {
 			scroll: function () {
