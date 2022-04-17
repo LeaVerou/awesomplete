@@ -1,5 +1,5 @@
 describe("awesomplete.destroy", function () {
-	
+
 	$.fixture("plain");
 
 	subject(function () { return new Awesomplete("#plain", { list: ["item1", "item2", "item3"] }) });
