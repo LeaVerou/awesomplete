@@ -583,4 +583,4 @@ if (typeof module === "object" && module.exports) {
 
 return _;
 
-})();
+}());
