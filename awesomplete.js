@@ -158,7 +158,7 @@ _.prototype = {
 			this._list = list;
 		}
 		else if (typeof list === "string" && list.indexOf(",") > -1) {
-			this._list = list.split(/\s*,\s*/);
+				this._list = list.split(/\s*,\s*/);
 		}
 		else { // Element or CSS selector
 			list = $(list);
@@ -358,11 +358,11 @@ _.prototype = {
 				});
 
 			if (this.ul.children.length === 0) {
-				
+
                 this.status.textContent = "No results found";
 
 				this.close({ reason: "nomatches" });
-				
+
 			} else {
 				this.open();
 
@@ -400,23 +400,17 @@ _.SORT_BYLENGTH = function (a, b) {
 _.CONTAINER = function (input) {
 	return $.create("div", {
 		className: "awesomplete",
-		around: input,
+		around: input
 	});
 };
 
 _.ITEM = function (text, input, item_id) {
-	var html =
-		input.trim() === ""
-			? text
-			: text.replace(
-					RegExp($.regExpEscape(input.trim()), "gi"),
-					"<mark>$&</mark>"
-				);
+	var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 	return $.create("li", {
 		innerHTML: html,
 		role: "option",
 		"aria-selected": "false",
-		id: "awesomplete_list_" + this.count + "_item_" + item_id,
+		id: "awesomplete_list_" + this.count + "_item_" + item_id
 	});
 };
 
@@ -424,31 +418,21 @@ _.REPLACE = function (text) {
 	this.input.value = text.value;
 };
 
-_.DATA = function (item /*, input*/) {
-	return item;
-};
+_.DATA = function (item/*, input*/) { return item; };
 
 // Private functions
 
 function Suggestion(data) {
 	var o = Array.isArray(data)
-		? { label: data[0], value: data[1] }
-		: typeof data === "object" && "label" in data && "value" in data
-		? data
-		: { label: data, value: data };
+	  ? { label: data[0], value: data[1] }
+	  : typeof data === "object" && "label" in data && "value" in data ? data : { label: data, value: data };
 
 	this.label = o.label || o.value;
 	this.value = o.value;
 }
-Object.defineProperty(
-	(Suggestion.prototype = Object.create(String.prototype)),
-	"length",
-	{
-		get: function () {
-			return this.label.length;
-		},
-	}
-);
+Object.defineProperty(Suggestion.prototype = Object.create(String.prototype), "length", {
+	get: function() { return this.label.length; }
+});
 Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
 	return "" + this.label;
 };
@@ -456,21 +440,23 @@ Suggestion.prototype.toString = Suggestion.prototype.valueOf = function () {
 function configure(instance, properties, o) {
 	for (var i in properties) {
 		var initial = properties[i],
-			attrValue = instance.input.getAttribute("data-" + i.toLowerCase());
+		    attrValue = instance.input.getAttribute("data-" + i.toLowerCase());
 
 		if (typeof initial === "number") {
 			instance[i] = parseInt(attrValue);
-		} else if (initial === false) {
-			// Boolean options must be false by default anyway
+		}
+		else if (initial === false) { // Boolean options must be false by default anyway
 			instance[i] = attrValue !== null;
-		} else if (initial instanceof Function) {
+		}
+		else if (initial instanceof Function) {
 			instance[i] = null;
-		} else {
+		}
+		else {
 			instance[i] = attrValue;
 		}
 
 		if (!instance[i] && instance[i] !== 0) {
-			instance[i] = i in o ? o[i] : initial;
+			instance[i] = (i in o)? o[i] : initial;
 		}
 	}
 }
@@ -480,9 +466,7 @@ function configure(instance, properties, o) {
 var slice = Array.prototype.slice;
 
 function $(expr, con) {
-	return typeof expr === "string"
-		? (con || document).querySelector(expr)
-		: expr || null;
+	return typeof expr === "string"? (con || document).querySelector(expr) : expr || null;
 }
 
 function $$(expr, con) {
@@ -497,7 +481,8 @@ $.create = function (tag, o) {
 
 		if (i === "inside") {
 			$(val).appendChild(element);
-		} else if (i === "around") {
+		}
+		else if (i === "around") {
 			var ref = $(val);
 			ref.parentNode.insertBefore(element, ref);
 			element.appendChild(ref);
@@ -505,9 +490,11 @@ $.create = function (tag, o) {
 			if (ref.getAttribute("autofocus") != null) {
 				ref.focus();
 			}
-		} else if (i in element) {
+		}
+		else if (i in element) {
 			element[i] = val;
-		} else {
+		}
+		else {
 			element.setAttribute(i, val);
 		}
 	}
@@ -579,7 +566,8 @@ if (typeof Document !== "undefined") {
 	// DOM already loaded?
 	if (document.readyState !== "loading") {
 		init();
-	} else {
+	}
+	else {
 		// Wait for it
 		document.addEventListener("DOMContentLoaded", init);
 	}
@@ -594,4 +582,5 @@ if (typeof module === "object" && module.exports) {
 }
 
 return _;
+
 })();
