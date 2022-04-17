@@ -38,6 +38,7 @@ var _ = function (input, o) {
 		container: _.CONTAINER,
 		item: _.ITEM,
 		replace: _.REPLACE,
+		listContainer: _.CONTAINER,
 		tabSelect: false,
 		listLabel: "Results List"
 	}, o);
@@ -52,8 +53,9 @@ var _ = function (input, o) {
 		hidden: "hidden",
         role: "listbox",
         id: "awesomplete_list_" + this.count,
-		inside: this.container,
-		"aria-label": this.listLabel
+		inside:
+			me.listContainer === _.CONTAINER ? me.container : me.listContainer,
+		"aria-label": this.listLabel,
 	});
 
 	this.status = $.create("span", {
@@ -69,14 +71,14 @@ var _ = function (input, o) {
 
 	this._events = {
 		input: {
-			"input": this.evaluate.bind(this),
-			"blur": this.close.bind(this, { reason: "blur" }),
-			"keydown": function(evt) {
+			input: this.evaluate.bind(this),
+			blur: this.close.bind(this, { reason: "blur" }),
+			keydown: function (evt) {
 				var c = evt.keyCode;
 
 				// If the dropdown `ul` is in view, then act on keydown for the following keys:
 				// Enter / Esc / Up / Down
-				if(me.opened) {
+				if (me.opened) {
 					if (c === 13 && me.selected) { // Enter
 						evt.preventDefault();
 						me.select(undefined, undefined, evt);
@@ -90,23 +92,23 @@ var _ = function (input, o) {
 					}
 					else if (c === 38 || c === 40) { // Down/Up arrow
 						evt.preventDefault();
-						me[c === 38? "previous" : "next"]();
+						me[c === 38 ? "previous" : "next"]();
 					}
 				}
 			}
 		},
 		form: {
-			"submit": this.close.bind(this, { reason: "submit" })
+			submit: this.close.bind(this, { reason: "submit" })
 		},
 		ul: {
 			// Prevent the default mousedowm, which ensures the input is not blurred.
 			// The actual selection will happen on click. This also ensures dragging the
 			// cursor away from the list item will cancel the selection
-			"mousedown": function(evt) {
+			mousedown: function (evt) {
 				evt.preventDefault();
 			},
 			// The click event is fired even if the corresponding mousedown event has called preventDefault
-			"click": function(evt) {
+			click: function (evt) {
 				var li = evt.target;
 
 				if (li !== this) {
@@ -121,12 +123,23 @@ var _ = function (input, o) {
 					}
 				}
 			}
-		}
+		},
+		window: {
+			scroll: function () {
+				var boundingRect = me.container.getBoundingClientRect();
+				me.ul.style.top = boundingRect.top + boundingRect.height + "px";
+				me.ul.style.left = boundingRect.left + "px";
+				me.ul.style.minWidth = boundingRect.width + "px";
+			},
+		},
 	};
 
 	$.bind(this.input, this._events.input);
 	$.bind(this.input.form, this._events.form);
 	$.bind(this.ul, this._events.ul);
+	if (this.listContainer !== _.CONTAINER) {
+		$.bind(window, this._events.window);
+	}
 
 	if (this.input.hasAttribute("list")) {
 		this.list = "#" + this.input.getAttribute("list");
@@ -195,6 +208,17 @@ _.prototype = {
 	},
 
 	open: function () {
+		if (this.listContainer !== _.CONTAINER) {
+			// In case the suggestion list is out of the container,
+			// get the bounding information of the container to set the position of the suggestion list below
+			var boundingRect = this.container.getBoundingClientRect();
+			this.ul.style.top = boundingRect.top + boundingRect.height + "px";
+			this.ul.style.left = boundingRect.left + "px";
+			this.ul.style.position = "fixed";
+			this.ul.style.transitionProperty = "height, width, transform";
+			this.ul.style.minWidth = boundingRect.width + "px";
+			this.ul.className = "awesomplete-suggestion-list";
+		}
 		this.input.setAttribute("aria-expanded", "true");
 		this.ul.removeAttribute("hidden");
 		this.isOpened = true;
@@ -208,18 +232,25 @@ _.prototype = {
 		$.fire(this.input, "awesomplete-open");
 	},
 
-	destroy: function() {
+	destroy: function () {
 		//remove events from the input and its form
 		$.unbind(this.input, this._events.input);
 		$.unbind(this.input.form, this._events.form);
+		if (this.listContainer !== _.CONTAINER) {
+			$.unbind(window, this._events.window);
+		}
 
 		// cleanup container if it was created by Awesomplete but leave it alone otherwise
 		if (!this.options.container) {
 			//move the input out of the awesomplete container and remove the container and its children
 			var parentNode = this.container.parentNode;
-
-			parentNode.insertBefore(this.input, this.container);
-			parentNode.removeChild(this.container);
+			if (this.listContainer !== _.CONTAINER) {
+				var ulParentNode = this.ul.parentNode;
+				ulParentNode.removeChild(this.ul);
+			} else {
+				parentNode.insertBefore(this.input, this.container);
+				parentNode.removeChild(this.container);
+			}
 		}
 
 		//remove autocomplete and aria-autocomplete attributes
@@ -299,7 +330,7 @@ _.prototype = {
 		}
 	},
 
-	evaluate: function() {
+	evaluate: function () {
 		var me = this;
 		var value = this.input.value;
 
@@ -309,10 +340,10 @@ _.prototype = {
 			this.ul.innerHTML = "";
 
 			this.suggestions = this._list
-				.map(function(item) {
+				.map(function (item) {
 					return new Suggestion(me.data(item, value));
 				})
-				.filter(function(item) {
+				.filter(function (item) {
 					return me.filter(item, value);
 				});
 
@@ -322,7 +353,7 @@ _.prototype = {
 
 			this.suggestions = this.suggestions.slice(0, this.maxItems);
 
-			this.suggestions.forEach(function(text, index) {
+			this.suggestions.forEach(function (text, index) {
 					me.ul.appendChild(me.item(text, value, index));
 				});
 
@@ -363,7 +394,7 @@ _.SORT_BYLENGTH = function (a, b) {
 		return a.length - b.length;
 	}
 
-	return a < b? -1 : 1;
+	return a < b ? -1 : 1;
 };
 
 _.CONTAINER = function (input) {
@@ -371,15 +402,15 @@ _.CONTAINER = function (input) {
 		className: "awesomplete",
 		around: input
 	});
-}
+};
 
 _.ITEM = function (text, input, item_id) {
 	var html = input.trim() === "" ? text : text.replace(RegExp($.regExpEscape(input.trim()), "gi"), "<mark>$&</mark>");
 	return $.create("li", {
 		innerHTML: html,
-		"role": "option",
+		role: "option",
 		"aria-selected": "false",
-		"id": "awesomplete_list_" + this.count + "_item_" + item_id
+		id: "awesomplete_list_" + this.count + "_item_" + item_id
 	});
 };
 
@@ -442,7 +473,7 @@ function $$(expr, con) {
 	return slice.call((con || document).querySelectorAll(expr));
 }
 
-$.create = function(tag, o) {
+$.create = function (tag, o) {
 	var element = document.createElement(tag);
 
 	for (var i in o) {
@@ -471,7 +502,7 @@ $.create = function(tag, o) {
 	return element;
 };
 
-$.bind = function(element, o) {
+$.bind = function (element, o) {
 	if (element) {
 		for (var event in o) {
 			var callback = o[event];
@@ -483,22 +514,22 @@ $.bind = function(element, o) {
 	}
 };
 
-$.unbind = function(element, o) {
+$.unbind = function (element, o) {
 	if (element) {
 		for (var event in o) {
 			var callback = o[event];
 
-			event.split(/\s+/).forEach(function(event) {
+			event.split(/\s+/).forEach(function (event) {
 				element.removeEventListener(event, callback);
 			});
 		}
 	}
 };
 
-$.fire = function(target, type, properties) {
+$.fire = function (target, type, properties) {
 	var evt = document.createEvent("HTMLEvents");
 
-	evt.initEvent(type, true, true );
+	evt.initEvent(type, true, true);
 
 	for (var j in properties) {
 		evt[j] = properties[j];
@@ -513,7 +544,7 @@ $.regExpEscape = function (s) {
 
 $.siblingIndex = function (el) {
 	/* eslint-disable no-cond-assign */
-	for (var i = 0; el = el.previousElementSibling; i++);
+	for (var i = 0; (el = el.previousElementSibling); i++);
 	return i;
 };
 

@@ -90,6 +90,7 @@ There are multiple customizations and properties able to be instantiated within 
 | `maxItems`  | `data-maxitems`  | Maximum number of suggestions to display.                                       | Number  | `10`          |
 | `autoFirst` | `data-autofirst` | Should the first element be automatically                                       | Boolean | `false`       |
 | `listLabel` | `data-listlabel` | Denotes a label to be used as aria-label on the generated autocomplete list.    | String  | Results List |
+| `listContainer` | `data-listcontainer` | Optional container where the list will be generated ; ex: `document.body`.      | HMTL Element   | created by the lib |
 
 ## License
 
