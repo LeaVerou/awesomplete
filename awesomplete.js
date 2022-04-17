@@ -6,386 +6,386 @@
  */
 
 (function () {
-	var _ = function (input, o) {
-		var me = this;
+var _ = function (input, o) {
+	var me = this;
 
-		// Keep track of number of instances for unique IDs
-		_.count = (_.count || 0) + 1;
-		this.count = _.count;
+	// Keep track of number of instances for unique IDs
+	_.count = (_.count || 0) + 1;
+	this.count = _.count;
 
-		// Setup
+	// Setup
 
-		this.isOpened = false;
+	this.isOpened = false;
 
-		this.input = $(input);
-		this.input.setAttribute("autocomplete", "off");
-		this.input.setAttribute("aria-expanded", "false");
-		this.input.setAttribute("aria-owns", "awesomplete_list_" + this.count);
-		this.input.setAttribute("role", "combobox");
+	this.input = $(input);
+	this.input.setAttribute("autocomplete", "off");
+	this.input.setAttribute("aria-expanded", "false");
+	this.input.setAttribute("aria-owns", "awesomplete_list_" + this.count);
+	this.input.setAttribute("role", "combobox");
 
-		// store constructor options in case we need to distinguish
-		// between default and customized behavior later on
-		this.options = o = o || {};
+	// store constructor options in case we need to distinguish
+	// between default and customized behavior later on
+	this.options = o = o || {};
 
-		configure(
-			this,
-			{
-				minChars: 2,
-				maxItems: 10,
-				autoFirst: false,
-				data: _.DATA,
-				filter: _.FILTER_CONTAINS,
-				sort: o.sort === false ? false : _.SORT_BYLENGTH,
-				container: _.CONTAINER,
-				item: _.ITEM,
-				replace: _.REPLACE,
-				listContainer: _.CONTAINER,
-				tabSelect: false,
-				listLabel: "Results List",
+	configure(
+		this,
+		{
+			minChars: 2,
+			maxItems: 10,
+			autoFirst: false,
+			data: _.DATA,
+			filter: _.FILTER_CONTAINS,
+			sort: o.sort === false ? false : _.SORT_BYLENGTH,
+			container: _.CONTAINER,
+			item: _.ITEM,
+			replace: _.REPLACE,
+			listContainer: _.CONTAINER,
+			tabSelect: false,
+			listLabel: "Results List",
+		},
+		o
+	);
+
+	this.index = -1;
+
+	// Create necessary elements
+
+	this.container = this.container(input);
+
+	this.ul = $.create("ul", {
+		hidden: "hidden",
+		inside:
+			me.listContainer === _.CONTAINER ? me.container : me.listContainer,
+		role: "listbox",
+		id: "awesomplete_list_" + this.count,
+		"aria-label": this.listLabel,
+	});
+
+	this.status = $.create("span", {
+		className: "visually-hidden",
+		role: "status",
+		"aria-live": "assertive",
+		"aria-atomic": true,
+		inside: this.container,
+		textContent:
+			this.minChars != 0
+				? "Type " + this.minChars + " or more characters for results."
+				: "Begin typing for results.",
+	});
+
+	// Bind events
+
+	this._events = {
+		input: {
+			input: this.evaluate.bind(this),
+			blur: this.close.bind(this, { reason: "blur" }),
+			keydown: function (evt) {
+				var c = evt.keyCode;
+
+				// If the dropdown `ul` is in view, then act on keydown for the following keys:
+				// Enter / Esc / Up / Down
+				if (me.opened) {
+					if (c === 13 && me.selected) {
+						// Enter
+						evt.preventDefault();
+						me.select(undefined, undefined, evt);
+					} else if (c === 9 && me.selected && me.tabSelect) {
+						evt.preventDefault();
+						me.select(undefined, undefined, evt);
+					} else if (c === 27) {
+						// Esc
+						me.close({ reason: "esc" });
+					} else if (c === 38 || c === 40) {
+						// Down/Up arrow
+						evt.preventDefault();
+						me[c === 38 ? "previous" : "next"]();
+					}
+				}
 			},
-			o
-		);
+		},
+		form: {
+			submit: this.close.bind(this, { reason: "submit" }),
+		},
+		ul: {
+			// Prevent the default mousedowm, which ensures the input is not blurred.
+			// The actual selection will happen on click. This also ensures dragging the
+			// cursor away from the list item will cancel the selection
+			mousedown: function (evt) {
+				evt.preventDefault();
+			},
+			// The click event is fired even if the corresponding mousedown event has called preventDefault
+			click: function (evt) {
+				var li = evt.target;
 
+				if (li !== this) {
+					while (li && !/li/i.test(li.nodeName)) {
+						li = li.parentNode;
+					}
+
+					if (li && evt.button === 0) {
+						// Only select on left click
+						evt.preventDefault();
+						me.select(li, evt.target, evt);
+					}
+				}
+			},
+		},
+		window: {
+			scroll: function () {
+				var boundingRect = me.container.getBoundingClientRect();
+				me.ul.style.top = boundingRect.top + boundingRect.height + "px";
+				me.ul.style.left = boundingRect.left + "px";
+				me.ul.style.minWidth = boundingRect.width + "px";
+			},
+		},
+	};
+
+	$.bind(this.input, this._events.input);
+	$.bind(this.input.form, this._events.form);
+	$.bind(this.ul, this._events.ul);
+	if (this.listContainer !== _.CONTAINER) {
+		$.bind(window, this._events.window);
+	}
+
+	if (this.input.hasAttribute("list")) {
+		this.list = "#" + this.input.getAttribute("list");
+		this.input.removeAttribute("list");
+	} else {
+		this.list = this.input.getAttribute("data-list") || o.list || [];
+	}
+
+	_.all.push(this);
+};
+
+_.prototype = {
+	set list(list) {
+		if (Array.isArray(list)) {
+			this._list = list;
+		} else if (typeof list === "string" && list.indexOf(",") > -1) {
+			this._list = list.split(/\s*,\s*/);
+		} else {
+			// Element or CSS selector
+			list = $(list);
+
+			if (list && list.children) {
+				var items = [];
+				slice.apply(list.children).forEach(function (el) {
+					if (!el.disabled) {
+						var text = el.textContent.trim();
+						var value = el.value || text;
+						var label = el.label || text;
+						if (value !== "") {
+							items.push({ label: label, value: value });
+						}
+					}
+				});
+				this._list = items;
+			}
+		}
+
+		if (document.activeElement === this.input) {
+			this.evaluate();
+		}
+	},
+
+	get selected() {
+		return this.index > -1;
+	},
+
+	get opened() {
+		return this.isOpened;
+	},
+
+	close: function (o) {
+		if (!this.opened) {
+			return;
+		}
+
+		this.input.setAttribute("aria-expanded", "false");
+		this.ul.setAttribute("hidden", "");
+		this.isOpened = false;
 		this.index = -1;
 
-		// Create necessary elements
+		this.status.setAttribute("hidden", "");
 
-		this.container = this.container(input);
+		$.fire(this.input, "awesomplete-close", o || {});
+	},
 
-		this.ul = $.create("ul", {
-			hidden: "hidden",
-			inside:
-				me.listContainer === _.CONTAINER ? me.container : me.listContainer,
-			role: "listbox",
-			id: "awesomplete_list_" + this.count,
-			"aria-label": this.listLabel,
-		});
-
-		this.status = $.create("span", {
-			className: "visually-hidden",
-			role: "status",
-			"aria-live": "assertive",
-			"aria-atomic": true,
-			inside: this.container,
-			textContent:
-				this.minChars != 0
-					? "Type " + this.minChars + " or more characters for results."
-					: "Begin typing for results.",
-		});
-
-		// Bind events
-
-		this._events = {
-			input: {
-				input: this.evaluate.bind(this),
-				blur: this.close.bind(this, { reason: "blur" }),
-				keydown: function (evt) {
-					var c = evt.keyCode;
-
-					// If the dropdown `ul` is in view, then act on keydown for the following keys:
-					// Enter / Esc / Up / Down
-					if (me.opened) {
-						if (c === 13 && me.selected) {
-							// Enter
-							evt.preventDefault();
-							me.select(undefined, undefined, evt);
-						} else if (c === 9 && me.selected && me.tabSelect) {
-							evt.preventDefault();
-							me.select(undefined, undefined, evt);
-						} else if (c === 27) {
-							// Esc
-							me.close({ reason: "esc" });
-						} else if (c === 38 || c === 40) {
-							// Down/Up arrow
-							evt.preventDefault();
-							me[c === 38 ? "previous" : "next"]();
-						}
-					}
-				},
-			},
-			form: {
-				submit: this.close.bind(this, { reason: "submit" }),
-			},
-			ul: {
-				// Prevent the default mousedowm, which ensures the input is not blurred.
-				// The actual selection will happen on click. This also ensures dragging the
-				// cursor away from the list item will cancel the selection
-				mousedown: function (evt) {
-					evt.preventDefault();
-				},
-				// The click event is fired even if the corresponding mousedown event has called preventDefault
-				click: function (evt) {
-					var li = evt.target;
-
-					if (li !== this) {
-						while (li && !/li/i.test(li.nodeName)) {
-							li = li.parentNode;
-						}
-
-						if (li && evt.button === 0) {
-							// Only select on left click
-							evt.preventDefault();
-							me.select(li, evt.target, evt);
-						}
-					}
-				},
-			},
-			window: {
-				scroll: function () {
-					var boundingRect = me.container.getBoundingClientRect();
-					me.ul.style.top = boundingRect.top + boundingRect.height + "px";
-					me.ul.style.left = boundingRect.left + "px";
-					me.ul.style.minWidth = boundingRect.width + "px";
-				},
-			},
-		};
-
-		$.bind(this.input, this._events.input);
-		$.bind(this.input.form, this._events.form);
-		$.bind(this.ul, this._events.ul);
+	open: function () {
 		if (this.listContainer !== _.CONTAINER) {
-			$.bind(window, this._events.window);
+			// In case the suggestion list is out of the container,
+			// get the bounding information of the container to set the position of the suggestion list below
+			var boundingRect = this.container.getBoundingClientRect();
+			this.ul.style.top = boundingRect.top + boundingRect.height + "px";
+			this.ul.style.left = boundingRect.left + "px";
+			this.ul.style.position = "fixed";
+			this.ul.style.transitionProperty = "height, width, transform";
+			this.ul.style.minWidth = boundingRect.width + "px";
+			this.ul.className = "awesomplete-suggestion-list";
+		}
+		this.input.setAttribute("aria-expanded", "true");
+		this.ul.removeAttribute("hidden");
+		this.isOpened = true;
+
+		this.status.removeAttribute("hidden");
+
+		if (this.autoFirst && this.index === -1) {
+			this.goto(0);
 		}
 
-		if (this.input.hasAttribute("list")) {
-			this.list = "#" + this.input.getAttribute("list");
-			this.input.removeAttribute("list");
+		$.fire(this.input, "awesomplete-open");
+	},
+
+	destroy: function () {
+		//remove events from the input and its form
+		$.unbind(this.input, this._events.input);
+		$.unbind(this.input.form, this._events.form);
+		if (this.listContainer !== _.CONTAINER) {
+			$.unbind(window, this._events.window);
+		}
+
+		// cleanup container if it was created by Awesomplete but leave it alone otherwise
+		if (!this.options.container) {
+			//move the input out of the awesomplete container and remove the container and its children
+			var parentNode = this.container.parentNode;
+			if (this.listContainer !== _.CONTAINER) {
+				var ulParentNode = this.ul.parentNode;
+				ulParentNode.removeChild(this.ul);
+			} else {
+				parentNode.insertBefore(this.input, this.container);
+				parentNode.removeChild(this.container);
+			}
+		}
+
+		//remove autocomplete and aria-autocomplete attributes
+		this.input.removeAttribute("autocomplete");
+		this.input.removeAttribute("aria-autocomplete");
+
+		//remove this awesomeplete instance from the global array of instances
+		var indexOfAwesomplete = _.all.indexOf(this);
+
+		if (indexOfAwesomplete !== -1) {
+			_.all.splice(indexOfAwesomplete, 1);
+		}
+	},
+
+	next: function () {
+		var count = this.ul.children.length;
+		this.goto(this.index < count - 1 ? this.index + 1 : count ? 0 : -1);
+	},
+
+	previous: function () {
+		var count = this.ul.children.length;
+		var pos = this.index - 1;
+
+		this.goto(this.selected && pos !== -1 ? pos : count - 1);
+	},
+
+	// Should not be used, highlights specific item without any checks!
+	goto: function (i) {
+		var lis = this.ul.children;
+
+		if (this.selected) {
+			lis[this.index].setAttribute("aria-selected", "false");
+		}
+
+		this.index = i;
+
+		if (i > -1 && lis.length > 0) {
+			lis[i].setAttribute("aria-selected", "true");
+
+			this.status.textContent =
+				lis[i].textContent + ", list item " + (i + 1) + " of " + lis.length;
+
+			this.input.setAttribute(
+				"aria-activedescendant",
+				this.ul.id + "_item_" + this.index
+			);
+
+			// scroll to highlighted element in case parent's height is fixed
+			this.ul.scrollTop =
+				lis[i].offsetTop - this.ul.clientHeight + lis[i].clientHeight;
+
+			$.fire(this.input, "awesomplete-highlight", {
+				text: this.suggestions[this.index],
+			});
+		}
+	},
+
+	select: function (selected, origin, originalEvent) {
+		if (selected) {
+			this.index = $.siblingIndex(selected);
 		} else {
-			this.list = this.input.getAttribute("data-list") || o.list || [];
+			selected = this.ul.children[this.index];
 		}
 
-		_.all.push(this);
-	};
+		if (selected) {
+			var suggestion = this.suggestions[this.index];
 
-	_.prototype = {
-		set list(list) {
-			if (Array.isArray(list)) {
-				this._list = list;
-			} else if (typeof list === "string" && list.indexOf(",") > -1) {
-				this._list = list.split(/\s*,\s*/);
-			} else {
-				// Element or CSS selector
-				list = $(list);
+			var allowed = $.fire(this.input, "awesomplete-select", {
+				text: suggestion,
+				origin: origin || selected,
+				originalEvent: originalEvent,
+			});
 
-				if (list && list.children) {
-					var items = [];
-					slice.apply(list.children).forEach(function (el) {
-						if (!el.disabled) {
-							var text = el.textContent.trim();
-							var value = el.value || text;
-							var label = el.label || text;
-							if (value !== "") {
-								items.push({ label: label, value: value });
-							}
-						}
-					});
-					this._list = items;
-				}
-			}
-
-			if (document.activeElement === this.input) {
-				this.evaluate();
-			}
-		},
-
-		get selected() {
-			return this.index > -1;
-		},
-
-		get opened() {
-			return this.isOpened;
-		},
-
-		close: function (o) {
-			if (!this.opened) {
-				return;
-			}
-
-			this.input.setAttribute("aria-expanded", "false");
-			this.ul.setAttribute("hidden", "");
-			this.isOpened = false;
-			this.index = -1;
-
-			this.status.setAttribute("hidden", "");
-
-			$.fire(this.input, "awesomplete-close", o || {});
-		},
-
-		open: function () {
-			if (this.listContainer !== _.CONTAINER) {
-				// In case the suggestion list is out of the container,
-				// get the bounding information of the container to set the position of the suggestion list below
-				var boundingRect = this.container.getBoundingClientRect();
-				this.ul.style.top = boundingRect.top + boundingRect.height + "px";
-				this.ul.style.left = boundingRect.left + "px";
-				this.ul.style.position = "fixed";
-				this.ul.style.transitionProperty = "height, width, transform";
-				this.ul.style.minWidth = boundingRect.width + "px";
-				this.ul.className = "awesomplete-suggestion-list";
-			}
-			this.input.setAttribute("aria-expanded", "true");
-			this.ul.removeAttribute("hidden");
-			this.isOpened = true;
-
-			this.status.removeAttribute("hidden");
-
-			if (this.autoFirst && this.index === -1) {
-				this.goto(0);
-			}
-
-			$.fire(this.input, "awesomplete-open");
-		},
-
-		destroy: function () {
-			//remove events from the input and its form
-			$.unbind(this.input, this._events.input);
-			$.unbind(this.input.form, this._events.form);
-			if (this.listContainer !== _.CONTAINER) {
-				$.unbind(window, this._events.window);
-			}
-
-			// cleanup container if it was created by Awesomplete but leave it alone otherwise
-			if (!this.options.container) {
-				//move the input out of the awesomplete container and remove the container and its children
-				var parentNode = this.container.parentNode;
-				if (this.listContainer !== _.CONTAINER) {
-					var ulParentNode = this.ul.parentNode;
-					ulParentNode.removeChild(this.ul);
-				} else {
-					parentNode.insertBefore(this.input, this.container);
-					parentNode.removeChild(this.container);
-				}
-			}
-
-			//remove autocomplete and aria-autocomplete attributes
-			this.input.removeAttribute("autocomplete");
-			this.input.removeAttribute("aria-autocomplete");
-
-			//remove this awesomeplete instance from the global array of instances
-			var indexOfAwesomplete = _.all.indexOf(this);
-
-			if (indexOfAwesomplete !== -1) {
-				_.all.splice(indexOfAwesomplete, 1);
-			}
-		},
-
-		next: function () {
-			var count = this.ul.children.length;
-			this.goto(this.index < count - 1 ? this.index + 1 : count ? 0 : -1);
-		},
-
-		previous: function () {
-			var count = this.ul.children.length;
-			var pos = this.index - 1;
-
-			this.goto(this.selected && pos !== -1 ? pos : count - 1);
-		},
-
-		// Should not be used, highlights specific item without any checks!
-		goto: function (i) {
-			var lis = this.ul.children;
-
-			if (this.selected) {
-				lis[this.index].setAttribute("aria-selected", "false");
-			}
-
-			this.index = i;
-
-			if (i > -1 && lis.length > 0) {
-				lis[i].setAttribute("aria-selected", "true");
-
-				this.status.textContent =
-					lis[i].textContent + ", list item " + (i + 1) + " of " + lis.length;
-
-				this.input.setAttribute(
-					"aria-activedescendant",
-					this.ul.id + "_item_" + this.index
-				);
-
-				// scroll to highlighted element in case parent's height is fixed
-				this.ul.scrollTop =
-					lis[i].offsetTop - this.ul.clientHeight + lis[i].clientHeight;
-
-				$.fire(this.input, "awesomplete-highlight", {
-					text: this.suggestions[this.index],
-				});
-			}
-		},
-
-		select: function (selected, origin, originalEvent) {
-			if (selected) {
-				this.index = $.siblingIndex(selected);
-			} else {
-				selected = this.ul.children[this.index];
-			}
-
-			if (selected) {
-				var suggestion = this.suggestions[this.index];
-
-				var allowed = $.fire(this.input, "awesomplete-select", {
+			if (allowed) {
+				this.replace(suggestion);
+				this.close({ reason: "select" });
+				$.fire(this.input, "awesomplete-selectcomplete", {
 					text: suggestion,
-					origin: origin || selected,
 					originalEvent: originalEvent,
 				});
-
-				if (allowed) {
-					this.replace(suggestion);
-					this.close({ reason: "select" });
-					$.fire(this.input, "awesomplete-selectcomplete", {
-						text: suggestion,
-						originalEvent: originalEvent,
-					});
-				}
 			}
-		},
+		}
+	},
 
-		evaluate: function () {
-			var me = this;
-			var value = this.input.value;
+	evaluate: function () {
+		var me = this;
+		var value = this.input.value;
 
-			if (
-				value.length >= this.minChars &&
-				this._list &&
-				this._list.length > 0
-			) {
-				this.index = -1;
-				// Populate list with options that match
-				this.ul.innerHTML = "";
+		if (
+			value.length >= this.minChars &&
+			this._list &&
+			this._list.length > 0
+		) {
+			this.index = -1;
+			// Populate list with options that match
+			this.ul.innerHTML = "";
 
-				this.suggestions = this._list
-					.map(function (item) {
-						return new Suggestion(me.data(item, value));
-					})
-					.filter(function (item) {
-						return me.filter(item, value);
-					});
-
-				if (this.sort !== false) {
-					this.suggestions = this.suggestions.sort(this.sort);
-				}
-
-				this.suggestions = this.suggestions.slice(0, this.maxItems);
-
-				this.suggestions.forEach(function (text, index) {
-					me.ul.appendChild(me.item(text, value, index));
+			this.suggestions = this._list
+				.map(function (item) {
+					return new Suggestion(me.data(item, value));
+				})
+				.filter(function (item) {
+					return me.filter(item, value);
 				});
 
-				if (this.ul.children.length === 0) {
-					this.status.textContent = "No results found";
-
-					this.close({ reason: "nomatches" });
-				} else {
-					this.open();
-
-					this.status.textContent = this.ul.children.length + " results found";
-				}
-			} else {
-				this.close({ reason: "nomatches" });
-
-				this.status.textContent = "No results found";
+			if (this.sort !== false) {
+				this.suggestions = this.suggestions.sort(this.sort);
 			}
-		},
-	};
+
+			this.suggestions = this.suggestions.slice(0, this.maxItems);
+
+			this.suggestions.forEach(function (text, index) {
+				me.ul.appendChild(me.item(text, value, index));
+			});
+
+			if (this.ul.children.length === 0) {
+				this.status.textContent = "No results found";
+
+				this.close({ reason: "nomatches" });
+			} else {
+				this.open();
+
+				this.status.textContent = this.ul.children.length + " results found";
+			}
+		} else {
+			this.close({ reason: "nomatches" });
+
+			this.status.textContent = "No results found";
+		}
+	},
+};
 
 	// Static methods/properties
 
